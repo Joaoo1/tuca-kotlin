@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/home_fragment">
+
+    <fragment
+        android:id="@+id/home_fragment"
+        android:name="com.joaovitor.tucaprodutosdelimpeza.ui.home.HomeFragment"
+        android:label="HomeFragment">
+        <action
+            android:id="@+id/action_home_fragment_to_product_list_fragment"
+            app:destination="@id/product_list_fragment" />
+        <action
+            android:id="@+id/action_home_fragment_to_client_list_fragment"
+            app:destination="@id/client_list_fragment" />
+        <action
+            android:id="@+id/action_home_fragment_to_sales_list_fragment"
+            app:destination="@id/sale_list_fragment" />
+        <action
+            android:id="@+id/action_home_fragment_to_reportSalesFragment"
+            app:destination="@id/report_sales_fragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/client_list_fragment"
+        android:name="com.joaovitor.tucaprodutosdelimpeza.ui.client.list.ClientListFragment"
+        android:label="ClientListFragment" >
+        <action
+            android:id="@+id/action_clientListFragment_to_clientEditFragment"
+            app:destination="@id/client_edit_fragment" />
+        <action
+            android:id="@+id/action_clientListFragment_to_clientAddFragment"
+            app:destination="@id/client_add_fragment" />
+        <action
+            android:id="@+id/action_client_list_fragment_to_sales_info_fragment"
+            app:destination="@id/sales_info_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/client_add_fragment"
+        android:name="com.joaovitor.tucaprodutosdelimpeza.ui.client.add.ClientAddFragment"
+        android:label="ClientAddFragment" />
+    <fragment
+        android:id="@+id/client_edit_fragment"
+        android:name="com.joaovitor.tucaprodutosdelimpeza.ui.client.edit.ClientEditFragment"
+        android:label="ClientEditFragment" />
+
+
+    <fragment
+        android:id="@+id/product_list_fragment"
+        android:name="com.joaovitor.tucaprodutosdelimpeza.ui.product.list.ProductListFragment"
+        android:label="ProductListFragment"
+        tools:layout="@layout/fragment_product_list">
+        <action
+            android:id="@+id/action_productListFragment_to_product_add_fragment"
+            app:destination="@id/product_add_fragment" />
+        <action
+            android:id="@+id/action_productListFragment_to_product_edit_fragment"
+            app:destination="@id/product_edit_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/product_edit_fragment"
+        android:name="com.joaovitor.tucaprodutosdelimpeza.ui.product.edit.ProductEditFragment"
+        android:label="ProductEditFragment"
+        tools:layout="@layout/fragment_product_edit">
+        <action
+            android:id="@+id/action_product_edit_fragment_to_stock_history_fragment"
+            app:destination="@id/stock_history_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/product_add_fragment"
+        android:name="com.joaovitor.tucaprodutosdelimpeza.ui.product.add.ProductAddFragment"
+        android:label="ProductAddFragment"
+        tools:layout="@layout/fragment_product_add"/>
+    <fragment
+        android:id="@+id/stock_history_fragment"
+        android:name="com.joaovitor.tucaprodutosdelimpeza.ui.product.stockHistory.StockHistoryFragment"
+        android:label="StockHistoryFragment" />
+
+
+    <fragment
+        android:id="@+id/sale_list_fragment"
+        android:name="com.joaovitor.tucaprodutosdelimpeza.ui.sale.list.SalesListFragment"
+        android:label="SalesListFragment" >
+        <action
+            android:id="@+id/action_sales_list_fragment_to_sales_add_fragment"
+            app:destination="@id/sales_add_fragment" />
+        <action
+            android:id="@+id/action_sales_list_fragment_to_sales_info_fragment"
+            app:destination="@id/sales_info_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/sales_add_fragment"
+        android:name="com.joaovitor.tucaprodutosdelimpeza.ui.sale.add.SaleAddFragment"
+        android:label="SaleAddFragment" >
+        <action
+            android:id="@+id/action_sales_add_fragment_to_select_client_fragment"
+            app:destination="@id/select_client_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/sales_info_fragment"
+        android:name="com.joaovitor.tucaprodutosdelimpeza.ui.sale.info.SaleInfoFragment"
+        android:label="SaleInfoFragment" >
+        <action
+            android:id="@+id/action_sales_info_fragment_to_sale_edit_products_fragment"
+            app:destination="@id/sale_edit_products_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/sale_edit_products_fragment"
+        android:name="com.joaovitor.tucaprodutosdelimpeza.ui.sale.editProducts.SaleEditProductsFragment"
+        android:label="SaleEditProductsFragment" />
+    <fragment
+        android:id="@+id/select_client_fragment"
+        android:name="com.joaovitor.tucaprodutosdelimpeza.ui.sale.selectClient.SelectClientFragment"
+        android:label="SelectClientFragment" />
+    <fragment
+        android:id="@+id/report_sales_fragment"
+        android:name="com.joaovitor.tucaprodutosdelimpeza.ui.reports.sales.ReportSalesFragment"
+        android:label="ReportSalesFragment" />
+
+</navigation>

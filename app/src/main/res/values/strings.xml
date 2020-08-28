@@ -1,0 +1,91 @@
+<resources>
+    <string name="app_name">Tuca Produtos de Limpeza</string>
+    <string name="copyright">© João Vitor da Silva</string>
+
+    <string name="title_activity_product">ProductActivity</string>
+    <string name="title_activity_login">LoginActivity</string>
+
+    <string name="divider">Divider</string>
+
+    <string name="money">R$%1$s</string>
+    <string name="quantity">%1$sx</string>
+
+
+    <!-- Navigation Drawer -->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+
+    <!-- Login Page -->
+    <string name="login_hint_email">Email</string>
+    <string name="login_hint_password">Senha</string>
+    <string name="login_button_sign_in">Entrar</string>
+    <string name="login_error_invalid_username">Email não é válido</string>
+    <string name="login_error_invalid_password">Senha inválida</string>
+    <string name="login_error_login_failed">"Login falhou"</string>
+
+    <!-- Home Fragment -->
+    <string name="home_button_clients">Clientes</string>
+    <string name="home_button_sales">Vendas</string>
+    <string name="home_button_reports">Relatórios</string>
+    <string name="home_button_products">Produtos</string>
+    <string name="home_subtitle_general_info">Informações gerais</string>
+    <string name="home_updated_at">Informações atualizadas em 12/08/2020 ás 21:00</string>
+    <string name="home_card_title_sales">Vendas</string>
+    <string name="home_card_description_sales">Número total de vendas</string>
+    <string name="home_card_title_clients">Clientes</string>
+    <string name="home_card_description_clients">Número total de clientes</string>
+    <string name="home_card_title_products">Produtos</string>
+    <string name="home_card_description_products">Número total de produtos</string>
+
+    <!-- ProductAdd Fragment -->
+    <string name="product_add_hint_name">Nome</string>
+    <string name="product_add_hint_price">Preço</string>
+    <string name="product_add_hint_stock">Estoque</string>
+    <string name="product_add_manage_stock">Gerenciar estoque</string>
+    <string name="ic_product_description">Produto</string>
+    <string name="ic_price_description">Preço do produto</string>
+    <string name="ic_stock_description">Estoque</string>
+
+    <!-- ProductEdit Fragment -->
+    <string name="product_edit_tab_cadaster">Cadastro</string>
+    <string name="product_edit_tab_stock">Estoque</string>
+    <string name="product_edit_save_product">Salvar</string>
+
+    <!-- StockHistory Fragment -->
+    <string name="stock_history_sale">Venda %1$s</string>
+    <string name="stock_history_client">Cliente %1$s</string>
+
+    <!-- ClientAdd Fragment -->
+    <string name="client_add_hint_name">Nome</string>
+    <string name="client_add_hint_street">Rua</string>
+    <string name="client_add_hint_complement">Complemento</string>
+    <string name="client_add_hint_neighborhood">Bairro</string>
+    <string name="client_add_hint_city">Cidade</string>
+    <string name="client_add_hint_phone">Telefone</string>
+
+    <!-- SaleList Fragment -->
+    <string name="sales_list_sale">Venda %1$s</string>
+
+    <!-- SaleAdd Fragment -->
+    <string name="sale_add_hint_products">Produtos</string>
+    <string name="sale_add_hint_client">Cliente</string>
+    <string name="sale_add_add_product">Adicionar</string>
+    <string name="sale_add_payment">Pagamento</string>
+    <string name="sale_add_radio_unpaid">Não pago</string>
+    <string name="sale_add_radio_paid">Pago</string>
+    <string name="sale_add_radio_partially_paid">Parcialmente pago</string>
+    <string name="sale_add_hint_paid_value">Valor pago</string>
+    <string name="sale_add_hint_discount">Desconto</string>
+    <string name="sale_add_check_box_print">Imprimir recibo</string>
+    <string name="sale_add_initial_quantity">1</string>
+
+    <!-- ReportSales Fragment -->
+
+
+</resources>

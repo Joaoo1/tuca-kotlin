@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.joaovitor.tucaprodutosdelimpeza.ui.sale.add.SaleAddViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/activity_vertical_margin"
+                android:layout_marginHorizontal="@dimen/activity_horizontal_margin">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="30dp"
+                    android:layout_height="@dimen/input_height"
+                    android:layout_marginTop="12dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_input_product"
+                    tools:ignore="contentDescription" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_layout_product"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                        android:id="@+id/product"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/input_height"
+                        android:hint="@string/sale_add_hint_products" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/add_product"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/button_height"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="28dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/btn_primary"
+                    android:text="@string/sale_add_add_product"
+                    android:textSize="17sp"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintEnd_toStartOf="@+id/remove_quantity"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/input_layout_product" />
+
+                <ImageButton
+                    android:id="@+id/add_quantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/button_height"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="12dp"
+                    android:background="@android:color/transparent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/input_layout_product"
+                    app:srcCompat="@drawable/ic_add_gray"
+                    tools:ignore="ContentDescription" />
+
+                <EditText
+                    android:id="@+id/quantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="16dp"
+                    android:inputType="number"
+                    android:minWidth="30dp"
+                    android:text="@string/sale_add_initial_quantity"
+                    android:hint="@string/sale_add_initial_quantity"
+                    android:textAlignment="center"
+                    android:autofillHints=""
+                    app:layout_constraintEnd_toStartOf="@+id/add_quantity"
+                    app:layout_constraintTop_toBottomOf="@+id/input_layout_product"
+                    />
+
+                <ImageButton
+                    android:id="@+id/remove_quantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/button_height"
+                    android:background="@android:color/transparent"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintEnd_toStartOf="@+id/quantity"
+                    app:layout_constraintTop_toBottomOf="@+id/input_layout_product"
+                    app:srcCompat="@drawable/ic_remove_gray"
+                    tools:ignore="ContentDescription" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/products_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="12dp"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/add_product"
+                    tools:listitem="@layout/list_item_sale_product" />
+
+                <ImageView
+                    android:id="@+id/imageView7"
+                    android:layout_width="30dp"
+                    android:layout_height="@dimen/input_height"
+                    android:layout_marginTop="24dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/products_list"
+                    app:srcCompat="@drawable/ic_input_client"
+                    tools:ignore="ContentDescription"/>
+
+                <EditText
+                    android:id="@+id/client"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/input_height"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="24dp"
+                    android:ems="10"
+                    android:hint="@string/sale_add_hint_client"
+                    android:inputType="textPersonName"
+                    android:autofillHints=""
+                    android:enabled="false"
+                    android:onClick="@{() -> viewModel.onClickFab()}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView7"
+                    app:layout_constraintTop_toBottomOf="@+id/products_list"
+                    />
+
+                <ImageView
+                    android:id="@+id/imageView8"
+                    android:layout_width="30dp"
+                    android:layout_height="@dimen/button_height"
+                    android:layout_marginTop="24dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imageView7"
+                    app:srcCompat="@drawable/ic_input_calendar"
+                    tools:ignore="ContentDescription"/>
+
+                <EditText
+                    android:id="@+id/date"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="24dp"
+                    android:inputType="date"
+                    app:layout_constraintStart_toEndOf="@+id/imageView8"
+                    app:layout_constraintTop_toBottomOf="@+id/client"
+                    android:autofillHints=""
+                    tools:ignore="LabelFor" />
+
+                <ImageButton
+                    android:id="@+id/select_date"
+                    android:layout_width="50dp"
+                    android:layout_height="@dimen/button_height"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginStart="12dp"
+                    android:background="@drawable/btn_primary"
+                    android:src="@drawable/ic_edit_white"
+                    app:layout_constraintStart_toEndOf="@+id/date"
+                    app:layout_constraintTop_toBottomOf="@+id/client"
+                    tools:ignore="ContentDescription"/>
+
+                <ImageView
+                    android:id="@+id/imageView9"
+                    android:layout_width="30dp"
+                    android:layout_height="@dimen/button_height"
+                    android:layout_marginTop="24dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imageView8"
+                    app:srcCompat="@drawable/ic_input_payment"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="32dp"
+                    android:textSize="18sp"
+                    android:text="@string/sale_add_payment"
+                    android:textColor="@android:color/secondary_text_light"
+                    app:layout_constraintStart_toEndOf="@+id/imageView9"
+                    app:layout_constraintTop_toBottomOf="@+id/date" />
+
+                <RadioGroup
+                    android:id="@+id/radio_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="12dp"
+                    android:orientation="vertical"
+                    app:layout_constraintStart_toEndOf="@+id/imageView9"
+                    app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                    <RadioButton
+                        android:id="@+id/radio_button_unpaid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="@string/sale_add_radio_unpaid"
+                        android:textColor="@color/colorGray"
+                        tools:layout_editor_absoluteX="38dp"
+                        tools:layout_editor_absoluteY="498dp" />
+
+                    <RadioButton
+                        android:id="@+id/radio_button_paid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/sale_add_radio_paid"
+                        android:textColor="@color/colorGray"
+                        tools:layout_editor_absoluteX="38dp"
+                        tools:layout_editor_absoluteY="498dp" />
+
+                    <RadioButton
+                        android:id="@+id/radio_button_partially_paid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/sale_add_radio_partially_paid"
+                        android:textColor="@color/colorGray"
+                        tools:layout_editor_absoluteX="38dp"
+                        tools:layout_editor_absoluteY="498dp" />
+                </RadioGroup>
+
+                <EditText
+                    android:id="@+id/paid_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:ems="10"
+                    android:hint="@string/sale_add_hint_paid_value"
+                    android:inputType="textPersonName"
+                    app:layout_constraintStart_toStartOf="@+id/radio_group"
+                    app:layout_constraintTop_toBottomOf="@+id/radio_group"
+                    android:autofillHints="" />
+
+                <ImageView
+                    android:id="@+id/imageView10"
+                    android:layout_width="30dp"
+                    android:layout_height="@dimen/button_height"
+                    android:layout_marginTop="208dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imageView9"
+                    app:srcCompat="@drawable/ic_input_discount"
+                    tools:ignore="ContentDescription" />
+
+                <EditText
+                    android:id="@+id/discount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="32dp"
+                    android:ems="5"
+                    android:hint="@string/sale_add_hint_discount"
+                    android:inputType="numberDecimal"
+                    app:layout_constraintStart_toEndOf="@+id/imageView10"
+                    app:layout_constraintTop_toBottomOf="@+id/paid_value"
+                    android:autofillHints="" />
+
+                <CheckBox
+                    android:id="@+id/check_box_print"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="140dp"
+                    android:layout_marginStart="16dp"
+                    android:checked="true"
+                    android:text="@string/sale_add_check_box_print"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/discount" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_select_client"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="@dimen/fab_margin"
+            android:layout_marginBottom="@dimen/fab_margin"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="@{() -> viewModel.onClickFab()}"
+            app:srcCompat="@drawable/ic_client_add_white" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="10dp"
+            android:orientation="horizontal"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:background="@color/colorPrimaryDark">
+
+
+            <TextView
+                android:id="@+id/textView25"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="12dp"
+                android:text="Total:"
+                android:textAlignment="viewStart"
+                android:textColor="@android:color/primary_text_light"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/textView26"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="12dp"
+                android:text="R$114.00"
+                android:textAlignment="textEnd"
+                android:textColor="@android:color/primary_text_light"
+                android:textSize="25sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</layout>

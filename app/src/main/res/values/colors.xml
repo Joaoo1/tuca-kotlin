@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#06C1FF</color>
+    <color name="colorPrimaryDark">#2C98F0</color>
+    <color name="colorAccent">#FF8300</color>
+    <color name="colorBackground">#EBF5FC</color>
+
+    <color name="colorGray">#656565</color>
+    <color name="colorCardHome">#0282AC</color>
+
+    <color name="inputIcon">#BBBABA</color>
+    <color name="colorGreenStock">#149A31</color>
+    <color name="colorHeaderClientAddEdit">#A9838383</color>
+    <color name="colorBlueMoney">#1D2FCE</color>
+    <color name="colorSecondaryDivider">#B8B8B8</color>
+
+
+    <color name="colorSubtitle6">#494949</color>
+    <color name="colorDivider">#80C9C9C9</color>
+
+
+</resources>

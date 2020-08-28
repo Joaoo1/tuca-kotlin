@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="homeViewModel"
+            type="com.joaovitor.tucaprodutosdelimpeza.ui.home.HomeViewModel" />
+    </data>
+    <ScrollView
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="24dp"
+            android:paddingBottom="50dp"
+            tools:context=".TestFragment">
+
+            <!-- Shortcut buttons -->
+            <FrameLayout
+                android:id="@+id/buttonClients"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/home_button_height"
+                android:background="@drawable/btn_home_client"
+                android:onClick="@{() -> homeViewModel.navigateToClient()}"
+                app:layout_constraintEnd_toStartOf="@+id/buttonSales"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="@string/home_button_clients"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="74dp"
+                    android:layout_height="54dp"
+                    android:src="@drawable/ic_client_white"
+                    android:layout_gravity="end|bottom"
+                    tools:ignore="ContentDescription"
+                     />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/buttonSales"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/home_button_height"
+                android:layout_marginStart="@dimen/home_button_margin"
+                android:background="@drawable/btn_home_sales"
+                android:onClick="@{() -> homeViewModel.navigateToSale()}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/buttonClients"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="@string/home_button_sales"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="45dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="4dp"
+                    android:src="@drawable/ic_sale_white"
+                    android:layout_gravity="bottom|end"
+                    tools:ignore="ContentDescription" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/buttonReports"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/home_button_height"
+                android:layout_marginTop="@dimen/home_button_margin"
+                android:background="@drawable/btn_home_reports"
+                android:onClick="@{() -> homeViewModel.navigateToReport()}"
+                app:layout_constraintEnd_toStartOf="@+id/buttonProducts"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/buttonClients">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="@string/home_button_reports"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/iconReports"
+                    android:layout_width="50dp"
+                    android:layout_height="45dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="4dp"
+                    android:src="@drawable/ic_home_reports"
+                    android:layout_gravity="bottom|end"
+                    tools:ignore="ContentDescription" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/buttonProducts"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/home_button_height"
+                android:layout_marginStart="@dimen/home_button_margin"
+                android:layout_marginTop="@dimen/home_button_margin"
+                android:background="@drawable/btn_home_products"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/buttonReports"
+                app:layout_constraintTop_toBottomOf="@+id/buttonSales"
+                android:onClick="@{() -> homeViewModel.navigateToProduct()}">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="@string/home_button_products"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="45dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="4dp"
+                    android:src="@drawable/ic_product_white"
+                    android:layout_gravity="bottom|end"
+                    tools:ignore="ContentDescription" />
+            </FrameLayout>
+
+            <!-- Subtitle general info -->
+            <LinearLayout
+                android:id="@+id/subtitle_general_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:background="@drawable/subtitle_marker"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/buttonReports">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/home_subtitle_general_info"
+                    android:textColor="@android:color/primary_text_light"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </LinearLayout>
+
+            <!-- General info cards-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/subtitle_general_info">
+
+                <ImageButton
+                    android:id="@+id/refreshGeneralInfo"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="end"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_home_refresh_general_info"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/updatedAtGeneralInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="italic"
+                    android:text="@string/home_updated_at"
+                    android:textAlignment="textEnd"
+                    android:textSize="12sp"
+                    />
+
+                <!-- Cards general info-->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
+                    app:cardBackgroundColor="@color/colorCardHome"
+                    app:cardCornerRadius="7dp"
+                    app:cardElevation="10dp"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_card_title_sales"
+                        android:textColor="@android:color/primary_text_light"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:paddingHorizontal="20dp"
+                        android:layout_marginTop="10dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/textViewTotalSales"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:paddingHorizontal="20dp"
+                        android:text="4000"
+                        android:textColor="@android:color/primary_text_light"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_card_description_sales"
+                        android:textColor="@android:color/primary_text_light"
+                        android:textSize="12sp"
+                        android:layout_gravity="bottom"
+                        android:paddingHorizontal="20dp"
+                        android:layout_marginBottom="10dp"/>
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="110dp"
+                        android:layout_marginEnd="10dp"
+                        android:src="@drawable/ic_sale_white"
+                        tools:ignore="ContentDescription"
+                        android:layout_gravity="end|center_vertical"/>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
+                    app:cardBackgroundColor="@color/colorCardHome"
+                    app:cardCornerRadius="7dp"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_card_title_clients"
+                        android:textColor="@android:color/primary_text_light"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:paddingHorizontal="20dp"
+                        android:layout_marginTop="10dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/textViewTotalClients"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:paddingHorizontal="20dp"
+                        android:text="1500"
+                        android:textColor="@android:color/primary_text_light"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_card_description_clients"
+                        android:textColor="@android:color/primary_text_light"
+                        android:textSize="12sp"
+                        android:layout_gravity="bottom"
+                        android:paddingHorizontal="20dp"
+                        android:layout_marginBottom="10dp"/>
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="110dp"
+                        android:layout_marginEnd="10dp"
+                        android:src="@drawable/ic_client_white"
+                        tools:ignore="ContentDescription"
+                        android:layout_gravity="end|center_vertical"/>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
+                    app:cardBackgroundColor="@color/colorCardHome"
+                    app:cardCornerRadius="7dp"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_card_title_products"
+                        android:textColor="@android:color/primary_text_light"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:paddingHorizontal="20dp"
+                        android:layout_marginTop="10dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/textViewTotalProducts"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:paddingHorizontal="20dp"
+                        android:text="100"
+                        android:textColor="@android:color/primary_text_light"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_card_description_products"
+                        android:textColor="@android:color/primary_text_light"
+                        android:textSize="12sp"
+                        android:layout_gravity="bottom"
+                        android:paddingHorizontal="20dp"
+                        android:layout_marginBottom="10dp"/>
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="110dp"
+                        android:layout_marginEnd="10dp"
+                        android:src="@drawable/ic_product_white"
+                        tools:ignore="ContentDescription"
+                        android:layout_gravity="end|center_vertical"/>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</layout>
