@@ -5,6 +5,7 @@ import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import com.joaovitor.tucaprodutosdelimpeza.R
@@ -42,8 +43,14 @@ class SaleInfoFragment : Fragment() {
         when(item.itemId) {
             R.id.action_register_payment -> createPaymentDialog()
             R.id.action_delete_sale -> createDeleteSaleDialog()
+            R.id.action_edit_products -> navigateToEditProducts()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun navigateToEditProducts() {
+        this.findNavController().navigate(
+            SaleInfoFragmentDirections.actionSalesInfoFragmentToSaleEditProductsFragment())
     }
 
     private fun createPaymentDialog() {
@@ -54,12 +61,11 @@ class SaleInfoFragment : Fragment() {
             sale.total
             )
         context?.let {
-            AlertDialog.Builder(it)
+            MaterialAlertDialogBuilder(it)
                 .setView(view)
                 .setTitle(getString(R.string.dialog_payment_title))
                 .setNegativeButton(getString(R.string.dialog_payment_negative_button), null)
                 .setPositiveButton(getString(R.string.dialog_payment_positive_button), null)
-                .create()
                 .show()
         }
     }

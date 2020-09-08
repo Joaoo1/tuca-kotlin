@@ -3,7 +3,6 @@ package com.joaovitor.tucaprodutosdelimpeza.ui.sale.add
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -12,12 +11,9 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentSaleAddBinding
-import java.util.*
-
-// import com.joaovitor.tucaprodutosdelimpeza.ui.sale.list.SalesListFragmentDirections
+import java.util.Calendar
 
 class SaleAddFragment : Fragment() {
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

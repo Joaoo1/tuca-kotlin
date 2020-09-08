@@ -14,7 +14,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentReportSalesBinding
 
-class ReportSalesFragment : Fragment() {
+class  ReportSalesFragment : Fragment() {
 
     private lateinit var mContext: Context
     override fun onCreateView(

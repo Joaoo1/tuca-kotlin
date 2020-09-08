@@ -3,9 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/add_products"
+        android:id="@+id/action_edit_products"
         app:showAsAction="never"
-        android:title="@string/menu_item_add_products_title" />
+        android:title="@string/menu_item_edit_products_title" />
 
     <item
         android:id="@+id/action_delete_sale"
