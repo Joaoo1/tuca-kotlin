@@ -46,7 +46,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 R.id.client_list_fragment,
                 R.id.product_list_fragment,
                 R.id.sale_list_fragment,
-                R.id.report_sales_fragment
+                R.id.reports_fragment,
+                R.id.settings_fragment
             ), drawerLayout
         )
 

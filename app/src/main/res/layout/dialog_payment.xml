@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="valueToReceive"
+            type="String" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp"
+        android:paddingHorizontal="24dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/paid_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/dialog_payment_hint_paid_value"
+            android:inputType="textPersonName"
+            app:helperText="@{String.format(@string/dialog_payment_paid_value_helper_text, valueToReceive)}"
+            app:startIconDrawable="@drawable/ic_money"
+            app:layout_constraintTop_toTopOf="parent"
+            style="@style/AppTheme.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/dialog_payment_info_empty_field"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/paid_value" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

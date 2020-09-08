@@ -22,7 +22,7 @@
             android:layout_margin="@dimen/fab_margin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_add_white" />
+            app:srcCompat="@drawable/ic_person_add_white" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

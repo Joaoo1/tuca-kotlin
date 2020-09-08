@@ -5,65 +5,52 @@
     xmlns:tools="http://schemas.android.com/tools">
 <ScrollView
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
-    android:layout_marginVertical="@dimen/activity_vertical_margin">
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+        android:layout_marginVertical="@dimen/activity_vertical_margin"
         tools:context=".ui.reports.sales.ReportSalesFragment">
-
-        <TextView
-            android:id="@+id/textView27"
-            style="@style/Headline6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Situação de pagamento"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <RadioGroup
             android:id="@+id/radio_group"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="12dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView27">
+            app:layout_constraintTop_toTopOf="parent">
 
-            <RadioButton
-                android:id="@+id/radioButton"
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/report_sales_headline_situation"
+                style="@style/Headline6"/>
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="4dp"
-                android:checked="true"
-                android:textSize="16sp"
                 android:paddingHorizontal="12dp"
+                android:layout_marginTop="6dp"
+                android:checked="true"
                 android:text="Todos" />
 
-            <RadioButton
-                android:id="@+id/radioButton2"
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/radio_button_paid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="4dp"
                 android:paddingHorizontal="12dp"
-                android:text="Pago"
-                android:textSize="16sp"/>
+                android:text="Pago" />
 
-            <RadioButton
-                android:id="@+id/radioButton3"
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/radio_button_unpaid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="4dp"
                 android:paddingHorizontal="12dp"
-                android:text="Não pago"
-                android:textSize="16sp"/>
+                android:text="Não pago" />
         </RadioGroup>
 
         <View
-            android:id="@+id/view"
+            android:id="@+id/divider"
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginHorizontal="2dp"
@@ -75,46 +62,64 @@
             tools:layout_editor_absoluteY="91dp" />
 
         <TextView
-            android:id="@+id/textView31"
-            style="@style/Headline6"
+            android:id="@+id/headline_period"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="Intervalo de tempo"
+            android:text="@string/report_sales_headline_period"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view" />
+            app:layout_constraintTop_toBottomOf="@+id/divider"
+            style="@style/Headline6"/>
 
-        <TextView
-            android:id="@+id/textView29"
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/label_start_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:drawablePadding="6dp"
             android:gravity="center_vertical"
-            android:text="Período inicial"
+            android:text="@string/report_sales_label_start_date"
             android:textSize="20sp"
             app:drawableStartCompat="@drawable/ic_input_calendar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView31" />
+            app:layout_constraintTop_toBottomOf="@+id/headline_period" />
 
-        <TextView
-            android:id="@+id/textView30"
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/start_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:autofillHints=""
+            android:ems="6"
+            android:focusable="false"
+            android:inputType="date"
+            android:text="20/08/2020"
+            android:backgroundTint="#CECECECE"
+            android:textAlignment="center"
+            android:textColor="#CECECECE"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_start_date" />
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/label_end_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:textSize="20sp"
             android:gravity="center_vertical"
             android:drawablePadding="6dp"
-            android:text="Período inicial"
+            android:text="@string/report_sales_label_end_date"
             app:drawableStartCompat="@drawable/ic_input_calendar"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+            app:layout_constraintTop_toBottomOf="@+id/start_date" />
 
         <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/editTextTextPersonName"
+            android:id="@+id/end_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -129,29 +134,11 @@
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView29" />
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/editTextTextPersonName2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:autofillHints=""
-            android:ems="6"
-            android:focusable="false"
-            android:inputType="date"
-            android:text="20/08/2020"
-            android:backgroundTint="#CECECECE"
-            android:textAlignment="center"
-            android:textColor="#CECECECE"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView30" />
+            app:layout_constraintTop_toBottomOf="@+id/label_end_date" />
 
 
         <View
-            android:id="@+id/view3"
+            android:id="@+id/divider2"
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginHorizontal="2dp"
@@ -161,64 +148,66 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2" />
+            app:layout_constraintTop_toBottomOf="@+id/end_date" />
 
-        <TextView
-            android:id="@+id/textView28"
-            style="@style/Headline6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
-            android:text="Endereço"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view3" />
 
         <RadioGroup
-            android:layout_width="0dp"
+            android:id="@+id/radio_group_address"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="12dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView28" >
+            app:layout_constraintTop_toBottomOf="@+id/divider2" >
 
-            <RadioButton
-                android:id="@+id/radioButton4"
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/report_sales_headline_address"
+                style="@style/Headline6"/>
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="4dp"
                 android:checked="true"
+                android:layout_marginTop="6dp"
                 android:paddingHorizontal="12dp"
-                android:text="Sem filtro"
-                android:textSize="16sp"/>
+                android:text="@string/report_sales_radio_button_no_filter" />
 
-            <RadioButton
-                android:id="@+id/radioButton5"
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/radio_button_street"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="4dp"
                 android:paddingHorizontal="12dp"
-                android:text="Rua"
-                android:textSize="16sp"/>
+                android:text="@string/report_sales_radio_button_street" />
 
-            <RadioButton
-                android:id="@+id/radioButton6"
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/radio_button_neighborhood"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="4dp"
                 android:paddingHorizontal="12dp"
-                android:text="Bairro"
-                android:textSize="16sp"/>
+                android:text="@string/report_sales_radio_button_neighborhood" />
 
             <RadioButton
-                android:id="@+id/radioButton7"
+                android:id="@+id/radio_button_city"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="4dp"
                 android:paddingHorizontal="12dp"
-                android:text="Cidade"
-                android:textSize="16sp"/>
+                android:text="@string/report_sales_radio_button_city" />
+
+
         </RadioGroup>
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/filter_sales"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="32dp"
+            android:text="@string/report_sales_filter_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radio_group_address" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
 

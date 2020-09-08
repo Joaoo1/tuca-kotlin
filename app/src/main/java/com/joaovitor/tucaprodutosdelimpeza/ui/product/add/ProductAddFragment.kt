@@ -1,11 +1,12 @@
 package com.joaovitor.tucaprodutosdelimpeza.ui.product.add
 
 import android.os.Bundle
+import android.view.*
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import com.joaovitor.tucaprodutosdelimpeza.R
+import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentProductAddBinding
+import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentProductEditStockBinding
 
 class ProductAddFragment : Fragment() {
 
@@ -13,15 +14,24 @@ class ProductAddFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
+        activity?.title = resources.getString(R.string.title_fragment_product_add)
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_product_add, container, false)
+        val binding: FragmentProductAddBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_product_add, container, false)
+
+        binding.manageStock.setOnCheckedChangeListener { _, isChecked ->
+            binding.stock.isEnabled = isChecked
+            if(!isChecked) {
+                binding.stock.editText?.setText("")
+            }
+        }
+        return binding.root
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ProductAddFragment().apply {
-                arguments = Bundle().apply {}
-            }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.product_add, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 }

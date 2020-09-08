@@ -10,208 +10,105 @@
         android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
         android:layout_marginVertical="@dimen/activity_vertical_margin">
 
-
-        <ImageView
-            android:id="@+id/imageView11"
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/label_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:drawableStart="@drawable/ic_input_calendar"
+            android:drawablePadding="8dp"
+            android:gravity="center"
+            android:text="@string/sale_info_label_data"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintEnd_toStartOf="@+id/date"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_input_calendar"
-            tools:ignore="ContentDescription" />
-
-        <ImageView
-            android:id="@+id/imageView12"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView11"
-            app:srcCompat="@drawable/ic_input_payment"
-            tools:ignore="ContentDescription"/>
-
-        <ImageView
-            android:id="@+id/imageView13"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView12"
-            app:srcCompat="@drawable/ic_input_client"
-            tools:ignore="ContentDescription"/>
-
-        <ImageView
-            android:id="@+id/imageView14"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView13"
-            app:srcCompat="@drawable/ic_input_sale"
-            tools:ignore="ContentDescription"/>
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="6dp"
-            android:text="Data da Venda"
-            android:textColor="@android:color/primary_text_light"
-            app:layout_constraintStart_toEndOf="@+id/imageView11"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/textView14"
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
-            android:text="Valor Bruto"
-            android:textColor="@android:color/secondary_text_light"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView13" />
-
-        <TextView
-            android:id="@+id/textView15"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
-            android:text="Desconto"
-            android:textColor="@android:color/secondary_text_light"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView14" />
-
-        <TextView
-            android:id="@+id/textView16"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:text="Valor líquido"
-            android:textColor="@android:color/secondary_text_light"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView17" />
-
-        <TextView
-            android:id="@+id/textView17"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:text="Valor a receber"
-            android:textColor="@android:color/secondary_text_light"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView18" />
-
-        <TextView
-            android:id="@+id/textView18"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
-            android:text="Valor pago"
-            android:textColor="@android:color/secondary_text_light"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView16" />
-
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="14dp"
-            android:text="Situação"
-            android:textColor="@android:color/primary_text_light"
-            app:layout_constraintStart_toEndOf="@+id/imageView12"
-            app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="14dp"
-            android:text="Cliente"
-            android:textColor="@android:color/primary_text_light"
-            app:layout_constraintStart_toEndOf="@+id/imageView13"
-            app:layout_constraintTop_toBottomOf="@+id/textView5" />
-
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="14dp"
-            android:text="Vendedor"
-            android:textColor="@android:color/primary_text_light"
-            app:layout_constraintStart_toEndOf="@+id/imageView14"
-            app:layout_constraintTop_toBottomOf="@+id/textView6" />
-
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="2dp"
             android:text="22/08/2020 19:45"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/textView2"
+            app:layout_constraintStart_toEndOf="@+id/label_date"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/textView9"
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/label_situation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="12dp"
+            android:drawableStart="@drawable/ic_input_payment"
+            android:drawablePadding="8dp"
+            android:gravity="center"
+            android:text="@string/sale_info_label_situation"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintEnd_toStartOf="@+id/situation"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_date" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/situation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
             android:text="NÃO PAGO"
             android:textColor="@android:color/holo_red_dark"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/textView5"
-            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+            app:layout_constraintStart_toEndOf="@+id/label_situation"
+            app:layout_constraintTop_toBottomOf="@+id/date" />
 
-        <TextView
-            android:id="@+id/textView10"
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/label_client"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="12dp"
+            android:drawableStart="@drawable/ic_input_client"
+            android:drawablePadding="8dp"
+            android:gravity="center"
+            android:text="@string/sale_info_label_client"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintEnd_toStartOf="@+id/client"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_situation" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/client"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
             android:text="Joaquim"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/textView6"
-            app:layout_constraintTop_toBottomOf="@+id/textView9" />
+            app:layout_constraintStart_toEndOf="@+id/label_client"
+            app:layout_constraintTop_toBottomOf="@+id/situation" />
 
-        <TextView
-            android:id="@+id/textView11"
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/label_seller"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="12dp"
+            android:drawableStart="@drawable/ic_input_sale"
+            android:drawablePadding="8dp"
+            android:gravity="center"
+            android:text="@string/sale_info_label_seller"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintEnd_toStartOf="@+id/seller"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_client" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/seller"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
             android:text="João Vitor"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/textView7"
-            app:layout_constraintTop_toBottomOf="@+id/textView10" />
+            app:layout_constraintStart_toEndOf="@+id/label_seller"
+            app:layout_constraintTop_toBottomOf="@+id/client" />
 
         <ImageView
-            android:id="@+id/imageView15"
-            android:layout_width="0dp"
-            android:layout_height="0.5dp"
-            android:layout_marginTop="20dp"
-            android:background="@android:color/black"
-            android:contentDescription="@string/divider"
-            android:src="?android:attr/listDivider"
-            android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView7"
-            tools:ignore="ContentDescription"/>
-
-        <ImageView
-            android:id="@+id/imageView16"
+            android:id="@+id/divider"
             android:layout_width="0dp"
             android:layout_height="0.5dp"
             android:layout_marginTop="20dp"
@@ -219,65 +116,23 @@
             android:contentDescription="@string/divider"
             android:src="?android:attr/listDivider"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
-
-        <ImageView
-            android:id="@+id/imageView17"
-            android:layout_width="0dp"
-            android:layout_height="0.5dp"
-            android:layout_marginStart="14dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="14dp"
-            android:background="@color/colorSecondaryDivider"
-            android:contentDescription="@string/divider"
-            android:src="?android:attr/listDivider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView15"
-            tools:ignore="ContentDescription"/>
-
-        <ImageView
-            android:id="@+id/imageView18"
-            android:layout_width="0dp"
-            android:layout_height="0.5dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:background="@color/colorSecondaryDivider"
-            android:contentDescription="@string/divider"
-            android:src="?android:attr/listDivider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView18"
-            tools:ignore="ContentDescription"/>
+            app:layout_constraintTop_toBottomOf="@+id/label_seller"
+            tools:ignore="ContentDescription" />
 
         <TextView
-            android:id="@+id/textView12"
+            android:id="@+id/headline_products"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Produtos"
+            android:text="@string/sale_info_headline_products"
             android:textColor="@android:color/primary_text_light"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView15" />
-
-        <TextView
-            android:id="@+id/textView13"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Pagamento"
-            android:textColor="@android:color/primary_text_light"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView16" />
+            app:layout_constraintTop_toBottomOf="@+id/divider" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+            android:id="@+id/products_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -285,12 +140,48 @@
             android:layout_marginEnd="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView12"
-            tools:listitem="@layout/list_item_info_sale_product"
-            tools:itemCount="3"/>
+            app:layout_constraintTop_toBottomOf="@+id/headline_products"
+            tools:itemCount="2"
+            tools:listitem="@layout/list_item_info_sale_product" />
+
+        <ImageView
+            android:id="@+id/divider2"
+            android:layout_width="0dp"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="20dp"
+            android:background="@android:color/black"
+            android:contentDescription="@string/divider"
+            android:src="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/products_list" />
 
         <TextView
-            android:id="@+id/textView19"
+            android:id="@+id/headline_payment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/sale_info_headline_payment"
+            android:textColor="@android:color/primary_text_light"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider2" />
+
+        <TextView
+            android:id="@+id/label_gross_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:text="@string/sale_info_label_gross_value"
+            android:textColor="@android:color/secondary_text_light"
+            app:layout_constraintEnd_toStartOf="@+id/gross_value"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/headline_payment" />
+
+        <TextView
+            android:id="@+id/gross_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -298,12 +189,24 @@
             android:text="R$20.00"
             android:textColor="@color/colorBlueMoney"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/textView14"
-            app:layout_constraintTop_toBottomOf="@+id/textView13" />
+            app:layout_constraintStart_toEndOf="@+id/label_gross_value"
+            app:layout_constraintTop_toBottomOf="@+id/headline_payment" />
 
         <TextView
-            android:id="@+id/textView20"
+            android:id="@+id/label_discount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:text="@string/sale_info_label_discount"
+            android:textColor="@android:color/secondary_text_light"
+            app:layout_constraintEnd_toStartOf="@+id/discount"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_gross_value" />
+
+        <TextView
+            android:id="@+id/discount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -311,12 +214,38 @@
             android:text="R$0.00"
             android:textColor="@color/colorBlueMoney"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/textView14"
-            app:layout_constraintTop_toBottomOf="@+id/textView19" />
+            app:layout_constraintStart_toEndOf="@+id/label_discount"
+            app:layout_constraintTop_toBottomOf="@+id/gross_value" />
+
+        <ImageView
+            android:id="@+id/divider3"
+            android:layout_width="0dp"
+            android:layout_height="0.5dp"
+            android:layout_marginHorizontal="14dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorSecondaryDivider"
+            android:contentDescription="@string/divider"
+            android:src="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_discount"
+            tools:ignore="ContentDescription" />
 
         <TextView
-            android:id="@+id/textView21"
+            android:id="@+id/label_net_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/sale_info_label_net_value"
+            android:textColor="@android:color/secondary_text_light"
+            app:layout_constraintEnd_toStartOf="@+id/net_value"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider3" />
+
+        <TextView
+            android:id="@+id/net_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -324,12 +253,24 @@
             android:text="R$20.00"
             android:textColor="@color/colorBlueMoney"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/textView16"
-            app:layout_constraintTop_toBottomOf="@+id/imageView17" />
+            app:layout_constraintStart_toEndOf="@+id/label_net_value"
+            app:layout_constraintTop_toBottomOf="@+id/divider3" />
 
         <TextView
-            android:id="@+id/textView22"
+            android:id="@+id/label_paid_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:text="@string/sale_info_label_paid_value"
+            android:textColor="@android:color/secondary_text_light"
+            app:layout_constraintEnd_toStartOf="@+id/paid_value"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_net_value" />
+
+        <TextView
+            android:id="@+id/paid_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -337,12 +278,39 @@
             android:text="R$20.00"
             android:textColor="@color/colorBlueMoney"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/textView18"
-            app:layout_constraintTop_toBottomOf="@+id/textView21" />
+            app:layout_constraintStart_toEndOf="@+id/label_paid_value"
+            app:layout_constraintTop_toBottomOf="@+id/net_value" />
+
+        <ImageView
+            android:id="@+id/divider4"
+            android:layout_width="0dp"
+            android:layout_height="0.5dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/colorSecondaryDivider"
+            android:contentDescription="@string/divider"
+            android:src="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_paid_value"
+            tools:ignore="ContentDescription" />
 
         <TextView
-            android:id="@+id/textView23"
+            android:id="@+id/label_receivable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/sale_info_label_receivable"
+            android:textColor="@android:color/secondary_text_light"
+            app:layout_constraintEnd_toStartOf="@+id/receivable"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider4" />
+
+        <TextView
+            android:id="@+id/receivable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -350,9 +318,8 @@
             android:text="R$0.00"
             android:textColor="@color/colorBlueMoney"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/textView17"
-            app:layout_constraintTop_toBottomOf="@+id/imageView18" />
+            app:layout_constraintStart_toEndOf="@+id/label_receivable"
+            app:layout_constraintTop_toBottomOf="@+id/divider4" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

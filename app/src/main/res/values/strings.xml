@@ -2,14 +2,36 @@
     <string name="app_name">Tuca Produtos de Limpeza</string>
     <string name="copyright">© João Vitor da Silva</string>
 
-    <string name="title_activity_product">ProductActivity</string>
-    <string name="title_activity_login">LoginActivity</string>
-
     <string name="divider">Divider</string>
 
     <string name="money">R$%1$s</string>
     <string name="quantity">%1$sx</string>
+    <string name="sale_id">Venda %1$s</string>
 
+
+    <!-- Fragments titles -->
+    <string name="title_fragment_home">Página inicial</string>
+
+    <string name="title_fragment_client_list">Clientes</string>
+    <string name="title_fragment_client_add">Adicionar cliente</string>
+    <string name="title_fragment_client_edit">Editar cliente</string>
+
+    <string name="title_fragment_sale_list">Vendas</string>
+    <string name="title_fragment_sale_add">Registrar venda</string>
+    <string name="title_fragment_sale_info">Venda %1$s</string>
+    <string name="title_fragment_sale_edit">Editar produtos</string>
+    <string name="title_fragment_sale_select_client">Selecionar cliente</string>
+
+    <string name="title_fragment_product_list">Produtos</string>
+    <string name="title_fragment_product_add">Adicionar produto</string>
+    <string name="title_fragment_product_edit">Editar produto</string>
+    <string name="title_fragment_product_stock_history">Histórico de estoque</string>
+
+    <string name="title_fragment_reports">Relatórios</string>
+    <string name="title_fragment_report_sales">Relatório de vendas</string>
+    <string name="title_fragment_report_filtered_sales">Vendas filtradas</string>
+    <string name="title_fragment_report_products_sold">Relátorio de produtos vendidos</string>
+    <string name="title_fragment_report_products_sold_list">Produtos vendidos</string>
 
     <!-- Navigation Drawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -17,9 +39,12 @@
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
+    <string name="nav_menu_home">Página inicial</string>
+    <string name="nav_menu_sales">Vendas</string>
+    <string name="nav_menu_clients">Clientes</string>
+    <string name="nav_menu_products">Produtos</string>
+    <string name="nav_menu_reports">Relatórios</string>
+    <string name="nav_menu_settings">Configurações</string>
 
     <!-- Login Page -->
     <string name="login_hint_email">Email</string>
@@ -34,8 +59,8 @@
     <string name="home_button_sales">Vendas</string>
     <string name="home_button_reports">Relatórios</string>
     <string name="home_button_products">Produtos</string>
-    <string name="home_subtitle_general_info">Informações gerais</string>
-    <string name="home_updated_at">Informações atualizadas em 12/08/2020 ás 21:00</string>
+    <string name="home_headline_general_info">Informações gerais</string>
+    <string name="home_updated_at">Informações atualizadas em 12/08/2020 ás 21:00\u00A0</string>
     <string name="home_card_title_sales">Vendas</string>
     <string name="home_card_description_sales">Número total de vendas</string>
     <string name="home_card_title_clients">Clientes</string>
@@ -48,14 +73,12 @@
     <string name="product_add_hint_price">Preço</string>
     <string name="product_add_hint_stock">Estoque</string>
     <string name="product_add_manage_stock">Gerenciar estoque</string>
-    <string name="ic_product_description">Produto</string>
-    <string name="ic_price_description">Preço do produto</string>
-    <string name="ic_stock_description">Estoque</string>
 
     <!-- ProductEdit Fragment -->
     <string name="product_edit_tab_cadaster">Cadastro</string>
     <string name="product_edit_tab_stock">Estoque</string>
     <string name="product_edit_save_product">Salvar</string>
+    <string name="product_edit_label_switch_stock">Gerenciar estoque</string>
 
     <!-- StockHistory Fragment -->
     <string name="stock_history_sale">Venda %1$s</string>
@@ -69,23 +92,119 @@
     <string name="client_add_hint_city">Cidade</string>
     <string name="client_add_hint_phone">Telefone</string>
 
-    <!-- SaleList Fragment -->
-    <string name="sales_list_sale">Venda %1$s</string>
+    <!-- ClientEdit Fragment -->
+    <string name="client_edit_hint_name">Nome</string>
+    <string name="client_edit_hint_street">Rua</string>
+    <string name="client_edit_hint_complement">Complemento</string>
+    <string name="client_edit_hint_neighborhood">Bairro</string>
+    <string name="client_edit_hint_city">Cidade</string>
+    <string name="client_edit_hint_phone">Telefone</string>
+
 
     <!-- SaleAdd Fragment -->
     <string name="sale_add_hint_products">Produtos</string>
     <string name="sale_add_hint_client">Cliente</string>
-    <string name="sale_add_add_product">Adicionar</string>
+    <string name="sale_add_hint_discount">Desconto</string>
+    <string name="sale_add_hint_paid_value">Valor pago</string>
+    <string name="sale_add_hint_date">Data</string>
+    <string name="sale_add_button_add_product">Adicionar</string>
     <string name="sale_add_payment">Pagamento</string>
     <string name="sale_add_radio_unpaid">Não pago</string>
     <string name="sale_add_radio_paid">Pago</string>
     <string name="sale_add_radio_partially_paid">Parcialmente pago</string>
-    <string name="sale_add_hint_paid_value">Valor pago</string>
-    <string name="sale_add_hint_discount">Desconto</string>
     <string name="sale_add_check_box_print">Imprimir recibo</string>
     <string name="sale_add_initial_quantity">1</string>
+    <string name="sale_add_date_helper_text">Data em que foi realizada a venda</string>
+    <string name="sale_add_discount_helper_text">Valor descontado do valor total</string>
+    <string name="sale_add_label_total">Total:</string>
+
+    <!-- SaleInfo Fragment -->
+    <string name="sale_info_headline_products">Produtos</string>
+    <string name="sale_info_headline_payment">Pagamento</string>
+    <string name="sale_info_label_data">Data da Venda</string>
+    <string name="sale_info_label_situation">Situação</string>
+    <string name="sale_info_label_client">Cliente</string>
+    <string name="sale_info_label_seller">Vendedor</string>
+    <string name="sale_info_label_gross_value">Valor Bruto</string>
+    <string name="sale_info_label_discount">Desconto</string>
+    <string name="sale_info_label_net_value">Valor líquido</string>
+    <string name="sale_info_label_receivable">Valor a receber</string>
+    <string name="sale_info_label_paid_value">Valor pago</string>
+
+    <!-- SaleEditProducts Fragment -->
+    <string name="sale_edit_products_label_total">Total:</string>
 
     <!-- ReportSales Fragment -->
+    <string name="report_sales_headline_situation">Situação de pagamento</string>
+    <string name="report_sales_headline_period">Intervalo de tempo</string>
+    <string name="report_sales_headline_address">Endereço</string>
+    <string name="report_sales_label_end_date">Data final</string>
+    <string name="report_sales_label_start_date">Data inicial</string>
+    <string name="report_sales_radio_button_street">Rua</string>
+    <string name="report_sales_radio_button_neighborhood">Bairro</string>
+    <string name="report_sales_radio_button_city">Cidade</string>
+    <string name="report_sales_radio_button_no_filter">Sem filtro</string>
 
+
+    <string name="dialog_info_client_button_made_buys">Compras feitas</string>
+    <string name="dialog_info_client_button_call">Ligar para o número</string>
+    <string name="dialog_client_sales_title">Compras feitas por %1$s</string>
+
+    <string name="menu_item_search_title">Pesquisar</string>
+    <string name="menu_item_filter_title">Filtrar</string>
+    <string name="menu_item_refresh_list_title">Atualizar lista</string>
+    <string name="menu_item_save_title">Salvar</string>
+    <string name="menu_item_print_title">Imprimir</string>
+    <string name="menu_item_check_paid_title">Registrar pagamento</string>
+    <string name="menu_item_add_product_title">Adicionar produto</string>
+    <string name="menu_item_add_products_title">Adicionar produtos</string>
+    <string name="menu_item_delete_sale_title">Excluir venda</string>
+    <string name="menu_item_delete_product_title">Excluir produto</string>
+    <string name="menu_item_add_neighborhood_title">Adicionar bairro</string>
+    <string name="menu_item_add_city_title">Adicionar cidade</string>
+    <string name="menu_item_add_street_title">Adicionar rua</string>
+    <string name="menu_item_delete_client_title">Excluir cliente</string>
+    <string name="menu_item_print_report_title">Imprimir relatório</string>
+    <string name="report_sales_filter_button">Filtrar</string>
+    <string name="dialog_print_sales_text">Foram encontradas %1$n vendas com os filtros selecionados</string>
+    <string name="dialog_print_sales_title">Imprimir relatório?</string>
+    <string name="dialog_print_sales_print_button">Imprimir</string>
+    <string name="dialog_print_sales_visualize_button">Visualizar</string>
+
+    <string name="report_products_sold_headline_period">Periodo de tempo</string>
+    <string name="report_products_sold_label_start_date">Data inicio</string>
+    <string name="report_products_sold_label_end_date">Data final</string>
+
+    <!-- Preference Titles -->
+    <string name="settings_general_header">Geral</string>
+    <string name="settings_appearance_header">Aparência</string>
+
+    <string name="settings_manage_address_title">Gerenciar endereços</string>
+    <string name="list_item_product_stock">Estoque disponível: %1$s</string>
+    <string name="list_item_client_sale_client">Cliente %1$s</string>
+    <string name="list_item_client_sales_headline_products">Produtos:</string>
+    <string name="dialog_delete_client_title">Excluir cliente?</string>
+    <string name="dialog_delete_client_message">Esta ação irá excluir permanentemente o cliente</string>
+    <string name="dialog_delete_client_negative_button">Cancelar</string>
+    <string name="dialog_delete_client_positive_button">Excluir</string>
+    <string name="dialog_delete_product_title">Excluir Produto?</string>
+    <string name="dialog_delete_product_message">\"Esta ação irá excluir permanentemente o produto e o seu histórico de estoque \"</string>
+    <string name="dialog_delete_product_negative_button">Cancelar</string>
+    <string name="dialog_delete_product_positive_button">Excluir</string>
+    <string name="dialog_activate_bluetooth_title">Ativar bluetooth?</string>
+    <string name="dialog_activate_bluetooth_message">A opção de imprimir recibo está selecionada mas o bluetooth está desativado.</string>
+    <string name="dialog_activate_bluetooth_cancel_button">Cancelar</string>
+    <string name="dialog_activate_bluetooth_negative_button">Não</string>
+    <string name="dialog_activate_bluetooth_positive_button">Sim</string>
+    <string name="dialog_payment_hint_paid_value">Valor pago</string>
+    <string name="dialog_payment_paid_value_helper_text">Valor a receber: R$%1$S</string>
+    <string name="dialog_payment_info_empty_field">* Se deixar o campo em branco, irá registrar o pagamento do valor inteiro</string>
+    <string name="dialog_payment_title">Registrar pagamento</string>
+    <string name="dialog_payment_positive_button">SALVAR</string>
+    <string name="dialog_payment_negative_button">CANCELAR</string>
+    <string name="dialog_delete_sale_message">Esta ação irá excluir permanentemente a venda</string>
+    <string name="dialog_delete_sale_title">Excluir venda?</string>
+    <string name="dialog_delete_sale_negative_button">Cancelar</string>
+    <string name="dialog_delete_sale_positive_button">Excluir</string>
 
 </resources>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/refresh"
+        android:icon="@drawable/ic_refresh_white"
+        app:showAsAction="ifRoom"
+        android:title="@string/menu_item_refresh_list_title" />
+
+    <item
+        android:id="@+id/action_filter_sales"
+        android:icon="@drawable/ic_filter_list_white"
+        app:showAsAction="ifRoom"
+        android:title="@string/menu_item_filter_title" />
+
+    <item
+        android:id="@+id/search"
+        android:icon="@drawable/ic_search_white"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="always|collapseActionView"
+        android:title="@string/menu_item_search_title" />
+
+
+</menu>

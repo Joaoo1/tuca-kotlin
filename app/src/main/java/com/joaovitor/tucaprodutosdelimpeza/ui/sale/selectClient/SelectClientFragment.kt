@@ -1,10 +1,9 @@
 package com.joaovitor.tucaprodutosdelimpeza.ui.sale.selectClient
 
+import android.content.Context
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -20,6 +19,9 @@ class SelectClientFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
+        activity?.title = resources.getString(R.string.title_fragment_sale_select_client)
+
         // Inflate the layout for this fragment
         val binding: FragmentSelectClientBinding = DataBindingUtil
             .inflate(inflater,R.layout.fragment_select_client, container, false)
@@ -27,16 +29,11 @@ class SelectClientFragment : Fragment() {
         val viewModelFactory = SelectClientViewModelFactory()
         val viewModel = ViewModelProvider(this, viewModelFactory)
             .get(SelectClientViewModel::class.java)
-        val adapter = ClientListAdapter(ClientListAdapter.ClientListener { client ->
+        val adapter = SelectClientListAdapter(SelectClientListAdapter.SelectClientListener { client ->
             viewModel.onClientClicked(client)
         })
         binding.clientsList.adapter = adapter
 
-        viewModel.clients.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                (binding.clientsList.adapter as ClientListAdapter).listData = it
-            }
-        })
         viewModel.setClients()
 
         viewModel.navigateToAdd.observe(viewLifecycleOwner, Observer {
@@ -47,7 +44,18 @@ class SelectClientFragment : Fragment() {
             }
         })
 
+        viewModel.clients.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                adapter.listData = it
+            }
+        })
+
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.search_list, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
 }

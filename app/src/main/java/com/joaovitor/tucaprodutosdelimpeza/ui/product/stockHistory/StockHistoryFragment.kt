@@ -19,6 +19,7 @@ class StockHistoryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        activity?.title = resources.getString(R.string.title_fragment_product_stock_history)
         // Inflate the layout for this fragment
         val binding: FragmentStockHistoryBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_stock_history, container, false)

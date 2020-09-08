@@ -11,5 +11,4 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:context=".ui.sale.selectClient.SelectClientFragment"
         tools:listitem="@layout/list_item_client"/>
-
 </layout>

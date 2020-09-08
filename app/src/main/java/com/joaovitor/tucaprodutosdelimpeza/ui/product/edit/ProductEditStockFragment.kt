@@ -18,6 +18,10 @@ class ProductEditStockFragment : Fragment() {
         // Inflate the layout for this fragment
         val binding = FragmentProductEditStockBinding.inflate(inflater,container,false)
 
+        binding.switchStock.setOnCheckedChangeListener { _, isChecked ->
+            binding.stock.isEnabled = isChecked
+        }
+
         val stockHistory = binding.stockHistory
         stockHistory.setOnClickListener {
             this.findNavController()

@@ -18,16 +18,16 @@
             android:paddingHorizontal="16dp"
             android:paddingTop="24dp"
             android:paddingBottom="50dp"
-            tools:context=".TestFragment">
+            tools:context=".MainActivity">
 
             <!-- Shortcut buttons -->
             <FrameLayout
-                android:id="@+id/buttonClients"
+                android:id="@+id/btn_clients"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/home_button_height"
                 android:background="@drawable/btn_home_client"
                 android:onClick="@{() -> homeViewModel.navigateToClient()}"
-                app:layout_constraintEnd_toStartOf="@+id/buttonSales"
+                app:layout_constraintEnd_toStartOf="@+id/btnSales"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -50,14 +50,14 @@
             </FrameLayout>
 
             <FrameLayout
-                android:id="@+id/buttonSales"
+                android:id="@+id/btnSales"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/home_button_height"
                 android:layout_marginStart="@dimen/home_button_margin"
                 android:background="@drawable/btn_home_sales"
                 android:onClick="@{() -> homeViewModel.navigateToSale()}"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/buttonClients"
+                app:layout_constraintStart_toEndOf="@+id/btn_clients"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
@@ -80,15 +80,15 @@
             </FrameLayout>
 
             <FrameLayout
-                android:id="@+id/buttonReports"
+                android:id="@+id/btn_reports"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/home_button_height"
                 android:layout_marginTop="@dimen/home_button_margin"
                 android:background="@drawable/btn_home_reports"
                 android:onClick="@{() -> homeViewModel.navigateToReport()}"
-                app:layout_constraintEnd_toStartOf="@+id/buttonProducts"
+                app:layout_constraintEnd_toStartOf="@+id/btn_products"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/buttonClients">
+                app:layout_constraintTop_toBottomOf="@+id/btn_clients">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -100,7 +100,6 @@
                     android:textStyle="bold" />
 
                 <ImageView
-                    android:id="@+id/iconReports"
                     android:layout_width="50dp"
                     android:layout_height="45dp"
                     android:layout_marginEnd="8dp"
@@ -111,15 +110,15 @@
             </FrameLayout>
 
             <FrameLayout
-                android:id="@+id/buttonProducts"
+                android:id="@+id/btn_products"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/home_button_height"
                 android:layout_marginStart="@dimen/home_button_margin"
                 android:layout_marginTop="@dimen/home_button_margin"
                 android:background="@drawable/btn_home_products"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/buttonReports"
-                app:layout_constraintTop_toBottomOf="@+id/buttonSales"
+                app:layout_constraintStart_toEndOf="@+id/btn_reports"
+                app:layout_constraintTop_toBottomOf="@+id/btnSales"
                 android:onClick="@{() -> homeViewModel.navigateToProduct()}">
 
                 <TextView
@@ -141,23 +140,23 @@
                     tools:ignore="ContentDescription" />
             </FrameLayout>
 
-            <!-- Subtitle general info -->
+            <!-- Headline general info -->
             <LinearLayout
-                android:id="@+id/subtitle_general_info"
+                android:id="@+id/headline_general_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="36dp"
-                android:background="@drawable/subtitle_marker"
+                android:background="@drawable/headline_marker"
                 android:paddingHorizontal="20dp"
                 android:paddingVertical="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/buttonReports">
+                app:layout_constraintTop_toBottomOf="@+id/btn_reports">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/home_subtitle_general_info"
+                    android:text="@string/home_headline_general_info"
                     android:textColor="@android:color/primary_text_light"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -171,10 +170,10 @@
                 android:orientation="vertical"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/subtitle_general_info">
+                app:layout_constraintTop_toBottomOf="@+id/headline_general_info">
 
                 <ImageButton
-                    android:id="@+id/refreshGeneralInfo"
+                    android:id="@+id/refresh_general_info"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_gravity="end"
@@ -183,14 +182,13 @@
                     tools:ignore="ContentDescription" />
 
                 <TextView
-                    android:id="@+id/updatedAtGeneralInfo"
+                    android:id="@+id/updated_at_general_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textStyle="italic"
                     android:text="@string/home_updated_at"
                     android:textAlignment="textEnd"
-                    android:textSize="12sp"
-                    />
+                    android:textSize="12sp" />
 
                 <!-- Cards general info-->
                 <androidx.cardview.widget.CardView
@@ -213,7 +211,7 @@
                         />
 
                     <TextView
-                        android:id="@+id/textViewTotalSales"
+                        android:id="@+id/total_sales"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -261,7 +259,7 @@
                         />
 
                     <TextView
-                        android:id="@+id/textViewTotalClients"
+                        android:id="@+id/total_clients"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -309,7 +307,7 @@
                         />
 
                     <TextView
-                        android:id="@+id/textViewTotalProducts"
+                        android:id="@+id/total_products"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"

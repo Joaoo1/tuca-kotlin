@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.settings.ManageAddressFragment">
+
+    <TextView
+        android:id="@+id/street"
+        style="@style/Headline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:padding="16dp"
+        android:text="Ruas"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="24dp"
+        android:src="@drawable/ic_add_gray"
+        app:layout_constraintEnd_toStartOf="@+id/imageView5"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="24dp"
+        android:src="@drawable/ic_baseline_edit"
+        app:layout_constraintEnd_toStartOf="@+id/imageView7"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription"/>
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/ic_delete_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription"/>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="4dp"
+        android:contentDescription="@string/divider"
+        android:scaleType="fitXY"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintTop_toBottomOf="@+id/street" />
+
+    <TextView
+        android:id="@+id/neighborhood"
+        style="@style/Headline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:padding="16dp"
+        android:text="Bairros"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="24dp"
+        android:src="@drawable/ic_add_gray"
+        app:layout_constraintEnd_toStartOf="@+id/imageView9"
+        app:layout_constraintTop_toBottomOf="@+id/divider"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="24dp"
+        android:src="@drawable/ic_baseline_edit"
+        app:layout_constraintEnd_toStartOf="@+id/imageView10"
+        app:layout_constraintTop_toBottomOf="@+id/divider"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/ic_delete_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider"
+        tools:ignore="ContentDescription" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginHorizontal="4dp"
+        android:layout_marginTop="10dp"
+        android:contentDescription="@string/divider"
+        android:scaleType="fitXY"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/neighborhood" />
+
+    <TextView
+        android:id="@+id/city"
+        style="@style/Headline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:padding="16dp"
+        android:text="Cidades"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider2" />
+
+    <ImageView
+        android:id="@+id/imageView11"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="24dp"
+        android:src="@drawable/ic_add_gray"
+        app:layout_constraintEnd_toStartOf="@+id/imageView12"
+        app:layout_constraintTop_toBottomOf="@+id/divider2"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/imageView12"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="24dp"
+        android:src="@drawable/ic_baseline_edit"
+        app:layout_constraintEnd_toStartOf="@+id/imageView13"
+        app:layout_constraintTop_toBottomOf="@+id/divider2"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/imageView13"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/ic_delete_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider2"
+        tools:ignore="ContentDescription" />
+
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="4dp"
+        android:contentDescription="@string/divider"
+        android:scaleType="fitXY"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintTop_toBottomOf="@+id/city" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

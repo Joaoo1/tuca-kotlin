@@ -1,0 +1,20 @@
+<androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.preference.PreferenceCategory app:title="@string/settings_general_header">
+
+        <androidx.preference.Preference
+            app:key="manage_address"
+            app:title="@string/settings_manage_address_title" />
+
+    </androidx.preference.PreferenceCategory>
+
+    <androidx.preference.PreferenceCategory app:title="@string/settings_appearance_header">
+
+        <androidx.preference.SwitchPreferenceCompat
+            app:key="sync"
+            app:title="Ativar modo escuro"
+            app:enabled="false"/>
+
+    </androidx.preference.PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>

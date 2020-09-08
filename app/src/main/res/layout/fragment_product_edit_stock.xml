@@ -5,37 +5,15 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.product.edit.ProductEditStockFragment"
-    android:paddingTop="64dp"
+    android:paddingTop="56dp"
     android:paddingBottom="@dimen/activity_vertical_margin">
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/btn_primary"
-        android:text="@string/product_edit_save_product"
-        android:textColor="@android:color/white"
-        android:layout_marginHorizontal="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:text="@string/product_add_manage_stock"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/switch_stock"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="12dp"
+        android:text="@string/product_edit_label_switch_stock"
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
@@ -49,7 +27,7 @@
         app:layout_constraintTop_toBottomOf="@+id/switch_stock" />
 
     <EditText
-        android:id="@+id/editTextNumber"
+        android:id="@+id/stock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:width="220dp"
@@ -67,75 +45,44 @@
         app:layout_constraintTop_toBottomOf="@+id/divider"
         tools:ignore="LabelFor" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <TextView
         android:id="@+id/update_stock"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="76dp"
-        android:paddingHorizontal="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Atualizar estoque"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_home_refresh_general_info"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_marginHorizontal="16dp"
+        android:paddingVertical="16dp"
+        android:text="Atualizar estoque"
+        app:layout_constraintBottom_toTopOf="@id/divider2"
+        app:drawableEndCompat="@drawable/ic_home_refresh_general_info"
+        style="@style/Headline6"/>
 
     <View
         android:id="@+id/divider2"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="12dp"
         android:layout_marginHorizontal="12dp"
         android:background="?android:listDivider"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/update_stock" />
+        app:layout_constraintBottom_toTopOf="@+id/stock_history"
+        tools:layout_editor_absoluteX="12dp" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <TextView
         android:id="@+id/stock_history"
+        style="@style/Headline6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:paddingHorizontal="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider2">
+        android:layout_marginHorizontal="16dp"
+        android:paddingVertical="16dp"
+        android:text="Histórico de movimentações"
+        app:drawableEndCompat="@drawable/ic_chevron_right"
+        app:layout_constraintBottom_toTopOf="@+id/save"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Histórico de movimentações"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/imageView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="Histórico de movimentações"
-            android:src="@drawable/ic_arrow_forward_gray"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/save"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="@string/product_edit_save_product"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
