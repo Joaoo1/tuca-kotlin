@@ -23,6 +23,9 @@
         <action
             android:id="@+id/action_home_fragment_to_settings_fragment"
             app:destination="@id/settings_fragment" />
+        <action
+            android:id="@+id/action_home_fragment_to_sales_add_fragment"
+            app:destination="@id/sales_add_fragment" />
     </fragment>
 
 

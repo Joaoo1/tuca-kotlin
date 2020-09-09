@@ -1,10 +1,13 @@
 package com.joaovitor.tucaprodutosdelimpeza
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import android.view.MenuItem
+import android.widget.ImageView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -13,6 +16,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
+import com.joaovitor.tucaprodutosdelimpeza.ui.login.LoginActivity
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -56,9 +60,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val navController = navHostFragment.navController
         toolbar.setupWithNavController(navController, appBarConfiguration)
 
+        setupNavigationView()
+    }
+
+    private fun setupNavigationView() {
         val navigationView: NavigationView = findViewById(R.id.nav_view)
         navigationView.menu.getItem(0).isChecked = true
         navigationView.setNavigationItemSelectedListener(this)
+
+        val headerView = navigationView.getHeaderView(0)
+        val buttonLogout: AppCompatImageButton = headerView.findViewById(R.id.logout)
+
+        buttonLogout.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
+        }
+
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -67,5 +83,4 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return item.onNavDestinationSelected(navHostFragment.navController)
                 || super.onOptionsItemSelected(item)
     }
-
 }

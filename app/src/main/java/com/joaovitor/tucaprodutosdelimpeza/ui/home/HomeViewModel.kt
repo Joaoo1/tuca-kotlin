@@ -15,6 +15,9 @@ class HomeViewModel : ViewModel() {
     private val _navigateToSale = MutableLiveData<Boolean?>()
     val navigateToSale: LiveData<Boolean?> get() = _navigateToSale
 
+    private val _navigateToAddSale = MutableLiveData<Boolean?>()
+    val navigateToAddSale: LiveData<Boolean?> get() = _navigateToAddSale
+
     private val _navigateToReport = MutableLiveData<Boolean?>()
     val navigateToReport: LiveData<Boolean?> get() = _navigateToReport
 
@@ -30,6 +33,10 @@ class HomeViewModel : ViewModel() {
         _navigateToSale.value = true
     }
 
+    fun navigateToAddSale() {
+        _navigateToAddSale.value = true
+    }
+
     fun navigateToReport() {
         _navigateToReport.value = true
     }
@@ -39,5 +46,6 @@ class HomeViewModel : ViewModel() {
         _navigateToClient.value = false
         _navigateToSale.value = false
         _navigateToReport.value = false
+        _navigateToAddSale.value = false
     }
 }

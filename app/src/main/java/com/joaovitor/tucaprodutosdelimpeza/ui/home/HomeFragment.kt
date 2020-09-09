@@ -52,6 +52,14 @@ class HomeFragment : Fragment() {
             }
         })
 
+        homeViewModel.navigateToAddSale.observe(viewLifecycleOwner, Observer {
+            if(it == true) {
+                this.findNavController()
+                    .navigate(HomeFragmentDirections.actionHomeFragmentToSalesAddFragment())
+                homeViewModel.doneNavigating()
+            }
+        })
+
         homeViewModel.navigateToReport.observe(viewLifecycleOwner, Observer {
             if(it == true) {
                 this.findNavController()

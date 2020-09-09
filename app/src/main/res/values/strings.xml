@@ -188,7 +188,7 @@
     <string name="dialog_delete_client_negative_button">Cancelar</string>
     <string name="dialog_delete_client_positive_button">Excluir</string>
     <string name="dialog_delete_product_title">Excluir Produto?</string>
-    <string name="dialog_delete_product_message">\"Esta ação irá excluir permanentemente o produto e o seu histórico de estoque \"</string>
+    <string name="dialog_delete_product_message">Esta ação irá excluir permanentemente o produto e o seu histórico de estoque.</string>
     <string name="dialog_delete_product_negative_button">Cancelar</string>
     <string name="dialog_delete_product_positive_button">Excluir</string>
     <string name="dialog_activate_bluetooth_title">Ativar bluetooth?</string>

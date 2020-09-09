@@ -7,7 +7,8 @@
     <color name="backgroundColor">#EBF5FC</color>
 
     <color name="colorGray">#656565</color>
-    <color name="colorCardHome">#0282AC</color>
+    <color name="colorLightGray">#9E9E9E</color>
+    <color name="colorCardHome">@color/primaryDarkColor</color>
 
     <color name="inputIcon">#BBBABA</color>
     <color name="colorGreenStock">#149A31</color>
@@ -17,6 +18,7 @@
 
 
     <color name="colorDivider">#80C9C9C9</color>
+    <color name="loginButtonColor">#006C8F</color>
 
 
 </resources>

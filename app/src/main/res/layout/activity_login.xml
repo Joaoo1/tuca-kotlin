@@ -66,15 +66,16 @@
         android:layout_marginStart="@dimen/et_login_horinzontal_margin"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="@dimen/et_login_horinzontal_margin"
-        android:padding="16dp"
-        android:background="@drawable/btn_login"
+        android:padding="14dp"
+        android:backgroundTint="@color/loginButtonColor"
         android:text="@string/login_button_sign_in"
         android:textColor="@android:color/white"
         android:textSize="18sp"
-        android:enabled="false"
+        android:enabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password" />
+        app:layout_constraintTop_toBottomOf="@+id/password"
+        app:backgroundTintMode="add"/>
 
     <ProgressBar
         android:id="@+id/loading"
