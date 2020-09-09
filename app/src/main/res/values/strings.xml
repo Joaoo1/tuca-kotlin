@@ -208,5 +208,6 @@
     <string name="dialog_delete_sale_positive_button">Excluir</string>
     <string name="dialog_add_product_hint_product">Produto</string>
     <string name="dialog_add_product_title">Adicionar produto</string>
+    <string name="dialog_edit_address_hint_name">Nome</string>
 
 </resources>

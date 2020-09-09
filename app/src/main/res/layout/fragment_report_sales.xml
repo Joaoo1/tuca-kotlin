@@ -180,6 +180,7 @@
                 android:paddingHorizontal="12dp"
                 android:text="@string/report_sales_radio_button_street" />
 
+
             <com.google.android.material.radiobutton.MaterialRadioButton
                 android:id="@+id/radio_button_neighborhood"
                 android:layout_width="match_parent"
