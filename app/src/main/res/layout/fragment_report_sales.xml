@@ -27,6 +27,7 @@
                 style="@style/Headline6"/>
 
             <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/radio_button_all"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="12dp"
@@ -166,6 +167,7 @@
                 style="@style/Headline6"/>
 
             <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/radio_button_no_filter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:checked="true"

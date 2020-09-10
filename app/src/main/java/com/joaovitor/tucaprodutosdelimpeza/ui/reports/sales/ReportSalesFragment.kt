@@ -25,8 +25,6 @@ class  ReportSalesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        activity?.title = resources.getString(R.string.title_fragment_report_sales)
-
         val binding: FragmentReportSalesBinding = DataBindingUtil
             .inflate(inflater,R.layout.fragment_report_sales, container, false)
         mContext = requireContext()

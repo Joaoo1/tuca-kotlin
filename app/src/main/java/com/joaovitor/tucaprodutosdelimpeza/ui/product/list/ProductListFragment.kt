@@ -7,6 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.navigation.NavigationView
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentProductListBinding
 
@@ -20,7 +21,6 @@ class ProductListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        activity?.title = resources.getString(R.string.title_fragment_product_list)
 
         val binding: FragmentProductListBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_product_list, container, false)
@@ -66,5 +66,10 @@ class ProductListFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.search_list, menu)
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        activity?.findViewById<NavigationView>(R.id.nav_view)?.menu?.getItem(3)?.isChecked = true
     }
 }

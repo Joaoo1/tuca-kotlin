@@ -20,7 +20,6 @@ class SelectClientFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        activity?.title = resources.getString(R.string.title_fragment_sale_select_client)
 
         // Inflate the layout for this fragment
         val binding: FragmentSelectClientBinding = DataBindingUtil

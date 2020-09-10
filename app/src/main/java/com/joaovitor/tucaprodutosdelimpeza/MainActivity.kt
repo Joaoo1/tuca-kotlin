@@ -65,7 +65,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun setupNavigationView() {
         val navigationView: NavigationView = findViewById(R.id.nav_view)
-        navigationView.menu.getItem(0).isChecked = true
         navigationView.setNavigationItemSelectedListener(this)
 
         val headerView = navigationView.getHeaderView(0)

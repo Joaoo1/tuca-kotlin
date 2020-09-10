@@ -15,7 +15,6 @@ class ProductEditFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        activity?.title = resources.getString(R.string.title_fragment_product_edit)
 
         // Inflate the layout for this fragment
         val binding = FragmentProductEditBinding.inflate(inflater,container,false)

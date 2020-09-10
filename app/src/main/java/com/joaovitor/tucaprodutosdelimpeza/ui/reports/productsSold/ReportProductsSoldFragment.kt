@@ -20,8 +20,6 @@ class ReportProductsSoldFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        activity?.title = resources.getString(R.string.title_fragment_report_products_sold)
-
         // Inflate the layout for this fragment
         val binding: FragmentReportProductsSoldBinding =  DataBindingUtil.inflate(inflater,R.layout.fragment_report_products_sold, container, false)
         binding.generate.setOnClickListener {

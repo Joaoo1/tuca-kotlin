@@ -3,13 +3,19 @@ package com.joaovitor.tucaprodutosdelimpeza.ui.sale.list
 import android.app.Dialog
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.navigation.NavigationView
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentSaleListBinding
+import java.text.SimpleDateFormat
+import java.util.*
 
 class SaleListFragment : Fragment() {
 
@@ -18,7 +24,7 @@ class SaleListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        activity?.title = resources.getString(R.string.title_fragment_sale_list)
+
         val binding: FragmentSaleListBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_sale_list, container, false)
         val viewModelFactory = SaleListViewModelFactory()
@@ -72,9 +78,44 @@ class SaleListFragment : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onResume() {
+        super.onResume()
+        activity?.findViewById<NavigationView>(R.id.nav_view)?.menu?.getItem(1)?.isChecked = true
+    }
+
     private fun createFiltersDialog() {
         val filtersDialog = activity?.let { Dialog(it) }!!
         filtersDialog.setContentView(R.layout.dialog_filter_sales)
+        val startDatePicker: AppCompatEditText = filtersDialog.findViewById(R.id.start_date)
+        val endDatePicker: AppCompatEditText = filtersDialog.findViewById(R.id.end_date)
+
+        startDatePicker.setOnClickListener {
+            val builder = MaterialDatePicker.Builder.datePicker()
+            builder.setTitleText("Selecione a data início")
+            builder.setSelection(Calendar.getInstance().timeInMillis)
+            val picker = builder.build()
+            picker.addOnPositiveButtonClickListener {
+                val format = SimpleDateFormat("dd/MM/yyyy", Locale("pt-BR"))
+                format.timeZone = TimeZone.getTimeZone("UTC")
+                val selectedDate = format.format(Date(it))
+                startDatePicker.setText(selectedDate)
+            }
+            picker.show(parentFragmentManager, picker.toString())
+        }
+
+        endDatePicker.setOnClickListener {
+            val builder = MaterialDatePicker.Builder.datePicker()
+            builder.setTitleText("Selecione a data final")
+            builder.setSelection(Calendar.getInstance().timeInMillis)
+            val picker = builder.build()
+            picker.addOnPositiveButtonClickListener {
+                val format = SimpleDateFormat("dd/MM/yyyy", Locale("pt-BR"))
+                format.timeZone = TimeZone.getTimeZone("UTC")
+                val selectedDate = format.format(Date(it))
+                endDatePicker.setText(selectedDate)
+            }
+            picker.show(parentFragmentManager, picker.toString())
+        }
         filtersDialog.show()
     }
 

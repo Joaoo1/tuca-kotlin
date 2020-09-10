@@ -23,7 +23,7 @@ class SaleAddFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        activity?.title = resources.getString(R.string.title_fragment_sale_add)
+
         // Inflate the layout for this fragment
         val binding: FragmentSaleAddBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_sale_add, container, false

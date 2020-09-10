@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.navigation.NavigationView
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentClientListBinding
 
@@ -33,9 +34,7 @@ class ClientListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         setHasOptionsMenu(true)
-        activity?.title = resources.getString(R.string.title_fragment_client_list)
 
         val binding: FragmentClientListBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_client_list, container, false)
@@ -91,6 +90,16 @@ class ClientListFragment : Fragment() {
         return binding.root
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.search_list, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        activity?.findViewById<NavigationView>(R.id.nav_view)?.menu?.getItem(2)?.isChecked = true
+    }
+
     private fun showInfoClientDialog() {
         infoClientDialog = activity?.let { Dialog(it) }!!
         infoClientDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -131,10 +140,5 @@ class ClientListFragment : Fragment() {
         })
 
         showSalesMadeDialog.show()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.search_list, menu)
-        super.onCreateOptionsMenu(menu, inflater)
     }
 }

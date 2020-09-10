@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/home_fragment"
         android:name="com.joaovitor.tucaprodutosdelimpeza.ui.home.HomeFragment"
-        android:label="HomeFragment">
+        android:label="@string/title_fragment_home">
         <action
             android:id="@+id/action_home_fragment_to_product_list_fragment"
             app:destination="@id/product_list_fragment" />
@@ -32,7 +32,8 @@
     <fragment
         android:id="@+id/client_list_fragment"
         android:name="com.joaovitor.tucaprodutosdelimpeza.ui.client.list.ClientListFragment"
-        android:label="ClientListFragment" >
+        android:label="@string/title_fragment_client_list"
+        tools:layout="@layout/fragment_client_list">
         <action
             android:id="@+id/action_clientListFragment_to_clientEditFragment"
             app:destination="@id/client_edit_fragment" />
@@ -47,18 +48,20 @@
     <fragment
         android:id="@+id/client_add_fragment"
         android:name="com.joaovitor.tucaprodutosdelimpeza.ui.client.add.ClientAddFragment"
-        android:label="ClientAddFragment" />
+        android:label="@string/title_fragment_client_add"
+        tools:layout="@layout/fragment_client_add"/>
 
     <fragment
         android:id="@+id/client_edit_fragment"
         android:name="com.joaovitor.tucaprodutosdelimpeza.ui.client.edit.ClientEditFragment"
-        android:label="ClientEditFragment" />
+        android:label="@string/title_fragment_client_edit"
+        tools:layout="@layout/fragment_client_edit"/>
 
 
     <fragment
         android:id="@+id/product_list_fragment"
         android:name="com.joaovitor.tucaprodutosdelimpeza.ui.product.list.ProductListFragment"
-        android:label="ProductListFragment"
+        android:label="@string/title_fragment_product_list"
         tools:layout="@layout/fragment_product_list">
         <action
             android:id="@+id/action_productListFragment_to_product_add_fragment"
@@ -71,7 +74,7 @@
     <fragment
         android:id="@+id/product_edit_fragment"
         android:name="com.joaovitor.tucaprodutosdelimpeza.ui.product.edit.ProductEditFragment"
-        android:label="ProductEditFragment"
+        android:label="@string/title_fragment_product_edit"
         tools:layout="@layout/fragment_product_edit">
         <action
             android:id="@+id/action_product_edit_fragment_to_stock_history_fragment"
@@ -81,18 +84,20 @@
     <fragment
         android:id="@+id/product_add_fragment"
         android:name="com.joaovitor.tucaprodutosdelimpeza.ui.product.add.ProductAddFragment"
-        android:label="ProductAddFragment"
+        android:label="@string/title_fragment_product_add"
         tools:layout="@layout/fragment_product_add"/>
 
     <fragment
         android:id="@+id/stock_history_fragment"
         android:name="com.joaovitor.tucaprodutosdelimpeza.ui.product.stockHistory.StockHistoryFragment"
-        android:label="StockHistoryFragment" />
+        android:label="@string/title_fragment_product_stock_history"
+        tools:layout="@layout/fragment_stock_history"/>
 
     <fragment
         android:id="@+id/sale_list_fragment"
         android:name="com.joaovitor.tucaprodutosdelimpeza.ui.sale.list.SaleListFragment"
-        android:label="SalesListFragment" >
+        android:label="@string/title_fragment_sale_list"
+        tools:layout="@layout/fragment_sale_list">
         <action
             android:id="@+id/action_sales_list_fragment_to_sales_add_fragment"
             app:destination="@id/sales_add_fragment" />
@@ -104,7 +109,8 @@
     <fragment
         android:id="@+id/sales_add_fragment"
         android:name="com.joaovitor.tucaprodutosdelimpeza.ui.sale.add.SaleAddFragment"
-        android:label="SaleAddFragment" >
+        android:label="@string/title_fragment_sale_add"
+        tools:layout="@layout/fragment_sale_add">
         <action
             android:id="@+id/action_sales_add_fragment_to_select_client_fragment"
             app:destination="@id/select_client_fragment" />
@@ -113,7 +119,8 @@
     <fragment
         android:id="@+id/sales_info_fragment"
         android:name="com.joaovitor.tucaprodutosdelimpeza.ui.sale.info.SaleInfoFragment"
-        android:label="SaleInfoFragment" >
+        android:label="@string/title_fragment_sale_info"
+        tools:layout="@layout/fragment_sale_info">
         <action
             android:id="@+id/action_sales_info_fragment_to_sale_edit_products_fragment"
             app:destination="@id/sale_edit_products_fragment" />
@@ -125,17 +132,20 @@
     <fragment
         android:id="@+id/sale_edit_products_fragment"
         android:name="com.joaovitor.tucaprodutosdelimpeza.ui.sale.editProducts.SaleEditProductsFragment"
-        android:label="SaleEditProductsFragment" />
+        android:label="@string/title_fragment_sale_edit"
+        tools:layout="@layout/fragment_sale_edit_products"/>
 
     <fragment
         android:id="@+id/select_client_fragment"
         android:name="com.joaovitor.tucaprodutosdelimpeza.ui.sale.selectClient.SelectClientFragment"
-        android:label="SelectClientFragment" />
+        android:label="@string/title_fragment_sale_select_client"
+        tools:layout="@layout/fragment_select_client"/>
 
     <fragment
         android:id="@+id/report_sales_fragment"
         android:name="com.joaovitor.tucaprodutosdelimpeza.ui.reports.sales.ReportSalesFragment"
-        android:label="ReportSalesFragment" >
+        android:label="@string/title_fragment_report_sales"
+        tools:layout="@layout/fragment_report_sales">
 
         <action
             android:id="@+id/action_report_sales_fragment_to_filteredSalesFragment"
@@ -145,11 +155,13 @@
     <fragment
         android:id="@+id/filtered_sales_fragment"
         android:name="com.joaovitor.tucaprodutosdelimpeza.ui.reports.sales.FilteredSalesFragment"
-        android:label="FilteredSalesFragment" />
+        android:label="@string/title_fragment_report_filtered_sales"
+        tools:layout="@layout/fragment_filtered_sales"/>
     <fragment
         android:id="@+id/reports_fragment"
         android:name="com.joaovitor.tucaprodutosdelimpeza.ui.reports.ReportsFragment"
-        android:label="reports_fragment" >
+        android:label="@string/title_fragment_reports"
+        tools:layout="@layout/fragment_reports">
         <action
             android:id="@+id/action_reports_fragment_to_report_sales_fragment"
             app:destination="@id/report_sales_fragment" />
@@ -160,7 +172,7 @@
     <fragment
         android:id="@+id/report_products_sold_fragment"
         android:name="com.joaovitor.tucaprodutosdelimpeza.ui.reports.productsSold.ReportProductsSoldFragment"
-        android:label="reportProductsSoldFragment"
+        android:label="@string/title_fragment_report_products_sold"
         tools:layout="@layout/fragment_report_products_sold" >
         <action
             android:id="@+id/action_report_products_sold_fragment_to_products_sold_list_fragment"
@@ -169,12 +181,12 @@
     <fragment
         android:id="@+id/products_sold_list_fragment"
         android:name="com.joaovitor.tucaprodutosdelimpeza.ui.reports.productsSold.ProductsSoldListFragment"
-        android:label="fragmentProductsSoldList"
+        android:label="@string/title_fragment_report_products_sold_list"
         tools:layout="@layout/fragment_products_sold_list" />
     <fragment
         android:id="@+id/settings_fragment"
         android:name="com.joaovitor.tucaprodutosdelimpeza.ui.settings.SettingsFragment"
-        android:label="SettingsFragment" >
+        android:label="@string/title_fragment_settings">
         <action
             android:id="@+id/action_settings_fragment_to_manage_address_fragment"
             app:destination="@id/manage_address_fragment" />
@@ -182,7 +194,7 @@
     <fragment
         android:id="@+id/manage_address_fragment"
         android:name="com.joaovitor.tucaprodutosdelimpeza.ui.settings.ManageAddressFragment"
-        android:label="fragment_manage_address"
+        android:label="@string/title_fragment_manage_address"
         tools:layout="@layout/fragment_manage_address" />
 
 </navigation>

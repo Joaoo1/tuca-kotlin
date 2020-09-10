@@ -12,7 +12,7 @@ class FilteredSalesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        activity?.title = resources.getString(R.string.title_fragment_report_filtered_sales)
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_filtered_sales, container, false)
     }

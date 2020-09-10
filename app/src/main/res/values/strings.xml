@@ -8,30 +8,27 @@
     <string name="quantity">%1$sx</string>
     <string name="sale_id">Venda %1$s</string>
 
-
     <!-- Fragments titles -->
     <string name="title_fragment_home">Página inicial</string>
-
     <string name="title_fragment_client_list">Clientes</string>
     <string name="title_fragment_client_add">Adicionar cliente</string>
     <string name="title_fragment_client_edit">Editar cliente</string>
-
     <string name="title_fragment_sale_list">Vendas</string>
     <string name="title_fragment_sale_add">Registrar venda</string>
     <string name="title_fragment_sale_info">Venda %1$s</string>
     <string name="title_fragment_sale_edit">Editar produtos</string>
     <string name="title_fragment_sale_select_client">Selecionar cliente</string>
-
     <string name="title_fragment_product_list">Produtos</string>
     <string name="title_fragment_product_add">Adicionar produto</string>
     <string name="title_fragment_product_edit">Editar produto</string>
     <string name="title_fragment_product_stock_history">Histórico de estoque</string>
-
     <string name="title_fragment_reports">Relatórios</string>
     <string name="title_fragment_report_sales">Relatório de vendas</string>
     <string name="title_fragment_report_filtered_sales">Vendas filtradas</string>
     <string name="title_fragment_report_products_sold">Relátorio de produtos vendidos</string>
     <string name="title_fragment_report_products_sold_list">Produtos vendidos</string>
+    <string name="title_fragment_settings">Configurações</string>
+    <string name="title_fragment_manage_address">Gerenciar endereços</string>
 
     <!-- Navigation Drawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -178,8 +175,8 @@
     <!-- Preference Titles -->
     <string name="settings_general_header">Geral</string>
     <string name="settings_appearance_header">Aparência</string>
-
     <string name="settings_manage_address_title">Gerenciar endereços</string>
+
     <string name="list_item_product_stock">Estoque disponível: %1$s</string>
     <string name="list_item_client_sale_client">Cliente %1$s</string>
     <string name="list_item_client_sales_headline_products">Produtos:</string>
@@ -188,11 +185,11 @@
     <string name="dialog_delete_client_negative_button">Cancelar</string>
     <string name="dialog_delete_client_positive_button">Excluir</string>
     <string name="dialog_delete_product_title">Excluir Produto?</string>
-    <string name="dialog_delete_product_message">Esta ação irá excluir permanentemente o produto e o seu histórico de estoque.</string>
+    <string name="dialog_delete_product_message">Esta ação irá excluir permanentemente o produto e o seu histórico de estoque</string>
     <string name="dialog_delete_product_negative_button">Cancelar</string>
     <string name="dialog_delete_product_positive_button">Excluir</string>
     <string name="dialog_activate_bluetooth_title">Ativar bluetooth?</string>
-    <string name="dialog_activate_bluetooth_message">A opção de imprimir recibo está selecionada mas o bluetooth está desativado.</string>
+    <string name="dialog_activate_bluetooth_message">A opção de imprimir recibo está selecionada mas o bluetooth está desativado</string>
     <string name="dialog_activate_bluetooth_cancel_button">Cancelar</string>
     <string name="dialog_activate_bluetooth_negative_button">Não</string>
     <string name="dialog_activate_bluetooth_positive_button">Sim</string>

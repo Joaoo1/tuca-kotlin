@@ -13,8 +13,6 @@ class ProductsSoldListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        activity?.title = resources.getString(R.string.title_fragment_report_products_sold_list)
-
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_products_sold_list, container, false)
     }
