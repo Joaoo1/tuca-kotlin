@@ -7,7 +7,7 @@
     <color name="backgroundColor">#EBF5FC</color>
 
     <color name="colorGray">#656565</color>
-    <color name="colorLightGray">#9E9E9E</color>
+    <color name="colorLightGray">#C5C2C2</color>
     <color name="colorCardHome">@color/primaryDarkColor</color>
 
     <color name="inputIcon">#BBBABA</color>

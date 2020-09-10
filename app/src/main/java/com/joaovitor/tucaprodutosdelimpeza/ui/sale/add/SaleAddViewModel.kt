@@ -4,37 +4,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Client
+import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
 import java.util.Date
 
 class SaleAddViewModel : ViewModel() {
 
-    var emptyList: List<Sale> = emptyList()
-    var sales = MutableLiveData(emptyList)
+    var emptyList: List<Product> = emptyList()
+    var products = MutableLiveData(emptyList)
 
-    fun setSales() {
-        val mySales = mutableListOf<Sale>()
-        mySales.add(Sale(2312, Client("add", "Amanda Silveira"), Date(), "R$20.00"))
-        mySales.add(Sale(2312, Client("add", "Joaquim Rosa"), Date(), "R$20.00"))
-        mySales.add(Sale(2312, Client("add", "Fernando Silveira"), Date(), "R$20.00"))
-        mySales.add(Sale(2312, Client("add", "Amanda Machado"), Date(), "R$20.00"))
-        mySales.add(Sale(2312, Client("add", "Amanda Silveira"), Date(), "R$20.00"))
-        mySales.add(Sale(2312, Client("add", "João Silva"), Date(), "R$20.00"))
-        mySales.add(Sale(2312, Client("add", "Amanda Silveira"), Date(), "R$20.00"))
-        mySales.add(Sale(2312, Client("add", "Joaquim Rosa"), Date(), "R$20.00"))
-        mySales.add(Sale(2312, Client("add", "Fernando Silveira"), Date(), "R$20.00"))
-        mySales.add(Sale(2312, Client("add", "Amanda Machado"), Date(), "R$20.00"))
-        mySales.add(Sale(2312, Client("add", "Amanda Silveira"), Date(), "R$20.00"))
-        mySales.add(Sale(2312, Client("add", "João Silva"), Date(), "R$20.00"))
-        mySales.add(Sale(2312, Client("add", "Amanda Silveira"), Date(), "R$20.00"))
-        mySales.add(Sale(2312, Client("add", "Joaquim Rosa"), Date(), "R$20.00"))
-        mySales.add(Sale(2312, Client("add", "Fernando Silveira"), Date(), "R$20.00"))
-        mySales.add(Sale(2312, Client("add", "Amanda Machado"), Date(), "R$20.00"))
-        mySales.add(Sale(2312, Client("add", "Amanda Silveira"), Date(), "R$20.00"))
-        mySales.add(Sale(2312, Client("add", "João Silva"), Date(), "R$20.00"))
-
-
-        sales.postValue(mySales)
+    fun setProducts() {
+        val myProducts = mutableListOf<Product>()
+        myProducts.add(Product("Detergente verde limão","20.00",20,2))
+        myProducts.add(Product("Detergente verde limão","20.00",20,2))
+        products.postValue(myProducts)
     }
 
     private var _navigateToSelectClient = MutableLiveData<Boolean>()
@@ -51,10 +34,6 @@ class SaleAddViewModel : ViewModel() {
 
     fun doneNavigation(){
         _navigateToSelectClient.value = false
-    }
-
-    fun onSaleClicked(sale: Sale) {
-        _selectedClient.value = sale
     }
 
 }

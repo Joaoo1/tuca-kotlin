@@ -8,10 +8,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentSaleAddBinding
-import java.util.Calendar
+import com.joaovitor.tucaprodutosdelimpeza.utils.SaleProductItemDecoration
+import java.text.SimpleDateFormat
+import java.util.*
 
 class SaleAddFragment : Fragment() {
 
@@ -32,6 +35,22 @@ class SaleAddFragment : Fragment() {
 
         binding.viewModel = viewModel
 
+        val adapter = SaleProductsAdapter()
+        val productsList: RecyclerView = binding.productsList
+        context?.let {
+            SaleProductItemDecoration(it) }?.let {
+                productsList.addItemDecoration(it)
+            }
+        productsList.adapter = adapter
+        viewModel.products.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                println(it)
+                adapter.addHeaderAndSubmitList(it)
+            }
+        })
+
+        viewModel.setProducts()
+
         binding.client.setEndIconOnClickListener {
             viewModel.navigateToSelectClient()
         }
@@ -41,7 +60,13 @@ class SaleAddFragment : Fragment() {
             builder.setTitleText("Selecione a data da venda")
             builder.setSelection(Calendar.getInstance().timeInMillis)
             val picker = builder.build()
-            picker.show(parentFragmentManager, "asd")
+            picker.addOnPositiveButtonClickListener {
+                val format = SimpleDateFormat("dd/MM/yyyy", Locale("pt-BR"))
+                format.timeZone = TimeZone.getTimeZone("UTC")
+                val selectedDate = format.format(Date(it))
+                binding.date.editText?.setText(selectedDate)
+            }
+            picker.show(parentFragmentManager, picker.toString())
         }
 
         binding.radioButtonPartiallyPaid.setOnCheckedChangeListener { _, isChecked ->

@@ -24,7 +24,7 @@
             android:title="@string/nav_menu_products" />
 
         <item
-            android:id="@+id/report_sales_fragment"
+            android:id="@+id/reports_fragment"
             android:icon="@drawable/ic_menu_reports"
             android:title="@string/nav_menu_reports" />
     </group>

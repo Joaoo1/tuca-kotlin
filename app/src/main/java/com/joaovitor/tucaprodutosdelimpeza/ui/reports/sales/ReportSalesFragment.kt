@@ -10,9 +10,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentReportSalesBinding
+import java.text.SimpleDateFormat
+import java.time.Instant
+import java.util.*
 
 class  ReportSalesFragment : Fragment() {
 
@@ -38,6 +42,34 @@ class  ReportSalesFragment : Fragment() {
 
         binding.filterSales.setOnClickListener{
             viewModel.onButtonFilterClicked()
+        }
+
+        binding.startDate.setOnClickListener {
+            val builder = MaterialDatePicker.Builder.datePicker()
+            builder.setTitleText("Selecione a data início")
+            builder.setSelection(Calendar.getInstance().timeInMillis)
+            val picker = builder.build()
+            picker.addOnPositiveButtonClickListener {
+                val format = SimpleDateFormat("dd/MM/yyyy", Locale("pt-BR"))
+                format.timeZone = TimeZone.getTimeZone("UTC")
+                val selectedDate = format.format(Date(it))
+                binding.startDate.setText(selectedDate)
+            }
+            picker.show(parentFragmentManager, picker.toString())
+        }
+
+        binding.endDate.setOnClickListener {
+            val builder = MaterialDatePicker.Builder.datePicker()
+            builder.setTitleText("Selecione a data final")
+            builder.setSelection(Calendar.getInstance().timeInMillis)
+            val picker = builder.build()
+            picker.addOnPositiveButtonClickListener {
+                val format = SimpleDateFormat("dd/MM/yyyy", Locale("pt-BR"))
+                format.timeZone = TimeZone.getTimeZone("UTC")
+                val selectedDate = format.format(Date(it))
+                binding.endDate.setText(selectedDate)
+            }
+            picker.show(parentFragmentManager, picker.toString())
         }
 
         return binding.root

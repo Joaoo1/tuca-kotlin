@@ -37,7 +37,7 @@
         android:enabled="false"
         android:text="500"
         android:textAlignment="center"
-        android:textColor="@color/colorGray"
+        android:textColor="@color/colorLightGray"
         android:textSize="80sp"
         app:layout_constraintBottom_toTopOf="@+id/update_stock"
         app:layout_constraintEnd_toEndOf="parent"
