@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.firestore.FirebaseFirestore
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentHomeBinding
 
@@ -64,6 +65,15 @@ class HomeFragment : Fragment() {
                 homeViewModel.doneNavigating()
             }
         })
+
+        FirebaseFirestore.getInstance()
+            .collection("vendas")
+            .get()
+            .addOnSuccessListener {
+            for (doc in it) {
+                println(doc.id)
+            }
+        }
 
         return binding.root
     }

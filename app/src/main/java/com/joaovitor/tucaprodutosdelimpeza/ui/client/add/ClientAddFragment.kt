@@ -38,7 +38,7 @@ class ClientAddFragment : Fragment() {
                 items,
                 DialogInterface.OnClickListener {
                         _, index ->
-                    binding.neighborhood.editText?.setText(items[index])
+                    binding.city.editText?.setText(items[index])
                 })
         }
 

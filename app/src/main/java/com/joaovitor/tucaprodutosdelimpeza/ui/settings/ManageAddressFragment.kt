@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.joaovitor.tucaprodutosdelimpeza.R
-import com.joaovitor.tucaprodutosdelimpeza.databinding.DialogEditAddressBinding
+import com.joaovitor.tucaprodutosdelimpeza.databinding.DialogManageAddressBinding
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentManageAddressBinding
 
 class ManageAddressFragment : Fragment() {
@@ -26,6 +26,18 @@ class ManageAddressFragment : Fragment() {
         // Inflate the layout for this fragment,
         val binding: FragmentManageAddressBinding = DataBindingUtil.inflate(
             inflater,R.layout.fragment_manage_address, container, false)
+
+        binding.addStreet.setOnClickListener {
+            createDialogAddAddress(AddressType.STREET)
+        }
+
+        binding.addNeighborhood.setOnClickListener {
+            createDialogAddAddress(AddressType.NEIGHBORHOOD)
+        }
+
+        binding.addCity.setOnClickListener {
+            createDialogAddAddress(AddressType.CITY)
+        }
 
         binding.editStreet.setOnClickListener {
             val items = arrayOf("Teste", "Teste1", "teste2")
@@ -60,6 +72,39 @@ class ManageAddressFragment : Fragment() {
                 })
         }
 
+        binding.deleteStreet.setOnClickListener {
+            val items = arrayOf("Teste", "Teste1", "teste2")
+            createDialogSelectAddress(
+                items,
+                DialogInterface.OnClickListener {
+                        _, index ->
+
+                    createDialogDeleteAddress(AddressType.STREET, items[index])
+                })
+        }
+
+        binding.deleteNeighborhood.setOnClickListener {
+            val items = arrayOf("Teste", "Teste1", "teste2")
+            createDialogSelectAddress(
+                items,
+                DialogInterface.OnClickListener {
+                        _, index ->
+
+                    createDialogDeleteAddress(AddressType.NEIGHBORHOOD, items[index])
+                })
+        }
+
+        binding.deleteCity.setOnClickListener {
+            val items = arrayOf("Teste", "Teste1", "teste2")
+            createDialogSelectAddress(
+                items,
+                DialogInterface.OnClickListener {
+                        _, index ->
+
+                    createDialogDeleteAddress(AddressType.CITY, items[index])
+                })
+        }
+
         return binding.root
     }
 
@@ -76,10 +121,27 @@ class ManageAddressFragment : Fragment() {
         }
     }
 
-    private fun createDialogEditAddress(type: AddressType, name: String) {
-        val binding: DialogEditAddressBinding = DataBindingUtil.inflate(
+    private fun createDialogAddAddress(type: AddressType) {
+        val binding: DialogManageAddressBinding = DataBindingUtil.inflate(
             layoutInflater,
-            R.layout.dialog_edit_address,
+            R.layout.dialog_manage_address,
+            null,
+            false)
+
+        context?.let {
+            MaterialAlertDialogBuilder(it)
+                .setTitle("Adicionar "+type.value)
+                .setMessage("Digite o nome do(a) "+type.value)
+                .setView(binding.root)
+                .setNegativeButton("Cancelar", null)
+                .setPositiveButton("Salvar", null)
+                .show()}
+    }
+
+    private fun createDialogEditAddress(type: AddressType, name: String) {
+        val binding: DialogManageAddressBinding = DataBindingUtil.inflate(
+            layoutInflater,
+            R.layout.dialog_manage_address,
             null,
             false)
 
@@ -90,6 +152,16 @@ class ManageAddressFragment : Fragment() {
                 .setTitle("Editar "+type.value)
                 .setMessage("Digite o novo nome do(a) "+type.value)
                 .setView(binding.root)
+                .setNegativeButton("Cancelar", null)
+                .setPositiveButton("Salvar", null)
+                .show()}
+    }
+
+    private fun createDialogDeleteAddress(type: AddressType, name: String) {
+        context?.let {
+            MaterialAlertDialogBuilder(it)
+                .setTitle("Excluir $name")
+                .setMessage("Esta ação irá deletar o(a) "+type.value+" permanentemente")
                 .setNegativeButton("Cancelar", null)
                 .setPositiveButton("Salvar", null)
                 .show()}
