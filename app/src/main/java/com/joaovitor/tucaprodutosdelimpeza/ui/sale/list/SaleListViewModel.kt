@@ -3,38 +3,22 @@ package com.joaovitor.tucaprodutosdelimpeza.ui.sale.list
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.joaovitor.tucaprodutosdelimpeza.data.model.Client
+import com.joaovitor.tucaprodutosdelimpeza.data.SaleRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
-import java.util.Date
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class SaleListViewModel : ViewModel() {
 
-    var emptyList: List<Sale> = emptyList()
+    private var emptyList: List<Sale> = emptyList()
     var sales = MutableLiveData(emptyList)
 
+    private var saleRepository: SaleRepository = SaleRepository()
+
     fun setSales() {
-        val mySales = mutableListOf<Sale>()
-        mySales.add(Sale(2312, Client("add", "Amanda Silveira"), Date(), "20.00"))
-        mySales.add(Sale(2312, Client("add", "Joaquim Rosa"), Date(), "R$20.00"))
-        mySales.add(Sale(2312, Client("add", "Fernando Silveira"), Date(), "R$20.00"))
-        mySales.add(Sale(2312, Client("add", "Amanda Machado"), Date(), "R$20.00"))
-        mySales.add(Sale(2312, Client("add", "Amanda Silveira"), Date(), "R$20.00"))
-        mySales.add(Sale(2312, Client("add", "João Silva"), Date(), "R$20.00"))
-        mySales.add(Sale(2312, Client("add", "Amanda Silveira"), Date(), "R$20.00"))
-        mySales.add(Sale(2312, Client("add", "Joaquim Rosa"), Date(), "R$20.00"))
-        mySales.add(Sale(2312, Client("add", "Fernando Silveira"), Date(), "R$20.00"))
-        mySales.add(Sale(2312, Client("add", "Amanda Machado"), Date(), "R$20.00"))
-        mySales.add(Sale(2312, Client("add", "Amanda Silveira"), Date(), "R$20.00"))
-        mySales.add(Sale(2312, Client("add", "João Silva"), Date(), "R$20.00"))
-        mySales.add(Sale(2312, Client("add", "Amanda Silveira"), Date(), "R$20.00"))
-        mySales.add(Sale(2312, Client("add", "Joaquim Rosa"), Date(), "R$20.00"))
-        mySales.add(Sale(2312, Client("add", "Fernando Silveira"), Date(), "R$20.00"))
-        mySales.add(Sale(2312, Client("add", "Amanda Machado"), Date(), "R$20.00"))
-        mySales.add(Sale(2312, Client("add", "Amanda Silveira"), Date(), "R$20.00"))
-        mySales.add(Sale(2312, Client("add", "João Silva"), Date(), "R$20.00"))
-
-
-        sales.postValue(mySales)
+        GlobalScope.launch {
+            sales.postValue(saleRepository.getSales())
+        }
     }
 
     private var _navigateToAdd = MutableLiveData<Boolean>()

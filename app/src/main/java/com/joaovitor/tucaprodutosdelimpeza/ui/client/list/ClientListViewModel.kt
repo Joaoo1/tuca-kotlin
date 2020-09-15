@@ -43,22 +43,22 @@ class ClientListViewModel : ViewModel() {
         products.add(Product("Detergente neutro", "40.00",200, 1))
         products.add(Product("Amaciante", "10.00",100, 1))
         val sales = mutableListOf<Sale>()
-        sales.add(Sale(4500,Client("1","Amanda","Palhoça"), Date(),
+/*        sales.add(Sale("asd", 4500,Client("1","Amanda","Palhoça"), Date(),
             "300.00", false, products))
-        sales.add(Sale(4500,Client("1","Bernardo","Palhoça"), Date(),
+        sales.add(Sale("asd", 4500,Client("1","Bernardo","Palhoça"), Date(),
             "300.00", false, products))
-        sales.add(Sale(4520,Client("1","Bruno","Palhoça"), Date(),
+        sales.add(Sale("asd", 4520,Client("1","Bruno","Palhoça"), Date(),
             "300.00", false, products))
-        sales.add(Sale(1200,Client("1","Carlos","Palhoça"), Date(),
+        sales.add(Sale("asd", 1200,Client("1","Carlos","Palhoça"), Date(),
             "300.00", false, products))
-        sales.add(Sale(1240,Client("1","Caroline","Palhoça"), Date(),
+        sales.add(Sale("asd", 1240,Client("1","Caroline","Palhoça"), Date(),
             "300.00", false, products))
-        sales.add(Sale(2130,Client("1","João","Palhoça"), Date(),
+        sales.add(Sale("asd", 2130,Client("1","João","Palhoça"), Date(),
             "300.00", false, products))
-        sales.add(Sale(1500,Client("1","Pablo","Palhoça"), Date(),
+        sales.add(Sale("asd", 1500,Client("1","Pablo","Palhoça"), Date(),
             "300.00", false, products))
-        sales.add(Sale(5500,Client("1","Valter","Palhoça"), Date(),
-            "300.00", false, products))
+        sales.add(Sale("asd", 5500,Client("1","Valter","Palhoça"), Date(),
+            "300.00", false, products))*/
 
         clientSales.postValue(sales)
     }

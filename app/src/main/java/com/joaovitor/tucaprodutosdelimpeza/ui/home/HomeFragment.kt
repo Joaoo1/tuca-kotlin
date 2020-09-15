@@ -66,15 +66,6 @@ class HomeFragment : Fragment() {
             }
         })
 
-        FirebaseFirestore.getInstance()
-            .collection("vendas")
-            .get()
-            .addOnSuccessListener {
-            for (doc in it) {
-                println(doc.id)
-            }
-        }
-
         return binding.root
     }
 
