@@ -1,4 +1,4 @@
-package com.joaovitor.tucaprodutosdelimpeza.utils
+package com.joaovitor.tucaprodutosdelimpeza.util
 
 import android.content.Context
 import android.graphics.Canvas

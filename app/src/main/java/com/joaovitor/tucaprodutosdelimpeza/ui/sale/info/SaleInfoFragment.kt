@@ -5,6 +5,8 @@ import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
@@ -12,6 +14,8 @@ import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentSaleInfoBinding
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentSaleListBinding
+import com.joaovitor.tucaprodutosdelimpeza.ui.sale.list.SaleListViewModel
+import com.joaovitor.tucaprodutosdelimpeza.ui.sale.list.SaleListViewModelFactory
 
 
 class SaleInfoFragment : Fragment() {
@@ -28,9 +32,26 @@ class SaleInfoFragment : Fragment() {
             resources.getString(R.string.title_fragment_sale_info),
             sale.saleId)
 
+        //Create the viewModel
+        val viewModelFactory = SaleInfoViewModelFactory(sale)
+        val viewModel = ViewModelProvider(this,viewModelFactory)
+            .get(SaleInfoViewModel::class.java)
+
         // Inflate the layout for this fragment
         val binding: FragmentSaleInfoBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_sale_info, container, false)
+
+        val adapter = SaleInfoListAdapter()
+        binding.productsList.adapter = adapter
+
+        viewModel.sale.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                adapter.listData = it.products
+            }
+        })
+
+        binding.sale = sale
+
         return binding.root
     }
 

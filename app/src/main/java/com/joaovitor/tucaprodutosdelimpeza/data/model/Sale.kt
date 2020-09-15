@@ -37,6 +37,10 @@ data class Sale(
     @PropertyName("valorAReceber")
     val toReceive: String = "",
 
+    @get:PropertyName("valorPago")
+    @PropertyName("valorPago")
+    val paidValue: String = "",
+
     @PropertyName("pago")
     @get:PropertyName("pago")
     val paid: Boolean? = true,
@@ -65,8 +69,18 @@ data class Sale(
     @get:PropertyName("complementoCliente")
     val clientComplement: String? = "",
 
-    val products: ArrayList<Product>? = null,
+    val products: List<ProductSale> = listOf(),
     val seller: String? = "",
     val sellerUid: String? = ""
 
-) : Serializable
+) : Serializable {
+
+    val situation: String
+    get() {
+        return if(this.paid!!) {
+            "PAGO"
+        } else {
+            "NÃO PAGO"
+        }
+    }
+}

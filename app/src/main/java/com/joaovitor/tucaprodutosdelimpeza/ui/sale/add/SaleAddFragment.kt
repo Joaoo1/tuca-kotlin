@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentSaleAddBinding
-import com.joaovitor.tucaprodutosdelimpeza.utils.SaleProductItemDecoration
+import com.joaovitor.tucaprodutosdelimpeza.util.SaleProductItemDecoration
 import java.text.SimpleDateFormat
 import java.util.*
 

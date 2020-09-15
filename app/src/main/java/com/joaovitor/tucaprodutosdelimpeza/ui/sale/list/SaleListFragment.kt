@@ -38,6 +38,7 @@ class SaleListFragment : Fragment() {
         viewModel.sales.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.listData = it
+                println(it)
             }
         })
         viewModel.setSales()

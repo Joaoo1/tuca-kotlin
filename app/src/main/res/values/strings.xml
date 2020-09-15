@@ -206,5 +206,8 @@
     <string name="dialog_add_product_hint_product">Produto</string>
     <string name="dialog_add_product_title">Adicionar produto</string>
     <string name="dialog_edit_address_hint_name">Nome</string>
+    <string name="sale_paid">PAGO</string>
+    <string name="sale_unpaid">NÃO PAGO</string>
+    <string name="sale_partially_paid">PARCIALMENTE PAGO</string>
 
 </resources>

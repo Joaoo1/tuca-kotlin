@@ -3,7 +3,7 @@
     <data>
         <variable
             name="product"
-            type="com.joaovitor.tucaprodutosdelimpeza.data.model.Product" />
+            type="com.joaovitor.tucaprodutosdelimpeza.data.model.ProductSale" />
     </data>
 
     <LinearLayout
