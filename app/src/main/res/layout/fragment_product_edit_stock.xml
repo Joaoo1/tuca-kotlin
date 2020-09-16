@@ -1,88 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.product.edit.ProductEditStockFragment"
-    android:paddingTop="56dp"
-    android:paddingBottom="@dimen/activity_vertical_margin">
+<layout>
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/switch_stock"
+    <data>
+        <variable
+            name="product"
+            type="com.joaovitor.tucaprodutosdelimpeza.data.model.Product" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="12dp"
-        android:text="@string/product_edit_label_switch_stock"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        tools:context=".ui.product.edit.ProductEditStockFragment"
+        android:paddingTop="56dp"
+        android:paddingBottom="@dimen/activity_vertical_margin">
 
-    <View
-        android:id="@+id/divider"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="8dp"
-        android:background="?android:listDivider"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switch_stock" />
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switch_stock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:enabled="@{product.manageStock}"
+            android:text="@string/product_edit_label_switch_stock"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/stock"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:width="220dp"
-        android:autofillHints=""
-        android:ems="10"
-        android:inputType="number"
-        android:enabled="false"
-        android:text="500"
-        android:textAlignment="center"
-        android:textColor="@color/colorLightGray"
-        android:textSize="80sp"
-        app:layout_constraintBottom_toTopOf="@+id/update_stock"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider"
-        tools:ignore="LabelFor" />
+        <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="?android:listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/switch_stock" />
 
-    <TextView
-        android:id="@+id/update_stock"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:paddingVertical="16dp"
-        android:text="Atualizar estoque"
-        app:layout_constraintBottom_toTopOf="@id/divider2"
-        app:drawableEndCompat="@drawable/ic_home_refresh_general_info"
-        style="@style/Headline6"/>
+        <EditText
+            android:id="@+id/stock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:width="220dp"
+            android:autofillHints=""
+            android:ems="10"
+            android:inputType="number"
+            android:enabled="false"
+            android:text="@{String.valueOf(product.stock)}"
+            android:textAlignment="center"
+            android:textColor="@color/colorLightGray"
+            android:textSize="80sp"
+            app:layout_constraintBottom_toTopOf="@+id/update_stock"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider"
+            tools:ignore="LabelFor" />
 
-    <View
-        android:id="@+id/divider2"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginHorizontal="12dp"
-        android:background="?android:listDivider"
-        app:layout_constraintBottom_toTopOf="@+id/stock_history"
-        tools:layout_editor_absoluteX="12dp" />
+        <TextView
+            android:id="@+id/update_stock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:paddingVertical="16dp"
+            android:text="Atualizar estoque"
+            app:layout_constraintBottom_toTopOf="@id/divider2"
+            app:drawableEndCompat="@drawable/ic_home_refresh_general_info"
+            style="@style/Headline6"/>
 
-    <TextView
-        android:id="@+id/stock_history"
-        style="@style/Headline6"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:paddingVertical="16dp"
-        android:text="Histórico de movimentações"
-        app:drawableEndCompat="@drawable/ic_chevron_right"
-        app:layout_constraintBottom_toTopOf="@+id/save"
-        app:layout_constraintStart_toStartOf="parent" />
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="12dp"
+            android:background="?android:listDivider"
+            app:layout_constraintBottom_toTopOf="@+id/stock_history"
+            tools:layout_editor_absoluteX="12dp" />
 
-    <Button
-        android:id="@+id/save"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:text="@string/product_edit_save_product"
-        android:layout_marginHorizontal="16dp"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        <TextView
+            android:id="@+id/stock_history"
+            style="@style/Headline6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:paddingVertical="16dp"
+            android:text="Histórico de movimentações"
+            app:drawableEndCompat="@drawable/ic_chevron_right"
+            app:layout_constraintBottom_toTopOf="@+id/save"
+            app:layout_constraintStart_toStartOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/save"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="@string/product_edit_save_product"
+            android:layout_marginHorizontal="16dp"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

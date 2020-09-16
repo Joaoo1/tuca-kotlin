@@ -1,7 +1,5 @@
 package com.joaovitor.tucaprodutosdelimpeza.ui.sale.add
 
-import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.joaovitor.tucaprodutosdelimpeza.R
+import com.joaovitor.tucaprodutosdelimpeza.data.model.ProductSale
 import com.joaovitor.tucaprodutosdelimpeza.databinding.ListItemSaleProductBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,7 +22,7 @@ class SaleProductsAdapter : ListAdapter<SaleProductsAdapter.DataItem,
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
-    fun addHeaderAndSubmitList(list: List<Product>?) {
+    fun addHeaderAndSubmitList(list: List<ProductSale>?) {
         adapterScope.launch {
             val items = when (list) {
                 null -> listOf(DataItem.Header)
@@ -97,7 +96,7 @@ class SaleProductsAdapter : ListAdapter<SaleProductsAdapter.DataItem,
     }
 
     sealed class DataItem {
-        data class ProductItem(val product: Product): DataItem() {
+        data class ProductItem(val product: ProductSale): DataItem() {
             override val id = product.name
         }
 

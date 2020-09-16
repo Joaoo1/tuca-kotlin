@@ -15,7 +15,7 @@ class SaleListViewModel : ViewModel() {
 
     private var saleRepository: SaleRepository = SaleRepository()
 
-    fun setSales() {
+    init {
         GlobalScope.launch {
             sales.postValue(saleRepository.getSales())
         }

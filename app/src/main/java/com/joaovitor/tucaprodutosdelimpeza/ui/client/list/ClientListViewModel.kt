@@ -39,9 +39,9 @@ class ClientListViewModel : ViewModel() {
 
     private fun setClienSales() {
         val products = ArrayList<Product>()
-        products.add(Product("Detergente automotivo com Cera 5L", "20.00",100, 2))
-        products.add(Product("Detergente neutro", "40.00",200, 1))
-        products.add(Product("Amaciante", "10.00",100, 1))
+        products.add(Product("Detergente automotivo com Cera 5L", "20.00",100, true))
+        products.add(Product("Detergente neutro", "40.00",200, true))
+        products.add(Product("Amaciante", "10.00",100, true))
         val sales = mutableListOf<Sale>()
 /*        sales.add(Sale("asd", 4500,Client("1","Amanda","Palhoça"), Date(),
             "300.00", false, products))

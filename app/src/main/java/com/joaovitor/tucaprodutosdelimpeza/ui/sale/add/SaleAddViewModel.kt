@@ -5,18 +5,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Client
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
+import com.joaovitor.tucaprodutosdelimpeza.data.model.ProductSale
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
 import java.util.Date
 
 class SaleAddViewModel : ViewModel() {
 
-    var emptyList: List<Product> = emptyList()
+    var emptyList: List<ProductSale> = emptyList()
     var products = MutableLiveData(emptyList)
 
     fun setProducts() {
-        val myProducts = mutableListOf<Product>()
-        myProducts.add(Product("Detergente verde limão","20.00",20,2))
-        myProducts.add(Product("Detergente verde limão","20.00",20,2))
+        val myProducts = mutableListOf<ProductSale>()
+        myProducts.add(ProductSale("Detergente verde limão","20.00",20,Date()))
+        myProducts.add(ProductSale("Detergente verde limão","20.00",20,Date()))
         products.postValue(myProducts)
     }
 

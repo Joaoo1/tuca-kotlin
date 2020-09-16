@@ -79,6 +79,9 @@
         <action
             android:id="@+id/action_product_edit_fragment_to_stock_history_fragment"
             app:destination="@id/stock_history_fragment" />
+        <argument
+            android:name="product"
+            app:argType="com.joaovitor.tucaprodutosdelimpeza.data.model.Product" />
     </fragment>
 
     <fragment
@@ -133,7 +136,11 @@
         android:id="@+id/sale_edit_products_fragment"
         android:name="com.joaovitor.tucaprodutosdelimpeza.ui.sale.editProducts.SaleEditProductsFragment"
         android:label="@string/title_fragment_sale_edit"
-        tools:layout="@layout/fragment_sale_edit_products"/>
+        tools:layout="@layout/fragment_sale_edit_products">
+        <argument
+            android:name="sale"
+            app:argType="com.joaovitor.tucaprodutosdelimpeza.data.model.Sale" />
+    </fragment>
 
     <fragment
         android:id="@+id/select_client_fragment"

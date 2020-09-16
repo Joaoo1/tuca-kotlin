@@ -2,6 +2,7 @@ package com.joaovitor.tucaprodutosdelimpeza.data.model
 
 import com.google.firebase.firestore.PropertyName
 import java.io.Serializable
+import java.math.BigDecimal
 import java.util.*
 
 data class ProductSale(
@@ -25,4 +26,10 @@ data class ProductSale(
     val manageStock: Boolean = false,
 
     val parentId: String = ""
-): Serializable
+): Serializable {
+    val total: String
+        get() {
+            val total = BigDecimal(this.price).multiply(BigDecimal(this.quantity))
+            return total.toString()
+        }
+}

@@ -22,11 +22,15 @@ class ProductListFragment : Fragment() {
     ): View? {
         setHasOptionsMenu(true)
 
+        // Inflate the layout for this fragment
         val binding: FragmentProductListBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_product_list, container, false)
+
+        // Create the viewModel
         val viewModelFactory = ProductListViewModelFactory()
         val viewModel = ViewModelProvider(this,viewModelFactory)
             .get(ProductListViewModel::class.java)
+
         //Setting up the recycler view
         val adapter = ProductListAdapter(ProductListAdapter.ProductListener { product ->
             viewModel.onProductClicked(product)
@@ -37,7 +41,6 @@ class ProductListFragment : Fragment() {
                 (binding.productsList.adapter as ProductListAdapter).listData = it
             }
         })
-        viewModel.setProducts()
 
         //Floating button click
         binding.fab.setOnClickListener { viewModel.onClickFab() }
@@ -55,7 +58,7 @@ class ProductListFragment : Fragment() {
         viewModel.navigateToEdit.observe(viewLifecycleOwner, Observer { product ->
             product?.let {
                 this.findNavController()
-                    .navigate(ProductListFragmentDirections.actionProductListFragmentToProductEditFragment())
+                    .navigate(ProductListFragmentDirections.actionProductListFragmentToProductEditFragment(it))
                 viewModel.doneNavigation()
             }
         })

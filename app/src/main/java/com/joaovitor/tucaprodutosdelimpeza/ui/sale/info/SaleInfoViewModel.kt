@@ -8,7 +8,7 @@ import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class SaleInfoViewModel(mSale: Sale) : ViewModel() {
+class SaleInfoViewModel(mSale: Sale?) : ViewModel() {
 
     var sale = MutableLiveData(Sale())
 

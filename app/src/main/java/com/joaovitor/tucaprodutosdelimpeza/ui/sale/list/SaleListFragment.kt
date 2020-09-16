@@ -25,11 +25,15 @@ class SaleListFragment : Fragment() {
     ): View? {
         setHasOptionsMenu(true)
 
+        // Inflate the layout for this fragment
         val binding: FragmentSaleListBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_sale_list, container, false)
+
+        //Create the viewModel
         val viewModelFactory = SaleListViewModelFactory()
         val viewModel = ViewModelProvider(this,viewModelFactory)
             .get(SaleListViewModel::class.java)
+
         //Setting up the recycler view
         val adapter = SaleListAdapter(SaleListAdapter.SaleListener { sale ->
             viewModel.onSaleClicked(sale)
@@ -41,7 +45,6 @@ class SaleListFragment : Fragment() {
                 println(it)
             }
         })
-        viewModel.setSales()
 
         //Floating button click
         binding.fab.setOnClickListener { viewModel.onClickFab() }

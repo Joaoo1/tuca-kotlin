@@ -6,20 +6,50 @@ import android.os.Bundle
 import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.joaovitor.tucaprodutosdelimpeza.R
+import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
 import com.joaovitor.tucaprodutosdelimpeza.databinding.DialogAddProductBinding
+import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentSaleEditProductsBinding
+import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentSaleInfoBinding
+import com.joaovitor.tucaprodutosdelimpeza.ui.sale.info.SaleInfoFragmentArgs
+import com.joaovitor.tucaprodutosdelimpeza.ui.sale.info.SaleInfoViewModel
+import com.joaovitor.tucaprodutosdelimpeza.ui.sale.info.SaleInfoViewModelFactory
 
 class SaleEditProductsFragment : Fragment() {
+
+    private lateinit var sale: Sale
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
+        sale = arguments?.let { SaleEditProductsFragmentArgs.fromBundle(it).sale }!!
+
+        //Create the viewModel
+        val viewModelFactory = SaleInfoViewModelFactory(sale)
+        val viewModel = ViewModelProvider(requireActivity(),viewModelFactory)
+            .get(SaleInfoViewModel::class.java)
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sale_edit_products, container, false)
+        val binding: FragmentSaleEditProductsBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_sale_edit_products, container, false)
+
+        val adapter = SaleEditProductsListAdapter()
+        binding.productsList.adapter = adapter
+
+        viewModel.sale.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                adapter.listData = it.products
+            }
+        })
+
+        binding.sale = sale
+
+        return binding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

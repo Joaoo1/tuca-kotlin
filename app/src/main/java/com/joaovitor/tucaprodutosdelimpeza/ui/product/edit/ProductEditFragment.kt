@@ -3,34 +3,44 @@ package com.joaovitor.tucaprodutosdelimpeza.ui.product.edit
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentProductEditBinding
+import com.joaovitor.tucaprodutosdelimpeza.ui.product.list.ProductListViewModel
+import com.joaovitor.tucaprodutosdelimpeza.ui.product.list.ProductListViewModelFactory
+import com.joaovitor.tucaprodutosdelimpeza.ui.sale.info.SaleInfoFragmentArgs
 
 class ProductEditFragment : Fragment() {
+
+    private lateinit var product: Product
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
+        product = arguments?.let { ProductEditFragmentArgs.fromBundle(it).product }!!
 
         // Inflate the layout for this fragment
         val binding = FragmentProductEditBinding.inflate(inflater,container,false)
 
+        // Create the viewModel
+        val viewModelFactory = ProductEditViewModelFactory(product)
+        ViewModelProvider(this,viewModelFactory)
+            .get(ProductEditViewModel::class.java)
+
+        // Setting up viewPager with tabLayout
         val sectionsPagerAdapter = context?.let {
-            SectionsPagerAdapter(
-                it,childFragmentManager,
-                Product("a","a",1, 1))
+            SectionsPagerAdapter(it,childFragmentManager)
         }
         val viewPager = binding.viewPager
         viewPager.adapter = sectionsPagerAdapter
 
         val tabs = binding.tabLayout
         tabs.setupWithViewPager(viewPager)
-        // Tabs don't switch on click without it
-        tabs.bringToFront()
+        tabs.bringToFront() // Tabs don't switch on click without it
 
         return binding.root
     }

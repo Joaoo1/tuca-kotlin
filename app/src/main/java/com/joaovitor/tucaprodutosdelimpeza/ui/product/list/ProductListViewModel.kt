@@ -3,41 +3,23 @@ package com.joaovitor.tucaprodutosdelimpeza.ui.product.list
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.joaovitor.tucaprodutosdelimpeza.data.ProductRepository
+import com.joaovitor.tucaprodutosdelimpeza.data.SaleRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class ProductListViewModel : ViewModel() {
 
     var emptyList: List<Product> = emptyList()
     var products = MutableLiveData(emptyList)
 
-    fun setProducts() {
-        val myProducts = mutableListOf<Product>()
-        myProducts.add(Product("Alvejante", "R$20.00",123, 2))
-        myProducts.add(Product("Amaciante", "R$20.00",123, 2))
-        myProducts.add(Product("Desinfentante", "R$20.00",123, 2))
-        myProducts.add(Product("Detergente neutro", "R$20.00",123, 2))
-        myProducts.add(Product("Detergente de coco", "R$20.00",123, 2))
-        myProducts.add(Product("Cloro roupa colorida", "R$20.00",123, 2))
-        myProducts.add(Product("Sabão Liquido", "R$20.00",123, 2))
-        myProducts.add(Product("Vanish", "R$20.00",123, 2))
-        myProducts.add(Product("Alvejante", "R$20.00",123, 2))
-        myProducts.add(Product("Amaciante", "R$20.00",123, 2))
-        myProducts.add(Product("Desinfentante", "R$20.00",123, 2))
-        myProducts.add(Product("Detergente neutro", "R$20.00",123, 2))
-        myProducts.add(Product("Detergente de coco", "R$20.00",123, 2))
-        myProducts.add(Product("Cloro roupa colorida", "R$20.00",123, 2))
-        myProducts.add(Product("Sabão Liquido", "R$20.00",123, 2))
-        myProducts.add(Product("Vanish", "R$20.00",123, 2))
-        myProducts.add(Product("Alvejante", "R$20.00",123, 2))
-        myProducts.add(Product("Amaciante", "R$20.00",123, 2))
-        myProducts.add(Product("Desinfentante", "R$20.00",123, 2))
-        myProducts.add(Product("Detergente neutro", "R$20.00",123, 2))
-        myProducts.add(Product("Detergente de coco", "R$20.00",123, 2))
-        myProducts.add(Product("Cloro roupa colorida", "R$20.00",123, 2))
-        myProducts.add(Product("Sabão Liquido", "R$20.00",123, 2))
-        myProducts.add(Product("Vanish", "R$20.00",123, 2))
+    private var productRepository = ProductRepository()
 
-        products.postValue(myProducts)
+    init {
+        GlobalScope.launch {
+            products.postValue(productRepository.getProducts())
+        }
     }
 
     private var _navigateToAdd = MutableLiveData<Boolean>()

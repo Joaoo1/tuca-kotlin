@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
@@ -34,7 +35,7 @@ class SaleInfoFragment : Fragment() {
 
         //Create the viewModel
         val viewModelFactory = SaleInfoViewModelFactory(sale)
-        val viewModel = ViewModelProvider(this,viewModelFactory)
+        val viewModel = ViewModelProvider(requireActivity(),viewModelFactory)
             .get(SaleInfoViewModel::class.java)
 
         // Inflate the layout for this fragment
@@ -71,16 +72,14 @@ class SaleInfoFragment : Fragment() {
 
     private fun navigateToEditProducts() {
         this.findNavController().navigate(
-            SaleInfoFragmentDirections.actionSalesInfoFragmentToSaleEditProductsFragment())
+            SaleInfoFragmentDirections.actionSalesInfoFragmentToSaleEditProductsFragment(sale))
     }
 
     private fun createPaymentDialog() {
         val view = layoutInflater.inflate(R.layout.dialog_payment, null)
         val textInput: TextInputLayout = view.findViewById(R.id.paid_value)
         textInput.helperText = String.format(resources
-            .getString(R.string.dialog_payment_paid_value_helper_text),
-            sale.total
-            )
+            .getString(R.string.dialog_payment_paid_value_helper_text), sale.toReceive)
         context?.let {
             MaterialAlertDialogBuilder(it)
                 .setView(view)

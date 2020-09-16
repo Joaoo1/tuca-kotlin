@@ -8,8 +8,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
 
-class SectionsPagerAdapter(private val mContext: Context, fm: FragmentManager?, p: Product?
-) :
+class SectionsPagerAdapter(private val mContext: Context, fm: FragmentManager?) :
     FragmentPagerAdapter(fm!!, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     override fun getItem(position: Int): Fragment {
