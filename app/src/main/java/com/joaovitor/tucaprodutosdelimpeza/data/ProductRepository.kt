@@ -2,7 +2,9 @@ package com.joaovitor.tucaprodutosdelimpeza.data
 
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
+import com.joaovitor.tucaprodutosdelimpeza.data.model.StockHistory
 import kotlinx.coroutines.tasks.await
 
 class ProductRepository {
@@ -11,8 +13,22 @@ class ProductRepository {
         FirebaseFirestore.getInstance().collection("produtos")
 
     suspend fun getProducts(): List<Product> {
-        val querySnapshot = colRef.limit(50).get().await()
+        val querySnapshot = colRef.get().await()
 
-        return querySnapshot.toObjects(Product::class.java)
+        return querySnapshot.map {
+            val product = it.toObject(Product::class.java)
+            product.id = it.id
+            product
+        }
+    }
+
+    suspend fun getStockHistories(productId: String): List<StockHistory> {
+        return colRef
+            .document(productId)
+            .collection("stockHistory")
+            .orderBy("date", Query.Direction.DESCENDING)
+            .get()
+            .await()
+            .toObjects(StockHistory::class.java)
     }
 }

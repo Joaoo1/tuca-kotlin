@@ -26,14 +26,9 @@ class ProductEditFragment : Fragment() {
         // Inflate the layout for this fragment
         val binding = FragmentProductEditBinding.inflate(inflater,container,false)
 
-        // Create the viewModel
-        val viewModelFactory = ProductEditViewModelFactory(product)
-        ViewModelProvider(this,viewModelFactory)
-            .get(ProductEditViewModel::class.java)
-
         // Setting up viewPager with tabLayout
         val sectionsPagerAdapter = context?.let {
-            SectionsPagerAdapter(it,childFragmentManager)
+            SectionsPagerAdapter(it,childFragmentManager, product)
         }
         val viewPager = binding.viewPager
         viewPager.adapter = sectionsPagerAdapter

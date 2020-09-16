@@ -9,9 +9,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.joaovitor.tucaprodutosdelimpeza.R
+import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentProductEditCadasterBinding
 
-class ProductEditCadasterFragment : Fragment() {
+class ProductEditCadasterFragment(val product: Product) : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,11 +27,9 @@ class ProductEditCadasterFragment : Fragment() {
         )
 
         // Create the viewModel
-        val viewModelFactory = ProductEditViewModelFactory(null)
+        val viewModelFactory = ProductEditViewModelFactory(product)
         val viewModel = ViewModelProvider(this,viewModelFactory)
             .get(ProductEditViewModel::class.java)
-
-        binding.product = viewModel.product.value
 
         viewModel.product.observe(viewLifecycleOwner, Observer {
             binding.product = it

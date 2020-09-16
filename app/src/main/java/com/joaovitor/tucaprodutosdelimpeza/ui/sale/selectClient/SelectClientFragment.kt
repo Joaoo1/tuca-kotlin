@@ -1,6 +1,5 @@
 package com.joaovitor.tucaprodutosdelimpeza.ui.sale.selectClient
 
-import android.content.Context
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -10,8 +9,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentSelectClientBinding
-import com.joaovitor.tucaprodutosdelimpeza.ui.client.list.ClientListAdapter
-//import com.joaovitor.tucaprodutosdelimpeza.ui.sale.list.SalesListFragmentDirections
+import com.joaovitor.tucaprodutosdelimpeza.ui.sale.add.SaleAddViewModel
+import com.joaovitor.tucaprodutosdelimpeza.ui.sale.add.SaleAddViewModelFactory
 
 class SelectClientFragment : Fragment() {
 
@@ -25,27 +24,27 @@ class SelectClientFragment : Fragment() {
         val binding: FragmentSelectClientBinding = DataBindingUtil
             .inflate(inflater,R.layout.fragment_select_client, container, false)
 
-        val viewModelFactory = SelectClientViewModelFactory()
-        val viewModel = ViewModelProvider(this, viewModelFactory)
-            .get(SelectClientViewModel::class.java)
+        //Create the Add viewModel
+        val viewModelFactory = SaleAddViewModelFactory()
+        val viewModel = ViewModelProvider(requireActivity(), viewModelFactory)
+            .get(SaleAddViewModel::class.java)
+
+        //Setting up Recycler View
         val adapter = SelectClientListAdapter(SelectClientListAdapter.SelectClientListener { client ->
             viewModel.onClientClicked(client)
         })
         binding.clientsList.adapter = adapter
-
-        viewModel.setClients()
-
-        viewModel.navigateToAdd.observe(viewLifecycleOwner, Observer {
-            if(it) {
-                this.findNavController()
-                    .popBackStack()
-                onDestroy()
-            }
-        })
-
         viewModel.clients.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.listData = it
+            }
+        })
+
+        viewModel.navigateBackToAdd.observe(viewLifecycleOwner, Observer {
+            if(it) {
+                this.findNavController()
+                    .popBackStack()
+                viewModel.doneNavigation()
             }
         })
 
@@ -56,5 +55,4 @@ class SelectClientFragment : Fragment() {
         inflater.inflate(R.menu.search_list, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
-
 }

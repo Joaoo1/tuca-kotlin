@@ -6,6 +6,7 @@
             name="product"
             type="com.joaovitor.tucaprodutosdelimpeza.data.model.Product" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -21,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="12dp"
-            android:enabled="@{product.manageStock}"
+            android:checked="@{product.manageStock}"
             android:text="@string/product_edit_label_switch_stock"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -60,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:paddingVertical="16dp"
-            android:text="Atualizar estoque"
+            android:text="@string/product_edit_button_refresh_stock"
             app:layout_constraintBottom_toTopOf="@id/divider2"
             app:drawableEndCompat="@drawable/ic_home_refresh_general_info"
             style="@style/Headline6"/>
@@ -71,20 +72,19 @@
             android:layout_height="1dp"
             android:layout_marginHorizontal="12dp"
             android:background="?android:listDivider"
-            app:layout_constraintBottom_toTopOf="@+id/stock_history"
-            tools:layout_editor_absoluteX="12dp" />
+            app:layout_constraintBottom_toTopOf="@+id/stock_history" />
 
         <TextView
             android:id="@+id/stock_history"
-            style="@style/Headline6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:paddingVertical="16dp"
-            android:text="Histórico de movimentações"
+            android:text="@string/product_edit_button_stock_history"
             app:drawableEndCompat="@drawable/ic_chevron_right"
             app:layout_constraintBottom_toTopOf="@+id/save"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            style="@style/Headline6" />
 
         <Button
             android:id="@+id/save"

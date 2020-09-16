@@ -11,10 +11,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.joaovitor.tucaprodutosdelimpeza.R
+import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentSaleAddBinding
 import com.joaovitor.tucaprodutosdelimpeza.util.SaleProductItemDecoration
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Locale
+import java.util.Date
+import java.util.TimeZone
 
 class SaleAddFragment : Fragment() {
 
@@ -29,12 +33,18 @@ class SaleAddFragment : Fragment() {
             inflater, R.layout.fragment_sale_add, container, false
         )
 
+        //Create the viewModel
         val viewModelFactory = SaleAddViewModelFactory()
-        val viewModel: SaleAddViewModel = ViewModelProvider(this, viewModelFactory)
+        val viewModel: SaleAddViewModel = ViewModelProvider(requireActivity(), viewModelFactory)
             .get(SaleAddViewModel::class.java)
 
-        binding.viewModel = viewModel
+        viewModel.selectedClient.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                binding.selectedClient = it
+            }
+        })
 
+        // Setting up the RecyclerView
         val adapter = SaleProductsAdapter()
         val productsList: RecyclerView = binding.productsList
         context?.let {
@@ -48,8 +58,6 @@ class SaleAddFragment : Fragment() {
                 adapter.addHeaderAndSubmitList(it)
             }
         })
-
-        viewModel.setProducts()
 
         binding.client.setEndIconOnClickListener {
             viewModel.navigateToSelectClient()

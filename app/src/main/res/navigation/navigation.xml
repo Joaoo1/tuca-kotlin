@@ -94,7 +94,11 @@
         android:id="@+id/stock_history_fragment"
         android:name="com.joaovitor.tucaprodutosdelimpeza.ui.product.stockHistory.StockHistoryFragment"
         android:label="@string/title_fragment_product_stock_history"
-        tools:layout="@layout/fragment_stock_history"/>
+        tools:layout="@layout/fragment_stock_history">
+        <argument
+            android:name="productId"
+            app:argType="string" />
+    </fragment>
 
     <fragment
         android:id="@+id/sale_list_fragment"

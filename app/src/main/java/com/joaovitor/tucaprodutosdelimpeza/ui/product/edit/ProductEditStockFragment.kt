@@ -11,11 +11,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.joaovitor.tucaprodutosdelimpeza.R
-import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentProductEditCadasterBinding
+import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentProductEditStockBinding
-//import com.joaovitor.tucaprodutosdelimpeza.ui.product.list.ProductListFragmentDirections
 
-class ProductEditStockFragment : Fragment() {
+class ProductEditStockFragment(val product: Product) : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,15 +30,17 @@ class ProductEditStockFragment : Fragment() {
 
         binding.switchStock.setOnCheckedChangeListener { _, isChecked ->
             binding.stock.isEnabled = isChecked
-            if (isChecked) {
-                binding.stock.setTextColor(resources.getColor(R.color.colorGreenStock))
-            } else {
-                binding.stock.setTextColor(resources.getColor(R.color.colorLightGray))
+            context?.let {
+                if (isChecked) {
+                    binding.stock.setTextColor(ContextCompat.getColor(it, R.color.colorGreenStock))
+                } else {
+                    binding.stock.setTextColor(ContextCompat.getColor(it, R.color.colorLightGray))
+                }
             }
         }
 
         // Create the viewModel
-        val viewModelFactory = ProductEditViewModelFactory(null)
+        val viewModelFactory = ProductEditViewModelFactory(product)
         val viewModel = ViewModelProvider(this,viewModelFactory)
             .get(ProductEditViewModel::class.java)
 
@@ -47,13 +48,15 @@ class ProductEditStockFragment : Fragment() {
             binding.product = it
         })
 
-
-
-        val stockHistoryButton = binding.stockHistory
-        stockHistoryButton.setOnClickListener {
-            this.findNavController()
-                .navigate(ProductEditFragmentDirections.actionProductEditFragmentToStockHistoryFragment())
+        viewModel.product.value?.let {
+            if(it.manageStock) binding.switchStock.isChecked = true
         }
+
+        binding.stockHistory.setOnClickListener {
+            this.findNavController()
+                .navigate(ProductEditFragmentDirections.actionProductEditFragmentToStockHistoryFragment(product.id))
+        }
+
         return binding.root
     }
 }

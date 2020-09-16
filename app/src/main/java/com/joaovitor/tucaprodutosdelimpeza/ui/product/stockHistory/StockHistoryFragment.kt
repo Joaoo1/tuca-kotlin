@@ -19,21 +19,25 @@ class StockHistoryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val productId = StockHistoryFragmentArgs.fromBundle(requireArguments()).productId
+
         // Inflate the layout for this fragment
         val binding: FragmentStockHistoryBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_stock_history, container, false)
-        val viewModelFactory = StockHistoryViewModelFactory()
+
+        // Create the viewModel
+        val viewModelFactory = StockHistoryViewModelFactory(productId)
         val viewModel = ViewModelProvider(this,viewModelFactory)
             .get(StockHistoryViewModel::class.java)
+
         //Setting up the recycler view
         val adapter = StockHistoryListAdapter()
         binding.stockHistoriesList.adapter = adapter
         viewModel.stockHistories.observe(viewLifecycleOwner, Observer {
             it?.let {
-                (binding.stockHistoriesList.adapter as StockHistoryListAdapter).listData = it
+                adapter.listData = it
             }
         })
-        viewModel.setStockHistories()
 
         return binding.root
     }

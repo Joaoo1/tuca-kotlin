@@ -39,26 +39,26 @@ class ClientListViewModel : ViewModel() {
 
     private fun setClienSales() {
         val products = ArrayList<Product>()
-        products.add(Product("Detergente automotivo com Cera 5L", "20.00",100, true))
-        products.add(Product("Detergente neutro", "40.00",200, true))
-        products.add(Product("Amaciante", "10.00",100, true))
+        products.add(Product("id","Detergente automotivo com Cera 5L", "20.00",100, true))
+        products.add(Product("id","Detergente neutro", "40.00",200, true))
+        products.add(Product("id","Amaciante", "10.00",100, true))
         val sales = mutableListOf<Sale>()
-/*        sales.add(Sale("asd", 4500,Client("1","Amanda","Palhoça"), Date(),
-            "300.00", false, products))
-        sales.add(Sale("asd", 4500,Client("1","Bernardo","Palhoça"), Date(),
-            "300.00", false, products))
-        sales.add(Sale("asd", 4520,Client("1","Bruno","Palhoça"), Date(),
-            "300.00", false, products))
-        sales.add(Sale("asd", 1200,Client("1","Carlos","Palhoça"), Date(),
-            "300.00", false, products))
-        sales.add(Sale("asd", 1240,Client("1","Caroline","Palhoça"), Date(),
-            "300.00", false, products))
-        sales.add(Sale("asd", 2130,Client("1","João","Palhoça"), Date(),
-            "300.00", false, products))
-        sales.add(Sale("asd", 1500,Client("1","Pablo","Palhoça"), Date(),
-            "300.00", false, products))
-        sales.add(Sale("asd", 5500,Client("1","Valter","Palhoça"), Date(),
-            "300.00", false, products))*/
+        /*     sales.add(Sale("asd", 4500,Client("1","Amanda","Palhoça"), Date(),
+                 "300.00", false, products))
+             sales.add(Sale("asd", 4500,Client("1","Bernardo","Palhoça"), Date(),
+                 "300.00", false, products))
+             sales.add(Sale("asd", 4520,Client("1","Bruno","Palhoça"), Date(),
+                 "300.00", false, products))
+             sales.add(Sale("asd", 1200,Client("1","Carlos","Palhoça"), Date(),
+                 "300.00", false, products))
+             sales.add(Sale("asd", 1240,Client("1","Caroline","Palhoça"), Date(),
+                 "300.00", false, products))
+             sales.add(Sale("asd", 2130,Client("1","João","Palhoça"), Date(),
+                 "300.00", false, products))
+             sales.add(Sale("asd", 1500,Client("1","Pablo","Palhoça"), Date(),
+                 "300.00", false, products))
+             sales.add(Sale("asd", 5500,Client("1","Valter","Palhoça"), Date(),
+                 "300.00", false, products))*/
 
         clientSales.postValue(sales)
     }

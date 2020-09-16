@@ -8,14 +8,19 @@ import androidx.fragment.app.FragmentPagerAdapter
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
 
-class SectionsPagerAdapter(private val mContext: Context, fm: FragmentManager?) :
+class SectionsPagerAdapter(private val mContext: Context, fm: FragmentManager?,val product: Product) :
     FragmentPagerAdapter(fm!!, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+
+    companion object {
+        @StringRes
+        private val TAB_TITLES = intArrayOf(R.string.product_edit_tab_cadaster, R.string.product_edit_tab_stock)
+    }
 
     override fun getItem(position: Int): Fragment {
         return if (position == 0) {
-            ProductEditCadasterFragment()
+            ProductEditCadasterFragment(product)
         } else {
-            ProductEditStockFragment()
+            ProductEditStockFragment(product)
         }
     }
 
@@ -24,12 +29,6 @@ class SectionsPagerAdapter(private val mContext: Context, fm: FragmentManager?) 
     }
 
     override fun getCount(): Int {
-        // Show 2 total pages.
-        return 2
-    }
-
-    companion object {
-        @StringRes
-        private val TAB_TITLES = intArrayOf(R.string.product_edit_tab_cadaster, R.string.product_edit_tab_stock)
+        return TAB_TITLES.size
     }
 }

@@ -76,10 +76,13 @@
     <string name="product_edit_tab_stock">Estoque</string>
     <string name="product_edit_save_product">Salvar</string>
     <string name="product_edit_label_switch_stock">Gerenciar estoque</string>
+    <string name="product_edit_button_refresh_stock">Atualizar estoque</string>
+    <string name="product_edit_button_stock_history">Histórico de movimentações</string>
 
     <!-- StockHistory Fragment -->
     <string name="stock_history_sale">Venda %1$s</string>
     <string name="stock_history_client">Cliente %1$s</string>
+    <string name="stock_history_seller">Vendedor %1$s</string>
 
     <!-- ClientAdd Fragment -->
     <string name="client_add_hint_name">Nome</string>

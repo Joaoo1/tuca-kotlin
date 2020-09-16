@@ -3,31 +3,39 @@ package com.joaovitor.tucaprodutosdelimpeza.ui.sale.add
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.joaovitor.tucaprodutosdelimpeza.data.ClientRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Client
-import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
 import com.joaovitor.tucaprodutosdelimpeza.data.model.ProductSale
-import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.util.Date
 
 class SaleAddViewModel : ViewModel() {
 
-    var emptyList: List<ProductSale> = emptyList()
-    var products = MutableLiveData(emptyList)
+    private var _products = MutableLiveData<List<ProductSale>>()
+    val products: LiveData<List<ProductSale>>
+        get() = _products
 
-    fun setProducts() {
-        val myProducts = mutableListOf<ProductSale>()
-        myProducts.add(ProductSale("Detergente verde limão","20.00",20,Date()))
-        myProducts.add(ProductSale("Detergente verde limão","20.00",20,Date()))
-        products.postValue(myProducts)
+    private var _clients = MutableLiveData<List<Client>>()
+    val clients: LiveData<List<Client>>
+        get() = _clients
+
+    val selectedClient = MutableLiveData<Client>()
+
+    init {
+        GlobalScope.launch {
+            val clientRepository = ClientRepository()
+            _clients.postValue(clientRepository.getClients())
+        }
     }
 
     private var _navigateToSelectClient = MutableLiveData<Boolean>()
     val navigateToSelectClient: LiveData<Boolean>
         get() = _navigateToSelectClient
 
-    private var _selectedClient = MutableLiveData<Sale>()
-    val selectedClient: LiveData<Sale>
-        get() = _selectedClient
+    private var _navigateBackToAdd = MutableLiveData<Boolean>()
+    val navigateBackToAdd: LiveData<Boolean>
+        get() = _navigateBackToAdd
 
     fun navigateToSelectClient(){
         _navigateToSelectClient.value = true
@@ -35,6 +43,12 @@ class SaleAddViewModel : ViewModel() {
 
     fun doneNavigation(){
         _navigateToSelectClient.value = false
+        _navigateBackToAdd.value = false
+
     }
 
+    fun onClientClicked(client: Client){
+        _navigateBackToAdd.value = true
+        selectedClient.postValue(client)
+    }
 }

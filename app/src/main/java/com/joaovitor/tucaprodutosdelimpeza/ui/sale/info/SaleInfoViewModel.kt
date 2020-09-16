@@ -16,9 +16,6 @@ class SaleInfoViewModel(mSale: Sale?) : ViewModel() {
         sale.postValue(mSale)
     }
 
-    // private var saleRepository: SaleRepository = SaleRepository()
-
-
     private var _navigateToAdd = MutableLiveData<Boolean>()
     val navigateToAdd: LiveData<Boolean>
         get() = _navigateToAdd
