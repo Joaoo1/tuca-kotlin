@@ -6,8 +6,8 @@
 
     <data>
         <variable
-            name="selectedClient"
-            type="com.joaovitor.tucaprodutosdelimpeza.data.model.Client" />
+            name="viewModel"
+            type="com.joaovitor.tucaprodutosdelimpeza.ui.sale.add.SaleAddViewModel" />
     </data>
 
     <RelativeLayout
@@ -61,6 +61,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="12dp"
                     android:background="@android:color/transparent"
+                    android:onClick="@{() -> viewModel.addQuantity()}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/product"
                     app:srcCompat="@drawable/ic_add_gray"
@@ -72,14 +73,15 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="8dp"
-                    android:autofillHints=""
-                    android:hint="@string/sale_add_initial_quantity"
                     android:inputType="number"
                     android:minWidth="30dp"
-                    android:text="@string/sale_add_initial_quantity"
+                    android:focusable="false"
+                    android:hint="@string/sale_add_initial_quantity"
+                    android:text="@{String.valueOf(viewModel.quantity)}"
                     android:textAlignment="center"
                     app:layout_constraintEnd_toStartOf="@+id/add_quantity"
-                    app:layout_constraintTop_toBottomOf="@+id/product" />
+                    app:layout_constraintTop_toBottomOf="@+id/product"
+                    android:importantForAutofill="no" />
 
                 <ImageButton
                     android:id="@+id/remove_quantity"
@@ -88,6 +90,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="8dp"
                     android:background="@android:color/transparent"
+                    android:onClick="@{() -> viewModel.removeQuantity()}"
                     app:layout_constraintEnd_toStartOf="@+id/quantity"
                     app:layout_constraintTop_toBottomOf="@+id/product"
                     app:srcCompat="@drawable/ic_remove_gray"
@@ -123,7 +126,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:focusable="false"
-                        android:text="@{selectedClient.name}"/>
+                        android:text="@{viewModel.selectedClient.name}"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout

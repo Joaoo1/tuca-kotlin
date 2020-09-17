@@ -13,7 +13,7 @@ class ProductRepository {
         FirebaseFirestore.getInstance().collection("produtos")
 
     suspend fun getProducts(): List<Product> {
-        val querySnapshot = colRef.get().await()
+        val querySnapshot = colRef.orderBy("nome", Query.Direction.ASCENDING).get().await()
 
         return querySnapshot.map {
             val product = it.toObject(Product::class.java)

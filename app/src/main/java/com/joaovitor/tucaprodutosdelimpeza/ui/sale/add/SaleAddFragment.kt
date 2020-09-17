@@ -3,6 +3,7 @@ package com.joaovitor.tucaprodutosdelimpeza.ui.sale.add
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
+import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -10,8 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.joaovitor.tucaprodutosdelimpeza.R
-import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentSaleAddBinding
 import com.joaovitor.tucaprodutosdelimpeza.util.SaleProductItemDecoration
 import java.text.SimpleDateFormat
@@ -32,17 +33,14 @@ class SaleAddFragment : Fragment() {
         val binding: FragmentSaleAddBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_sale_add, container, false
         )
+        binding.lifecycleOwner = this
 
         //Create the viewModel
         val viewModelFactory = SaleAddViewModelFactory()
         val viewModel: SaleAddViewModel = ViewModelProvider(requireActivity(), viewModelFactory)
             .get(SaleAddViewModel::class.java)
 
-        viewModel.selectedClient.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                binding.selectedClient = it
-            }
-        })
+        binding.viewModel = viewModel
 
         // Setting up the RecyclerView
         val adapter = SaleProductsAdapter()
@@ -52,7 +50,7 @@ class SaleAddFragment : Fragment() {
                 productsList.addItemDecoration(it)
             }
         productsList.adapter = adapter
-        viewModel.products.observe(viewLifecycleOwner, Observer {
+        viewModel.saleProducts.observe(viewLifecycleOwner, Observer {
             it?.let {
                 println(it)
                 adapter.addHeaderAndSubmitList(it)
@@ -81,6 +79,13 @@ class SaleAddFragment : Fragment() {
             val visibility = if(isChecked) View.VISIBLE else View.GONE
             binding.paidValue.visibility = visibility
         }
+
+        viewModel.allProducts.observe(viewLifecycleOwner, Observer {
+            val productsArray = it?.toTypedArray() ?: arrayOf()
+            val autoCompleteAdapter = ArrayAdapter(requireContext(),
+                android.R.layout.simple_list_item_1, productsArray)
+            (binding.product.editText as MaterialAutoCompleteTextView).setAdapter(autoCompleteAdapter)
+        })
 
         viewModel.navigateToSelectClient.observe(viewLifecycleOwner, Observer {
             if (it) {
