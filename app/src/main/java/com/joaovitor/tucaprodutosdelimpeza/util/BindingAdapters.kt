@@ -1,5 +1,6 @@
 package com.joaovitor.tucaprodutosdelimpeza.util
 
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.google.android.material.textview.MaterialTextView
@@ -9,9 +10,10 @@ import java.math.BigDecimal
 import java.util.Date
 
 @BindingAdapter("formatDateToString")
-fun formatDateToString(textView: MaterialTextView, date: Date) {
+fun formatDateToString(textView: TextView, date: Date) {
     val formattedDate =  FormatDate.formatDateToString(date)
-    textView.text = formattedDate
+    @Suppress("UsePropertyAccessSyntax")
+    textView.setText(formattedDate)
 }
 
 @BindingAdapter("getSaleSituation")

@@ -50,10 +50,11 @@ class SaleAddFragment : Fragment() {
                 productsList.addItemDecoration(it)
             }
         productsList.adapter = adapter
-        viewModel.saleProducts.observe(viewLifecycleOwner, Observer {
+
+        viewModel.sale.observe(viewLifecycleOwner, Observer {
+                println("PASSOU")
             it?.let {
-                println(it)
-                adapter.addHeaderAndSubmitList(it)
+                adapter.addHeaderAndSubmitList(it.products)
             }
         })
 
@@ -62,17 +63,16 @@ class SaleAddFragment : Fragment() {
         }
 
         binding.date.setEndIconOnClickListener {
+            viewModel.onSaleDateSelect(Calendar.getInstance().timeInMillis)
+            /*val millis = Calendar.getInstance().timeInMillis
             val builder = MaterialDatePicker.Builder.datePicker()
             builder.setTitleText("Selecione a data da venda")
-            builder.setSelection(Calendar.getInstance().timeInMillis)
+            builder.setSelection(millis)
             val picker = builder.build()
             picker.addOnPositiveButtonClickListener {
-                val format = SimpleDateFormat("dd/MM/yyyy", Locale("pt-BR"))
-                format.timeZone = TimeZone.getTimeZone("UTC")
-                val selectedDate = format.format(Date(it))
-                binding.date.editText?.setText(selectedDate)
+                viewModel.onSaleDateSelect(it)
             }
-            picker.show(parentFragmentManager, picker.toString())
+            picker.show(parentFragmentManager, picker.toString())*/
         }
 
         binding.radioButtonPartiallyPaid.setOnCheckedChangeListener { _, isChecked ->

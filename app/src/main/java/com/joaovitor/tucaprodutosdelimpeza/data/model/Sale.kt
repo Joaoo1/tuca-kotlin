@@ -11,76 +11,86 @@ data class Sale(
 
     @PropertyName("idVenda")
     @get:PropertyName("idVenda")
-    val saleId: Int = 0,
+    @set:PropertyName("idVenda")
+    var saleId: Int = 0,
 
     @PropertyName("dataVenda")
     @get:PropertyName("dataVenda")
-    val saleDate: Date? = null,
+    @set:PropertyName("dataVenda")
+    var saleDate: Date = Date(),
 
     @PropertyName("dataPagamento")
     @get:PropertyName("dataPagamento")
-    val paymentDate: Date? = null,
+    @set:PropertyName("dataPagamento")
+    var paymentDate: Date? = null,
 
     @PropertyName("valorLiquido")
     @get:PropertyName("valorLiquido")
-    val total: String? = "",
+    @set:PropertyName("valorLiquido")
+    var total: String? = "",
 
     @PropertyName("valorBruto")
     @get:PropertyName("valorBruto")
-    val grossValue: String? = "",
+    @set:PropertyName("valorBruto")
+    var grossValue: String? = "",
 
     @PropertyName("desconto")
     @get:PropertyName("desconto")
-    val discount: String? = "",
+    @set:PropertyName("desconto")
+    var discount: String? = "",
 
-    @get:PropertyName("valorAReceber")
     @PropertyName("valorAReceber")
-    val toReceive: String = "",
+    @get:PropertyName("valorAReceber")
+    @set:PropertyName("valorAReceber")
+    var toReceive: String = "",
 
-    @get:PropertyName("valorPago")
     @PropertyName("valorPago")
-    val paidValue: String = "",
+    @get:PropertyName("valorPago")
+    @set:PropertyName("valorPago")
+    var paidValue: String = "",
 
     @PropertyName("pago")
     @get:PropertyName("pago")
-    val paid: Boolean? = true,
+    @set:PropertyName("pago")
+    var paid: Boolean? = true,
 
     @PropertyName("idCliente")
     @get:PropertyName("idCliente")
-    val clientId: String? = "",
+    @set:PropertyName("idCliente")
+    var clientId: String? = "",
 
     @PropertyName("nomeCliente")
     @get:PropertyName("nomeCliente")
-    val clientName: String? = "",
+    @set:PropertyName("nomeCliente")
+    var clientName: String? = "",
 
     @PropertyName("enderecoCliente")
     @get:PropertyName("enderecoCliente")
-    val clientStreet: String? = "",
+    @set:PropertyName("enderecoCliente")
+    var clientStreet: String? = "",
 
     @PropertyName("bairroCliente")
     @get:PropertyName("bairroCliente")
-    val clientNeighborhood: String? = "",
+    @set:PropertyName("bairroCliente")
+    var clientNeighborhood: String? = "",
 
     @PropertyName("cidadeCliente")
     @get:PropertyName("cidadeCliente")
-    val clientCity: String? = "",
+    @set:PropertyName("cidadeCliente")
+    var clientCity: String? = "",
 
     @PropertyName("complementoCliente")
     @get:PropertyName("complementoCliente")
-    val clientComplement: String? = "",
+    @set:PropertyName("complementoCliente")
+    var clientComplement: String? = "",
 
-    val products: List<ProductSale> = listOf(),
-    val seller: String? = "",
-    val sellerUid: String? = ""
+    @PropertyName("telefone")
+    @get:PropertyName("telefone")
+    @set:PropertyName("telefone")
+    var clientPhone: String? = "",
 
-) : Serializable {
+    var products: List<ProductSale> = listOf(),
+    var seller: String? = "",
+    var sellerUid: String? = ""
 
-    val situation: String
-    get() {
-        return if(this.paid!!) {
-            "PAGO"
-        } else {
-            "NÃO PAGO"
-        }
-    }
-}
+) : Serializable
