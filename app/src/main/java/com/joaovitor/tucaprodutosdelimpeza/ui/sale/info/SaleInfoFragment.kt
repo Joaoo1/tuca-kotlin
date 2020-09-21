@@ -17,11 +17,14 @@ import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentSaleInfoBinding
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentSaleListBinding
 import com.joaovitor.tucaprodutosdelimpeza.ui.sale.list.SaleListViewModel
 import com.joaovitor.tucaprodutosdelimpeza.ui.sale.list.SaleListViewModelFactory
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class SaleInfoFragment : Fragment() {
 
     private lateinit var sale: Sale
+    private lateinit var viewModel: SaleInfoViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,7 +38,7 @@ class SaleInfoFragment : Fragment() {
 
         //Create the viewModel
         val viewModelFactory = SaleInfoViewModelFactory(sale)
-        val viewModel = ViewModelProvider(requireActivity(),viewModelFactory)
+        viewModel = ViewModelProvider(requireActivity(),viewModelFactory)
             .get(SaleInfoViewModel::class.java)
 
         // Inflate the layout for this fragment
@@ -48,6 +51,14 @@ class SaleInfoFragment : Fragment() {
         viewModel.sale.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.listData = it.products
+            }
+        })
+
+        viewModel.navigateToEditProducts.observe(viewLifecycleOwner, Observer {
+            if(it) {
+                findNavController()
+                    .navigate(SaleInfoFragmentDirections.actionSalesInfoFragmentToSaleEditProductsFragment(sale))
+                viewModel.doneNavigation()
             }
         })
 
@@ -65,14 +76,9 @@ class SaleInfoFragment : Fragment() {
         when(item.itemId) {
             R.id.action_register_payment -> createPaymentDialog()
             R.id.action_delete_sale -> createDeleteSaleDialog()
-            R.id.action_edit_products -> navigateToEditProducts()
+            R.id.action_edit_products -> viewModel.navigateToEditProducts()
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun navigateToEditProducts() {
-        this.findNavController().navigate(
-            SaleInfoFragmentDirections.actionSalesInfoFragmentToSaleEditProductsFragment(sale))
     }
 
     private fun createPaymentDialog() {

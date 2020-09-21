@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+    <data>
+        <variable
+            name="viewModel"
+            type="com.joaovitor.tucaprodutosdelimpeza.ui.sale.info.SaleInfoViewModel" />
+    </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -29,12 +34,11 @@
             android:inputType="textPersonName"
             app:startIconDrawable="@drawable/ic_input_product"
             app:layout_constraintTop_toBottomOf="@+id/title"
-            style="@style/AppTheme.OutlinedBox">
+            style="@style/AppTheme.OutlinedBox.ExposedDropdownMenu">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textCapWords"/>
+                android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
@@ -67,22 +71,20 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="12dp"
             android:background="@android:color/transparent"
+            android:onClick="@{() -> viewModel.addQuantity()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/product"
             app:srcCompat="@drawable/ic_add_gray"
             tools:ignore="ContentDescription" />
 
-        <EditText
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/quantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
-            android:autofillHints=""
-            android:hint="@string/sale_add_initial_quantity"
-            android:inputType="number"
             android:minWidth="30dp"
-            android:text="@string/sale_add_initial_quantity"
+            android:text="@{String.valueOf(viewModel.quantity)}"
             android:textAlignment="center"
             app:layout_constraintEnd_toStartOf="@+id/add_quantity"
             app:layout_constraintTop_toBottomOf="@+id/product" />
@@ -94,6 +96,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:background="@android:color/transparent"
+            android:onClick="@{() -> viewModel.removeQuantity()}"
             app:layout_constraintEnd_toStartOf="@+id/quantity"
             app:layout_constraintTop_toBottomOf="@+id/product"
             app:srcCompat="@drawable/ic_remove_gray"

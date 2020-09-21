@@ -212,5 +212,11 @@
     <string name="sale_paid">PAGO</string>
     <string name="sale_unpaid">NÃO PAGO</string>
     <string name="sale_partially_paid">PARCIALMENTE PAGO</string>
+    <string name="dialog_filter_sales_headline_situation">Situação de pagamento</string>
+    <string name="dialog_filter_sales_headline_period">Intervalo de tempo</string>
+    <string name="dialog_filter_sales_button_filter">FILTRAR</string>
+    <string name="dialog_filter_sales_button_clean_filters">LIMPAR FILTROS</string>
+    <string name="dialog_filter_sales_checkbox_unpaid">Não pago</string>
+    <string name="dialog_filter_sales_checkbox_paid">Pago</string>
 
 </resources>

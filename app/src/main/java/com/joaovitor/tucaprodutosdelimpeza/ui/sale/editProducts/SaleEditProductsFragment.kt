@@ -4,11 +4,13 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.view.*
+import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
 import com.joaovitor.tucaprodutosdelimpeza.databinding.DialogAddProductBinding
@@ -21,6 +23,7 @@ import com.joaovitor.tucaprodutosdelimpeza.ui.sale.info.SaleInfoViewModelFactory
 class SaleEditProductsFragment : Fragment() {
 
     private lateinit var sale: Sale
+    private lateinit var viewModel: SaleInfoViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,7 +34,7 @@ class SaleEditProductsFragment : Fragment() {
 
         //Create the viewModel
         val viewModelFactory = SaleInfoViewModelFactory(sale)
-        val viewModel = ViewModelProvider(requireActivity(),viewModelFactory)
+        viewModel = ViewModelProvider(requireActivity(),viewModelFactory)
             .get(SaleInfoViewModel::class.java)
 
         // Inflate the layout for this fragment
@@ -65,16 +68,38 @@ class SaleEditProductsFragment : Fragment() {
 
     private fun createAddProductDialog() {
         val binding: DialogAddProductBinding = DataBindingUtil.inflate(layoutInflater, R.layout.dialog_add_product, null,false)
-        context?.let {
-            val dialog = MaterialAlertDialogBuilder(it)
+        context?.let { ctx ->
+            val dialog = MaterialAlertDialogBuilder(ctx)
                 .setView(binding.root)
                 .show()
 
+            binding.lifecycleOwner = this
+            binding.viewModel = viewModel
+
+            //Setting up products AutoCompleteTextView
+            viewModel.allProducts.observe(viewLifecycleOwner, Observer {
+                //Convert product list to a list with only the products name
+                val productsName = it?.map { product -> product.name }
+
+                //Null checking and convert list to array
+                val arrayProductsName = productsName?.toTypedArray() ?: arrayOf()
+
+                val autoCompleteAdapter = ArrayAdapter(requireContext(),
+                    android.R.layout.simple_list_item_1, arrayProductsName)
+                (binding.product.editText as MaterialAutoCompleteTextView).setAdapter(autoCompleteAdapter)
+            })
+
+            binding.addProduct.setOnClickListener {
+                viewModel.addProduct(binding.product.editText!!.text.toString())
+                dialog.dismiss()
+                viewModel.allProducts.removeObservers(viewLifecycleOwner)
+            }
+
             binding.close.setOnClickListener {
                 dialog.dismiss()
+                viewModel.allProducts.removeObservers(viewLifecycleOwner)
             }
         }
-
 
     }
 }

@@ -34,7 +34,7 @@ class SelectClientFragment : Fragment() {
             viewModel.onClientClicked(client)
         })
         binding.clientsList.adapter = adapter
-        viewModel.clients.observe(viewLifecycleOwner, Observer {
+        viewModel.allClients.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.listData = it
             }

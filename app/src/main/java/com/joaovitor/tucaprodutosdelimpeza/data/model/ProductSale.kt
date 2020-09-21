@@ -21,9 +21,7 @@ data class ProductSale(
 
     @PropertyName("add_date")
     @get:PropertyName("add_date")
-    val addDate: Date? = null,
-
-    val manageStock: Boolean = false,
+    val addDate: Date = Date(),
 
     val parentId: String = ""
 ): Serializable {

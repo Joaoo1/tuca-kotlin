@@ -3,10 +3,14 @@ package com.joaovitor.tucaprodutosdelimpeza.ui.sale.info
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.joaovitor.tucaprodutosdelimpeza.data.ProductRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.SaleRepository
+import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
+import com.joaovitor.tucaprodutosdelimpeza.data.model.ProductSale
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.util.*
 
 class SaleInfoViewModel(mSale: Sale?) : ViewModel() {
 
@@ -16,27 +20,56 @@ class SaleInfoViewModel(mSale: Sale?) : ViewModel() {
         sale.postValue(mSale)
     }
 
-    private var _navigateToAdd = MutableLiveData<Boolean>()
-    val navigateToAdd: LiveData<Boolean>
-        get() = _navigateToAdd
+    private var _allProducts = MutableLiveData<List<Product>>()
+    val allProducts: LiveData<List<Product>>
+        get() = _allProducts
 
+    val quantity = MutableLiveData(1)
 
-    private var _navigateToInfo = MutableLiveData<Sale>()
-    val navigateToInfo: LiveData<Sale>
-        get() = _navigateToInfo
+    fun addQuantity() {
+        quantity.postValue(quantity.value?.plus(1))
+    }
 
+    fun removeQuantity() {
+        if(quantity.value!! > 0) {
+            quantity.postValue(quantity.value?.minus(1))
+        }
+    }
 
-    fun onClickFab(){
-        _navigateToAdd.value = true
+    fun addProduct(text: String?) {
+        val productsName = allProducts.value?.map{ it.name }
+        val productIndex = productsName?.indexOf(text)
+        if(productIndex != null && productIndex >= 0) {
+            val productSale = convertProductToProductSale(
+                _allProducts.value!![productIndex],
+                quantity.value!!
+            )
+            val mSale = sale.value
+            mSale?.products = mSale?.products?.plus(productSale)!!
+            sale.value = mSale
+        } else {
+            //TODO: Show a error
+            return
+        }
+    }
+
+    private fun convertProductToProductSale(product: Product, quantity: Int): ProductSale {
+        return ProductSale(product.name, product.price, quantity, Date(), product.id)
+    }
+
+    //Navigation
+    private var _navigateToEditProducts = MutableLiveData<Boolean>()
+    val navigateToEditProducts: LiveData<Boolean>
+        get() = _navigateToEditProducts
+
+    fun navigateToEditProducts() {
+        _navigateToEditProducts.value = true
+        GlobalScope.launch {
+            _allProducts.postValue(ProductRepository().getProducts())
+        }
     }
 
     fun doneNavigation(){
-        _navigateToAdd.value = false
-        _navigateToInfo.value = null
+        _navigateToEditProducts.value = false
     }
-
-    fun onSaleClicked(sale: Sale) {
-        _navigateToInfo.value = sale
-    }
-
 }

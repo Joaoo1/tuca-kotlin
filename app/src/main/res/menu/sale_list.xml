@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/refresh"
+        android:id="@+id/action_refresh_sales"
         android:icon="@drawable/ic_refresh_white"
         app:showAsAction="ifRoom"
         android:title="@string/menu_item_refresh_list_title" />
@@ -15,7 +15,7 @@
         android:title="@string/menu_item_filter_title" />
 
     <item
-        android:id="@+id/search"
+        android:id="@+id/action_search_sales"
         android:icon="@drawable/ic_search_white"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="always|collapseActionView"

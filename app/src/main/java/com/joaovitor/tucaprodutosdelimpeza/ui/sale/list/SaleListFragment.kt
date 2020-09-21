@@ -1,23 +1,23 @@
 package com.joaovitor.tucaprodutosdelimpeza.ui.sale.list
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.*
-import androidx.appcompat.widget.AppCompatEditText
-import androidx.fragment.app.Fragment
+import android.view.inputmethod.EditorInfo
+import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentSaleListBinding
-import java.text.SimpleDateFormat
-import java.util.*
+
 
 class SaleListFragment : Fragment() {
+
+    private lateinit var viewModel: SaleListViewModel
+    private lateinit var listAdapter: SaleListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,22 +27,23 @@ class SaleListFragment : Fragment() {
 
         // Inflate the layout for this fragment
         val binding: FragmentSaleListBinding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_sale_list, container, false)
+            inflater, R.layout.fragment_sale_list, container, false
+        )
 
         //Create the viewModel
         val viewModelFactory = SaleListViewModelFactory()
-        val viewModel = ViewModelProvider(this,viewModelFactory)
+        viewModel = ViewModelProvider(this, viewModelFactory)
             .get(SaleListViewModel::class.java)
 
         //Setting up the recycler view
-        val adapter = SaleListAdapter(SaleListAdapter.SaleListener { sale ->
+        listAdapter = SaleListAdapter(SaleListAdapter.SaleListener { sale ->
             viewModel.onSaleClicked(sale)
         })
-        binding.salesList.adapter = adapter
+
+        binding.salesList.adapter = listAdapter
         viewModel.sales.observe(viewLifecycleOwner, Observer {
             it?.let {
-                adapter.listData = it
-                println(it)
+                listAdapter.saleList = it
             }
         })
 
@@ -51,7 +52,7 @@ class SaleListFragment : Fragment() {
 
         //Navigate to Add Fragment listener
         viewModel.navigateToAdd.observe(viewLifecycleOwner, Observer { navigate ->
-            if(navigate) {
+            if (navigate) {
                 findNavController()
                     .navigate(SaleListFragmentDirections.actionSalesListFragmentToSalesAddFragment())
                 viewModel.doneNavigation()
@@ -62,7 +63,11 @@ class SaleListFragment : Fragment() {
         viewModel.navigateToInfo.observe(viewLifecycleOwner, Observer { sale ->
             sale?.let {
                 findNavController()
-                    .navigate(SaleListFragmentDirections.actionSalesListFragmentToSalesInfoFragment(sale))
+                    .navigate(
+                        SaleListFragmentDirections.actionSalesListFragmentToSalesInfoFragment(
+                            sale
+                        )
+                    )
                 viewModel.doneNavigation()
             }
         })
@@ -72,14 +77,31 @@ class SaleListFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.sale_list, menu)
+        searchOnList(menu.findItem(R.id.action_search_sales))
         super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             R.id.action_filter_sales -> createFiltersDialog()
+            R.id.action_refresh_sales -> viewModel.refreshSalesList()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun searchOnList(search: MenuItem) {
+        val searchView = search.actionView as SearchView
+        searchView.imeOptions = EditorInfo.IME_ACTION_DONE
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                listAdapter.filter.filter(newText)
+                return false
+            }
+        })
     }
 
     override fun onResume() {
@@ -88,39 +110,7 @@ class SaleListFragment : Fragment() {
     }
 
     private fun createFiltersDialog() {
-        val filtersDialog = activity?.let { Dialog(it) }!!
-        filtersDialog.setContentView(R.layout.dialog_filter_sales)
-        val startDatePicker: AppCompatEditText = filtersDialog.findViewById(R.id.start_date)
-        val endDatePicker: AppCompatEditText = filtersDialog.findViewById(R.id.end_date)
-
-        startDatePicker.setOnClickListener {
-            val builder = MaterialDatePicker.Builder.datePicker()
-            builder.setTitleText("Selecione a data início")
-            builder.setSelection(Calendar.getInstance().timeInMillis)
-            val picker = builder.build()
-            picker.addOnPositiveButtonClickListener {
-                val format = SimpleDateFormat("dd/MM/yyyy", Locale("pt-BR"))
-                format.timeZone = TimeZone.getTimeZone("UTC")
-                val selectedDate = format.format(Date(it))
-                startDatePicker.setText(selectedDate)
-            }
-            picker.show(parentFragmentManager, picker.toString())
-        }
-
-        endDatePicker.setOnClickListener {
-            val builder = MaterialDatePicker.Builder.datePicker()
-            builder.setTitleText("Selecione a data final")
-            builder.setSelection(Calendar.getInstance().timeInMillis)
-            val picker = builder.build()
-            picker.addOnPositiveButtonClickListener {
-                val format = SimpleDateFormat("dd/MM/yyyy", Locale("pt-BR"))
-                format.timeZone = TimeZone.getTimeZone("UTC")
-                val selectedDate = format.format(Date(it))
-                endDatePicker.setText(selectedDate)
-            }
-            picker.show(parentFragmentManager, picker.toString())
-        }
-        filtersDialog.show()
+        FilterSalesDialog(this).show()
     }
 
 }

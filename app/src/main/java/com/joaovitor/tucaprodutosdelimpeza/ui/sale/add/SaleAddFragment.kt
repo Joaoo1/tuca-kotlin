@@ -4,6 +4,8 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
 import android.widget.ArrayAdapter
+import android.widget.EditText
+import android.widget.RadioGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -44,17 +46,11 @@ class SaleAddFragment : Fragment() {
 
         // Setting up the RecyclerView
         val adapter = SaleProductsAdapter()
-        val productsList: RecyclerView = binding.productsList
-        context?.let {
-            SaleProductItemDecoration(it) }?.let {
-                productsList.addItemDecoration(it)
-            }
-        productsList.adapter = adapter
-
-        viewModel.sale.observe(viewLifecycleOwner, Observer {
-                println("PASSOU")
+        binding.productsList.addItemDecoration(SaleProductItemDecoration(requireContext()))
+        binding.productsList.adapter = adapter
+        viewModel.products.observe(viewLifecycleOwner, Observer {
             it?.let {
-                adapter.addHeaderAndSubmitList(it.products)
+                adapter.addHeaderAndSubmitList(it)
             }
         })
 
@@ -75,15 +71,28 @@ class SaleAddFragment : Fragment() {
             picker.show(parentFragmentManager, picker.toString())*/
         }
 
-        binding.radioButtonPartiallyPaid.setOnCheckedChangeListener { _, isChecked ->
-            val visibility = if(isChecked) View.VISIBLE else View.GONE
+        binding.radioGroup.setOnCheckedChangeListener { _, id: Int ->
+            viewModel.paymentMethod = id
+
+            //Show or hide paid value edit text
+            val visibility = if(id == R.id.radio_button_partially_paid) View.VISIBLE  else View.GONE
             binding.paidValue.visibility = visibility
         }
 
+        binding.addProduct.setOnClickListener {
+            viewModel.addProduct(binding.product.editText?.text.toString())
+            binding.product.editText?.setText("")
+        }
+
         viewModel.allProducts.observe(viewLifecycleOwner, Observer {
-            val productsArray = it?.toTypedArray() ?: arrayOf()
+            //Convert product list to a list with only the products name
+            val productsName = it?.map { product -> product.name }
+
+            //Null checking and convert list to array
+            val arrayProductsName = productsName?.toTypedArray() ?: arrayOf()
             val autoCompleteAdapter = ArrayAdapter(requireContext(),
-                android.R.layout.simple_list_item_1, productsArray)
+                    android.R.layout.simple_list_item_1, arrayProductsName)
+
             (binding.product.editText as MaterialAutoCompleteTextView).setAdapter(autoCompleteAdapter)
         })
 

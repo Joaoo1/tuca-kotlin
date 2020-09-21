@@ -67,16 +67,13 @@
                     app:srcCompat="@drawable/ic_add_gray"
                     tools:ignore="ContentDescription" />
 
-                <EditText
+                <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/quantity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="8dp"
-                    android:inputType="number"
-                    android:minWidth="30dp"
                     android:focusable="false"
-                    android:hint="@string/sale_add_initial_quantity"
                     android:text="@{String.valueOf(viewModel.quantity)}"
                     android:textAlignment="center"
                     app:layout_constraintEnd_toStartOf="@+id/add_quantity"
@@ -126,7 +123,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:focusable="false"
-                        android:text="@{viewModel.sale.clientName}"/>
+                        android:text="@{viewModel.client.name}"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -148,7 +145,7 @@
                         android:layout_height="wrap_content"
                         android:maxLength="10"
                         android:focusable="false"
-                        app:formatDateToString="@{viewModel.sale.saleDate}"
+                        app:formatDateToString="@{viewModel.saleDate}"
                         />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -169,6 +166,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    android:checkedButton="@+id/radio_button_unpaid"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/divider">
 
@@ -182,7 +180,6 @@
                         android:id="@+id/radio_button_unpaid"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:checked="true"
                         android:paddingHorizontal="12dp"
                         android:text="@string/sale_add_radio_unpaid" />
 
@@ -217,7 +214,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:inputType="numberDecimal" />
+                        android:inputType="numberDecimal"
+                        android:text="@={viewModel.paidValue}"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -237,7 +235,8 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="numberDecimal"/>
+                        android:inputType="numberDecimal"
+                        android:text="@={viewModel.discount}" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <ImageView
@@ -291,7 +290,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"
-                android:text="R$114.00"
+                android:text="@{String.format(@string/money, viewModel.total.toString())}"
                 android:textAlignment="textEnd"
                 android:textColor="@android:color/primary_text_light"
                 android:textSize="28sp" />
