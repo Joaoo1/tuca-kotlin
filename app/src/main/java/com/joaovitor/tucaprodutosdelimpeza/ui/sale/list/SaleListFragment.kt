@@ -99,6 +99,7 @@ class SaleListFragment : Fragment() {
 
             override fun onQueryTextChange(newText: String): Boolean {
                 listAdapter.filter.filter(newText)
+                listAdapter.notifyDataSetChanged()
                 return false
             }
         })

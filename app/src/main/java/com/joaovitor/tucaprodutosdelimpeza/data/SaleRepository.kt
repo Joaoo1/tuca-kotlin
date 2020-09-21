@@ -10,8 +10,8 @@ class SaleRepository {
     private var colRef: CollectionReference =
         FirebaseFirestore.getInstance().collection("vendas")
 
-    suspend fun getSales(): List<Sale> {
-        val querySnapshot = colRef.limit(50).get().await()
+    suspend fun getSales(limit: Long? = 50): List<Sale> {
+        val querySnapshot = colRef.limit(limit!!).get().await()
 
         return querySnapshot.toObjects(Sale::class.java)
     }

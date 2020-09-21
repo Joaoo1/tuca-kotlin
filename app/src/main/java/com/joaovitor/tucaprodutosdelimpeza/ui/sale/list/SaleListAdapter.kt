@@ -90,7 +90,6 @@ class SaleListAdapter(val clickListener: SaleListener) :
                     saleFilterList = results.values as List<Sale>
                     println(results.values)
                 }
-                    notifyDataSetChanged()
             }
         }
     }

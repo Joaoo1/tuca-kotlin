@@ -7,7 +7,8 @@
     <fragment
         android:id="@+id/home_fragment"
         android:name="com.joaovitor.tucaprodutosdelimpeza.ui.home.HomeFragment"
-        android:label="@string/title_fragment_home">
+        android:label="@string/title_fragment_home"
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_home_fragment_to_product_list_fragment"
             app:destination="@id/product_list_fragment" />
@@ -49,13 +50,24 @@
         android:id="@+id/client_add_fragment"
         android:name="com.joaovitor.tucaprodutosdelimpeza.ui.client.add.ClientAddFragment"
         android:label="@string/title_fragment_client_add"
-        tools:layout="@layout/fragment_client_add"/>
+        tools:layout="@layout/fragment_client_add">
+        <action
+            android:id="@+id/action_client_add_fragment_to_manage_address_fragment"
+            app:destination="@id/manage_address_fragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/client_edit_fragment"
         android:name="com.joaovitor.tucaprodutosdelimpeza.ui.client.edit.ClientEditFragment"
         android:label="@string/title_fragment_client_edit"
-        tools:layout="@layout/fragment_client_edit"/>
+        tools:layout="@layout/fragment_client_edit">
+        <argument
+            android:name="client"
+            app:argType="com.joaovitor.tucaprodutosdelimpeza.data.model.Client" />
+        <action
+            android:id="@+id/action_client_edit_fragment_to_manage_address_fragment"
+            app:destination="@id/manage_address_fragment" />
+    </fragment>
 
 
     <fragment

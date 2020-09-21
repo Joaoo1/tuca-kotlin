@@ -10,17 +10,7 @@
         tools:ignore="AlwaysShowAction" />
 
     <item
-        android:id="@+id/add_street"
-        android:title="@string/menu_item_add_street_title"
-        app:showAsAction="never"/>
-
-    <item
-        android:id="@+id/add_neighborhood"
-        android:title="@string/menu_item_add_neighborhood_title"
-        app:showAsAction="never"/>
-
-    <item
-        android:id="@+id/add_city"
-        android:title="@string/menu_item_add_city_title"
+        android:id="@+id/add_address"
+        android:title="@string/menu_item_add_address_title"
         app:showAsAction="never"/>
 </menu>

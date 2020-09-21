@@ -7,6 +7,7 @@
     <string name="money">R$%1$s</string>
     <string name="quantity">%1$sx</string>
     <string name="sale_id">Venda %1$s</string>
+    <string name="client_neighborhood">Bairro %1$s</string>
 
     <!-- Fragments titles -->
     <string name="title_fragment_home">Página inicial</string>
@@ -144,11 +145,7 @@
     <string name="report_sales_radio_button_neighborhood">Bairro</string>
     <string name="report_sales_radio_button_city">Cidade</string>
     <string name="report_sales_radio_button_no_filter">Sem filtro</string>
-
-
-    <string name="dialog_info_client_button_made_buys">Compras feitas</string>
-    <string name="dialog_info_client_button_call">Ligar para o número</string>
-    <string name="dialog_client_sales_title">Compras feitas por %1$s</string>
+    <string name="report_sales_filter_button">Filtrar</string>
 
     <string name="menu_item_search_title">Pesquisar</string>
     <string name="menu_item_filter_title">Filtrar</string>
@@ -160,12 +157,10 @@
     <string name="menu_item_edit_products_title">Adicionar produtos</string>
     <string name="menu_item_delete_sale_title">Excluir venda</string>
     <string name="menu_item_delete_product_title">Excluir produto</string>
-    <string name="menu_item_add_neighborhood_title">Adicionar bairro</string>
-    <string name="menu_item_add_city_title">Adicionar cidade</string>
-    <string name="menu_item_add_street_title">Adicionar rua</string>
     <string name="menu_item_delete_client_title">Excluir cliente</string>
     <string name="menu_item_print_report_title">Imprimir relatório</string>
-    <string name="report_sales_filter_button">Filtrar</string>
+    <string name="menu_item_add_address_title">Adicionar endereço</string>
+
     <string name="dialog_print_sales_text">Foram encontradas %1$n vendas com os filtros selecionados</string>
     <string name="dialog_print_sales_title">Imprimir relatório?</string>
     <string name="dialog_print_sales_print_button">Imprimir</string>
@@ -183,6 +178,10 @@
     <string name="list_item_product_stock">Estoque disponível: %1$s</string>
     <string name="list_item_client_sale_client">Cliente %1$s</string>
     <string name="list_item_client_sales_headline_products">Produtos:</string>
+
+    <string name="dialog_info_client_button_made_buys">Compras feitas</string>
+    <string name="dialog_info_client_button_call">Ligar para o número</string>
+    <string name="dialog_client_sales_title">Compras feitas por %1$s</string>
     <string name="dialog_delete_client_title">Excluir cliente?</string>
     <string name="dialog_delete_client_message">Esta ação irá excluir permanentemente o cliente</string>
     <string name="dialog_delete_client_negative_button">Cancelar</string>
@@ -209,9 +208,6 @@
     <string name="dialog_add_product_hint_product">Produto</string>
     <string name="dialog_add_product_title">Adicionar produto</string>
     <string name="dialog_edit_address_hint_name">Nome</string>
-    <string name="sale_paid">PAGO</string>
-    <string name="sale_unpaid">NÃO PAGO</string>
-    <string name="sale_partially_paid">PARCIALMENTE PAGO</string>
     <string name="dialog_filter_sales_headline_situation">Situação de pagamento</string>
     <string name="dialog_filter_sales_headline_period">Intervalo de tempo</string>
     <string name="dialog_filter_sales_button_filter">FILTRAR</string>
@@ -219,4 +215,7 @@
     <string name="dialog_filter_sales_checkbox_unpaid">Não pago</string>
     <string name="dialog_filter_sales_checkbox_paid">Pago</string>
 
+    <string name="sale_paid">PAGO</string>
+    <string name="sale_unpaid">NÃO PAGO</string>
+    <string name="sale_partially_paid">PARCIALMENTE PAGO</string>
 </resources>

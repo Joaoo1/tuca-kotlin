@@ -3,70 +3,33 @@ package com.joaovitor.tucaprodutosdelimpeza.ui.client.list
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.joaovitor.tucaprodutosdelimpeza.data.ClientRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Client
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.util.*
 
 class ClientListViewModel : ViewModel() {
 
-    var clients: MutableLiveData<List<Client>>
-    var clientSales: MutableLiveData<List<Sale>>
+    var clients = MutableLiveData<List<Client>>(emptyList())
+    // var clientSales = MutableLiveData<List<Sale>>(emptyList())
+
+    private fun fetchClients(){
+        GlobalScope.launch {
+            clients.postValue(ClientRepository().getClients())
+        }
+    }
 
     init {
-        val emptyList: List<Client> = emptyList()
-        val emptyList2: List<Sale> = emptyList()
-        clients = MutableLiveData(emptyList)
-        clientSales = MutableLiveData(emptyList2)
-
-        setClients()
-        setClienSales()
+        fetchClients()
     }
 
-    private fun setClients() {
-        val myProducts = mutableListOf<Client>()
-        myProducts.add(Client("asd", "Amanda", "Palhoça"))
-        myProducts.add(Client("asd2", "Alfredo", "Palhoça"))
-        myProducts.add(Client("asd3", "Joaquim", "Palhoça"))
-        myProducts.add(Client("as4d", "Pedro", "Palhoça"))
-        myProducts.add(Client("asd5", "Rosa", "Palhoça"))
-        myProducts.add(Client("asd7", "Vinicius", "Palhoça"))
-        myProducts.add(Client("asd8", "Marcos", "Palhoça"))
-        myProducts.add(Client("asd0", "Kauã", "Palhoça"))
-
-        clients.postValue(myProducts)
-    }
-
-    private fun setClienSales() {
-        val products = ArrayList<Product>()
-        products.add(Product("id","Detergente automotivo com Cera 5L", "20.00",100, true))
-        products.add(Product("id","Detergente neutro", "40.00",200, true))
-        products.add(Product("id","Amaciante", "10.00",100, true))
-        val sales = mutableListOf<Sale>()
-        /*     sales.add(Sale("asd", 4500,Client("1","Amanda","Palhoça"), Date(),
-                 "300.00", false, products))
-             sales.add(Sale("asd", 4500,Client("1","Bernardo","Palhoça"), Date(),
-                 "300.00", false, products))
-             sales.add(Sale("asd", 4520,Client("1","Bruno","Palhoça"), Date(),
-                 "300.00", false, products))
-             sales.add(Sale("asd", 1200,Client("1","Carlos","Palhoça"), Date(),
-                 "300.00", false, products))
-             sales.add(Sale("asd", 1240,Client("1","Caroline","Palhoça"), Date(),
-                 "300.00", false, products))
-             sales.add(Sale("asd", 2130,Client("1","João","Palhoça"), Date(),
-                 "300.00", false, products))
-             sales.add(Sale("asd", 1500,Client("1","Pablo","Palhoça"), Date(),
-                 "300.00", false, products))
-             sales.add(Sale("asd", 5500,Client("1","Valter","Palhoça"), Date(),
-                 "300.00", false, products))*/
-
-        clientSales.postValue(sales)
-    }
-
+    //navigation
     private var _navigateToAdd = MutableLiveData<Boolean>()
     val navigateToAdd: LiveData<Boolean>
         get() = _navigateToAdd
-
 
     private var _navigateToEdit = MutableLiveData<Client>()
     val navigateToEdit: LiveData<Client>
@@ -76,9 +39,16 @@ class ClientListViewModel : ViewModel() {
     val openInfoDialog: LiveData<Client>
         get() = _openInfoDialog
 
-
     fun onClickFab(){
         _navigateToAdd.value = true
+    }
+
+    fun onClientClicked(client: Client) {
+        _openInfoDialog.value = client
+    }
+
+    fun openEditClient(client: Client) {
+        _navigateToEdit.value = client
     }
 
     fun doneNavigation(){
@@ -86,13 +56,4 @@ class ClientListViewModel : ViewModel() {
         _navigateToEdit.value = null
         _openInfoDialog.value = null
     }
-
-    fun onClientClicked(client: Client) {
-        _openInfoDialog.value = client
-    }
-
-    fun openEditClient() {
-        _navigateToEdit.value = Client("Rrr","asd")
-    }
-
 }

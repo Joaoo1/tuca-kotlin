@@ -14,9 +14,9 @@ data class Client(
     @set:PropertyName("nome")
     var name: String = "",
 
-    @PropertyName("rua")
-    @get:PropertyName("rua")
-    @set:PropertyName("rua")
+    @PropertyName("endereco")
+    @get:PropertyName("endereco")
+    @set:PropertyName("endereco")
     var street: String = "",
 
     @PropertyName("complemento")

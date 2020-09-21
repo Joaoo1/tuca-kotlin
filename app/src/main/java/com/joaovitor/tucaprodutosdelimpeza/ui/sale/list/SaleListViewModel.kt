@@ -103,6 +103,6 @@ class SaleListViewModel : ViewModel() {
     }
 
     fun refreshSalesList() {
-        TODO("Not yet implemented")
+        fetchSales()
     }
 }
