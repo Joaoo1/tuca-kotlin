@@ -29,16 +29,19 @@ class ClientEditFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        client = arguments?.let { ClientEditFragmentArgs.fromBundle(it).client }!!
 
         //Create the viewModel
-        val viewModelFactory = ClientEditViewModelFactory()
+        client = arguments?.let { ClientEditFragmentArgs.fromBundle(it).client }!!
+        val viewModelFactory = ClientEditViewModelFactory(client)
         viewModel = ViewModelProvider(requireActivity(), viewModelFactory)
             .get(ClientEditViewModel::class.java)
 
         // Inflate the layout for this fragment
         val binding: FragmentClientEditBinding = DataBindingUtil.inflate(
             inflater,R.layout.fragment_client_edit, container, false)
+
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
 
         viewModel.streets.observe(viewLifecycleOwner, Observer {
             it?.let {
@@ -50,15 +53,13 @@ class ClientEditFragment : Fragment() {
             }
         })
 
-        binding.client = client
-
         binding.neighborhood.editText?.setOnClickListener {
             val neighborhoods = viewModel.neighborhoods.toTypedArray()
             createDialogSelectAddress(
                 neighborhoods,
                 DialogInterface.OnClickListener {
                         _, index ->
-                    binding.neighborhood.editText?.setText(neighborhoods[index])
+                    viewModel.onNeighborhoodSelected(neighborhoods[index])
                 })
         }
 
@@ -68,7 +69,7 @@ class ClientEditFragment : Fragment() {
                 cities,
                 DialogInterface.OnClickListener {
                         _, index ->
-                    binding.city.editText?.setText(cities[index])
+                   viewModel.onCitySelected(cities[index])
                 })
         }
 
@@ -92,7 +93,7 @@ class ClientEditFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             R.id.action_delete_client -> createDeleteClientDialog()
-            R.id.action_add_address -> viewModel.onClickmenuItemAddAddress()
+            R.id.action_add_address -> viewModel.onClickMenuItemAddAddress()
         }
         return super.onOptionsItemSelected(item)
     }

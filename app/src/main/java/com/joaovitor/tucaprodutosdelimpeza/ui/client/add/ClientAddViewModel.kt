@@ -16,30 +16,26 @@ import java.util.*
 
 class ClientAddViewModel : ViewModel() {
 
-    var client: MutableLiveData<Client> = MutableLiveData(Client())
+    var client = MutableLiveData(Client())
 
     private var _streets = MutableLiveData<List<String>>()
     val streets: LiveData<List<String>>
         get() = _streets
 
     private var _neighborhoods: MutableList<String> = mutableListOf()
-    val neighborhoods: List<String>
-        get() = _neighborhoods
+    val neighborhoods: Array<String>
+        get() = _neighborhoods.toTypedArray()
 
     private var _cities: MutableList<String> = mutableListOf()
-    val cities: List<String>
-        get() = _cities
+    val cities: Array<String>
+        get() = _cities.toTypedArray()
 
-    private fun fetchAddresses(){
+    init {
         GlobalScope.launch {
             _streets.postValue(StreetRepository().getStreets())
             _neighborhoods.addAll(NeighborhoodRepository().getNeighborhoods())
             _cities.addAll(CityRepository().getCities())
         }
-    }
-
-    init {
-        fetchAddresses()
     }
 
     //navigation
@@ -51,7 +47,17 @@ class ClientAddViewModel : ViewModel() {
         _navigateToManageAddress.value = false
     }
 
-    fun onClickmenuItemAddAddress() {
+    fun onClickMenuItemAddAddress() {
         _navigateToManageAddress.value = true
+    }
+
+    fun onNeighborhoodSelected(neighborhood: String) {
+        client.value?.neighborhood = neighborhood
+        client.value = client.value
+    }
+
+    fun onCitySelected(city: String) {
+        client.value?.city = city
+        client.value = client.value
     }
 }

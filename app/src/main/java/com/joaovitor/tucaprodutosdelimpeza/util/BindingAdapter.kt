@@ -24,7 +24,7 @@ fun getSaleSituation(textView: MaterialTextView, sale: Sale) {
         return
     }
 
-    if(BigDecimal(sale.paidValue) == BigDecimal("0.00")) {
+    if (BigDecimal(sale.paidValue) == BigDecimal("0.00")) {
         textView.text = textView.resources.getString(R.string.sale_unpaid)
         textView.setTextColor(ContextCompat.getColor(textView.context, R.color.colorUnpaid))
         return

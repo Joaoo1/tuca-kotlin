@@ -14,7 +14,9 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 
-class ClientEditViewModel : ViewModel() {
+class ClientEditViewModel(mClient: Client) : ViewModel() {
+
+    var client = MutableLiveData<Client>()
 
     private var _streets = MutableLiveData<List<String>>()
     val streets: LiveData<List<String>>
@@ -37,7 +39,18 @@ class ClientEditViewModel : ViewModel() {
     }
 
     init {
+        client.postValue(mClient)
         fetchAddresses()
+    }
+
+    fun onNeighborhoodSelected(neighborhood: String) {
+        client.value?.neighborhood = neighborhood
+        client.value = client.value
+    }
+
+    fun onCitySelected(city: String) {
+        client.value?.city = city
+        client.value = client.value
     }
 
     //navigation
@@ -49,7 +62,7 @@ class ClientEditViewModel : ViewModel() {
         _navigateToManageAddress.value = false
     }
 
-    fun onClickmenuItemAddAddress() {
+    fun onClickMenuItemAddAddress() {
         _navigateToManageAddress.value = true
     }
 }

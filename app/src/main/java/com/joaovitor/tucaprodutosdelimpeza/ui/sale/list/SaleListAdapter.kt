@@ -68,13 +68,13 @@ class SaleListAdapter(val clickListener: SaleListener) :
                 if (charSearch.isEmpty()) {
                     saleFilterList = saleList
                 } else {
-                    var resultList: List<Sale> = ArrayList()
+                    val resultList: MutableList<Sale> = ArrayList()
                     for (sale in saleList) {
                         if (sale.saleId
                                 .toString()
                                 .toLowerCase(Locale.ROOT)
                                 .contains(charSearch.toLowerCase(Locale.ROOT))) {
-                            resultList = resultList.plus(sale)
+                            resultList.add(sale)
                         }
                     }
                     saleFilterList = resultList
@@ -88,7 +88,6 @@ class SaleListAdapter(val clickListener: SaleListener) :
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
                 if(results?.values != null) {
                     saleFilterList = results.values as List<Sale>
-                    println(results.values)
                 }
             }
         }

@@ -5,8 +5,10 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
+import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageButton
+import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -25,6 +27,7 @@ import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentClientListBinding
 class ClientListFragment : Fragment() {
 
     private lateinit var viewModel: ClientListViewModel
+    private lateinit var listAdapter: ClientListAdapter
     private lateinit var infoClientDialog: Dialog
 
     override fun onCreateView(
@@ -42,14 +45,14 @@ class ClientListFragment : Fragment() {
             .get(ClientListViewModel::class.java)
 
         //Setting up the recycler view
-        val adapter = ClientListAdapter(ClientListAdapter.ClientListener { client ->
+        listAdapter = ClientListAdapter(ClientListAdapter.ClientListener { client ->
             viewModel.onClientClicked(client)
         })
-        binding.clientsList.adapter = adapter
+        binding.clientsList.adapter = listAdapter
 
         viewModel.clients.observe(viewLifecycleOwner, Observer {
             it?.let {
-                adapter.addHeadersAndSubmitList(it)
+                listAdapter.submitClientList(it)
             }
         })
         //Floating button click
@@ -89,6 +92,8 @@ class ClientListFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.search_list, menu)
+        //Implement SearchView
+        searchOnList(menu.findItem(R.id.action_search))
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -142,5 +147,21 @@ class ClientListFragment : Fragment() {
         })*/
 
         showSalesMadeDialog.show()
+    }
+
+    private fun searchOnList(search: MenuItem) {
+        val searchView = search.actionView as SearchView
+        searchView.imeOptions = EditorInfo.IME_ACTION_DONE
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                listAdapter.filter.filter(newText)
+                listAdapter.notifyDataSetChanged()
+                return false
+            }
+        })
     }
 }

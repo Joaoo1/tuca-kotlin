@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+    <data>
+        <import type="com.joaovitor.tucaprodutosdelimpeza.util.Converter" />
+        <variable
+            name="viewModel"
+            type="com.joaovitor.tucaprodutosdelimpeza.ui.product.add.ProductAddViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -22,7 +29,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textCapWords"/>
+                android:inputType="textCapWords"
+                android:text="@={viewModel.product.name}"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -38,7 +46,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="numberDecimal"/>
+                android:inputType="numberDecimal"
+                android:text="@={viewModel.product.price}"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <ImageView
@@ -59,6 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/product_add_manage_stock"
+            android:checked="@={viewModel.isManagedStock}"
             app:layout_constraintTop_toBottomOf="@+id/divider"
             style="@style/Headline6"/>
 
@@ -67,7 +77,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/product_add_hint_stock"
-            android:enabled="false"
+            android:enabled="@{viewModel.isManagedStock}"
             app:startIconDrawable="@drawable/ic_input_stock"
             app:layout_constraintTop_toBottomOf="@+id/manage_stock"
             style="@style/AppTheme.OutlinedBox">
@@ -75,7 +85,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"/>
+                android:inputType="number"
+                android:text="@={Converter.intToString(viewModel.product.stock)}"/>
         </com.google.android.material.textfield.TextInputLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

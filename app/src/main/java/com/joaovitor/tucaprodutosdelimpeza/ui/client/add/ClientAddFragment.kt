@@ -49,25 +49,26 @@ class ClientAddFragment : Fragment() {
             }
         })
 
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
         binding.neighborhood.editText?.setOnClickListener {
-            val neighborhoods = viewModel.neighborhoods.toTypedArray()
+            val neighborhoods = viewModel.neighborhoods
             createDialogSelectAddress(
                 neighborhoods,
                 DialogInterface.OnClickListener {
                         _, index ->
-                    binding.neighborhood.editText?.setText(neighborhoods[index])
+                    viewModel.onNeighborhoodSelected(neighborhoods[index])
                 })
         }
 
         binding.city.editText?.setOnClickListener {
-            val cities = viewModel.cities.toTypedArray()
+            val cities = viewModel.cities
             createDialogSelectAddress(
                 cities,
                 DialogInterface.OnClickListener {
                         _, index ->
-                    binding.city.editText?.setText(cities[index])
+                    viewModel.onCitySelected(cities[index])
                 })
         }
 
@@ -76,7 +77,6 @@ class ClientAddFragment : Fragment() {
                 findNavController().navigate(
                     ClientAddFragmentDirections.actionClientAddFragmentToManageAddressFragment())
                 viewModel.doneNavigation()
-
             }
         })
 
@@ -90,7 +90,7 @@ class ClientAddFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
-            R.id.action_add_address -> viewModel.onClickmenuItemAddAddress()
+            R.id.action_add_address -> viewModel.onClickMenuItemAddAddress()
         }
         return super.onOptionsItemSelected(item)
     }

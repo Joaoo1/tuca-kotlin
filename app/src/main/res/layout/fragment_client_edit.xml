@@ -6,8 +6,8 @@
 
     <data>
         <variable
-            name="client"
-            type="com.joaovitor.tucaprodutosdelimpeza.data.model.Client" />
+            name="viewModel"
+            type="com.joaovitor.tucaprodutosdelimpeza.ui.client.edit.ClientEditViewModel" />
     </data>
 
     <ScrollView
@@ -85,7 +85,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/client_edit_hint_name"
-                        android:text="@={client.name}"/>
+                        android:text="@={viewModel.client.name}"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -103,7 +103,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/client_edit_hint_street"
-                        android:text="@={client.street}"/>
+                        android:text="@={viewModel.client.street}"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -121,7 +121,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/client_edit_hint_complement"
-                        android:text="@={client.complement}"/>
+                        android:text="@={viewModel.client.complement}"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -142,7 +142,7 @@
                         android:layout_height="wrap_content"
                         android:focusable="false"
                         android:hint="@string/client_edit_hint_neighborhood"
-                        android:text="@={client.neighborhood}"/>
+                        android:text="@={viewModel.client.neighborhood}"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -163,7 +163,7 @@
                         android:layout_height="wrap_content"
                         android:focusable="false"
                         android:hint="@string/client_edit_hint_city"
-                        android:text="@={client.city}"/>
+                        android:text="@={viewModel.client.city}"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -181,7 +181,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/client_edit_hint_phone"
-                        android:text="@={client.phone}"/>
+                        android:text="@={viewModel.client.phone}"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
