@@ -4,13 +4,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/save"
+        android:id="@+id/action_save"
         android:title="@string/menu_item_save_title"
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction" />
 
     <item
-        android:id="@+id/add_address"
+        android:id="@+id/action_add_address"
         android:title="@string/menu_item_add_address_title"
         app:showAsAction="never"/>
 </menu>

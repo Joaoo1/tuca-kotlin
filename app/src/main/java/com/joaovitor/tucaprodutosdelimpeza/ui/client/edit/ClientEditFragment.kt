@@ -3,44 +3,83 @@ package com.joaovitor.tucaprodutosdelimpeza.ui.client.edit
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.*
+import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.joaovitor.tucaprodutosdelimpeza.R
+import com.joaovitor.tucaprodutosdelimpeza.data.model.Client
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentClientAddBinding
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentClientEditBinding
+import com.joaovitor.tucaprodutosdelimpeza.ui.product.edit.ProductEditFragmentArgs
+import com.joaovitor.tucaprodutosdelimpeza.ui.sale.add.SaleAddViewModel
+import com.joaovitor.tucaprodutosdelimpeza.ui.sale.add.SaleAddViewModelFactory
 
 class ClientEditFragment : Fragment() {
+
+    private lateinit var client: Client
+    private lateinit var viewModel: ClientEditViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
+        client = arguments?.let { ClientEditFragmentArgs.fromBundle(it).client }!!
+
+        //Create the viewModel
+        val viewModelFactory = ClientEditViewModelFactory()
+        viewModel = ViewModelProvider(requireActivity(), viewModelFactory)
+            .get(ClientEditViewModel::class.java)
 
         // Inflate the layout for this fragment
         val binding: FragmentClientEditBinding = DataBindingUtil.inflate(
             inflater,R.layout.fragment_client_edit, container, false)
 
+        viewModel.streets.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                val arrayProductsName = it.toTypedArray()
+                val autoCompleteAdapter = ArrayAdapter(requireContext(),
+                    android.R.layout.simple_list_item_1, arrayProductsName)
+
+                (binding.street.editText as MaterialAutoCompleteTextView).setAdapter(autoCompleteAdapter)
+            }
+        })
+
+        binding.client = client
+
         binding.neighborhood.editText?.setOnClickListener {
-            val items = arrayOf("Teste", "Teste1", "teste2")
+            val neighborhoods = viewModel.neighborhoods.toTypedArray()
             createDialogSelectAddress(
-                items,
+                neighborhoods,
                 DialogInterface.OnClickListener {
                         _, index ->
-                    binding.neighborhood.editText?.setText(items[index])
+                    binding.neighborhood.editText?.setText(neighborhoods[index])
                 })
         }
 
         binding.city.editText?.setOnClickListener {
-            val items = arrayOf("Teste", "Teste1", "teste2")
+            val cities = viewModel.cities.toTypedArray()
             createDialogSelectAddress(
-                items,
+                cities,
                 DialogInterface.OnClickListener {
                         _, index ->
-                    binding.city.editText?.setText(items[index])
+                    binding.city.editText?.setText(cities[index])
                 })
         }
+
+        viewModel.navigateToManageAddress.observe(viewLifecycleOwner, Observer {
+            if(it){
+                findNavController().navigate(
+                    ClientEditFragmentDirections.actionClientEditFragmentToManageAddressFragment())
+                viewModel.doneNavigation()
+
+            }
+        })
 
         return binding.root
     }
@@ -52,7 +91,8 @@ class ClientEditFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
-            R.id.delete_client -> createDeleteClientDialog()
+            R.id.action_delete_client -> createDeleteClientDialog()
+            R.id.action_add_address -> viewModel.onClickmenuItemAddAddress()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -71,9 +111,8 @@ class ClientEditFragment : Fragment() {
     }
 
     private fun createDialogSelectAddress(
-        items: Array<String>,
-        clickListener: DialogInterface.OnClickListener?
-    ) {
+        items: Array<String>?,
+        clickListener: DialogInterface.OnClickListener?) {
         context?.let {
             MaterialAlertDialogBuilder(it)
                 .setTitle("Selecione um item")

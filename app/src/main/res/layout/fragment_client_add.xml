@@ -4,8 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+            name="viewModel"
+            type="com.joaovitor.tucaprodutosdelimpeza.ui.client.add.ClientAddViewModel" />
+    </data>
+
     <ScrollView
-        tools:context=".ui.client.add.ClientAddFragment"
+        tools:context=".ui.viewModel.client.add.ClientAddFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -78,7 +84,8 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/client_add_hint_name" />
+                        android:hint="@string/client_add_hint_name"
+                        android:text="@={viewModel.client.name}"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -90,12 +97,13 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageView2"
                     app:layout_constraintTop_toBottomOf="@id/name"
-                    style="@style/AppTheme.OutlinedBox.ExposedDropdownMenu">
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
 
-                    <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/client_add_hint_street" />
+                        android:hint="@string/client_add_hint_street"
+                        android:text="@={viewModel.client.street}"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -112,7 +120,8 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/client_add_hint_complement" />
+                        android:hint="@string/client_add_hint_complement"
+                        android:text="@={viewModel.client.complement}"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -132,7 +141,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/client_add_hint_neighborhood"
-                        android:focusable="false"/>
+                        android:focusable="false"
+                        android:text="@={viewModel.client.neighborhood}"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -151,7 +161,9 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/client_add_hint_city" />
+                        android:hint="@string/client_add_hint_city"
+                        android:focusable="false"
+                        android:text="@={viewModel.client.city}"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -168,7 +180,8 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/client_add_hint_phone" />
+                        android:hint="@string/client_add_hint_phone"
+                        android:text="@={viewModel.client.phone}"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>

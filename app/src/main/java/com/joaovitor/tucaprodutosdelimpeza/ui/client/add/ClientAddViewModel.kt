@@ -1,4 +1,4 @@
-package com.joaovitor.tucaprodutosdelimpeza.ui.client.edit
+package com.joaovitor.tucaprodutosdelimpeza.ui.client.add
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,7 +14,9 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 
-class ClientEditViewModel : ViewModel() {
+class ClientAddViewModel : ViewModel() {
+
+    var client: MutableLiveData<Client> = MutableLiveData(Client())
 
     private var _streets = MutableLiveData<List<String>>()
     val streets: LiveData<List<String>>
