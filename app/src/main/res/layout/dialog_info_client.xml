@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
         <import type="android.view.View"/>
-
         <variable
             name="client"
             type="com.joaovitor.tucaprodutosdelimpeza.data.model.Client" />
     </data>
+
     <RelativeLayout
         android:id="@+id/dialog_info_client"
         android:layout_height="wrap_content"
@@ -27,11 +28,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="60dp"
+                android:gravity="center"
                 android:text="@{client.name}"
                 android:textColor="@android:color/white"
                 android:textSize="24sp"
-                android:textStyle="bold"
-                android:gravity="center" />
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -100,14 +101,13 @@
 
         </LinearLayout>
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="90dp"
             android:layout_height="90dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:background="@drawable/ic_header_dialog_client"
-            android:src="@drawable/ic_client_white"
-            tools:ignore="ContentDescription" />
+            android:src="@drawable/ic_client_white" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/edit_client"

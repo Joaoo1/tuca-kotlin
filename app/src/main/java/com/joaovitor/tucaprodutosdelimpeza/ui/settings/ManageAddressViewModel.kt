@@ -19,7 +19,6 @@ class ManageAddressViewModel : ViewModel() {
         CITY("cidade"),
     }
 
-
     private var _openDialogAddAddress = MutableLiveData<AddressType>()
     val openDialogAddAddress: LiveData<AddressType>
         get() = _openDialogAddAddress
@@ -27,6 +26,10 @@ class ManageAddressViewModel : ViewModel() {
     private var _openDialogEditAddress = MutableLiveData<AddressObject>()
     val openDialogEditAddress: LiveData<AddressObject>
         get() = _openDialogEditAddress
+
+    private var _openDialogDeleteAddress = MutableLiveData<AddressObject>()
+    val openDialogDeleteAddress: LiveData<AddressObject>
+        get() = _openDialogDeleteAddress
 
     fun onClickAddStreet(){
         _openDialogAddAddress.value = AddressType.STREET
@@ -43,26 +46,48 @@ class ManageAddressViewModel : ViewModel() {
     fun onClickEditStreet(){
         GlobalScope.launch {
             val streets = StreetRepository().getStreets()
-            _openDialogEditAddress.value = AddressObject(AddressType.STREET, streets)
+            _openDialogEditAddress.postValue(AddressObject(AddressType.STREET, streets))
         }
     }
 
     fun onClickEditNeighborhood(){
         GlobalScope.launch {
             val neighborhoods = NeighborhoodRepository().getNeighborhoods()
-            _openDialogEditAddress.value = AddressObject(AddressType.NEIGHBORHOOD, neighborhoods)
+            _openDialogEditAddress.postValue(AddressObject(AddressType.NEIGHBORHOOD, neighborhoods))
         }
     }
 
     fun onClickEditCity(){
         GlobalScope.launch {
             val cities = CityRepository().getCities()
-            _openDialogEditAddress.value = AddressObject(AddressType.CITY, cities)
+            _openDialogEditAddress.postValue(AddressObject(AddressType.CITY, cities))
+        }
+    }
+
+    fun onClickDeleteStreet(){
+        GlobalScope.launch {
+            val streets = StreetRepository().getStreets()
+            _openDialogDeleteAddress.postValue(AddressObject(AddressType.STREET, streets))
+        }
+    }
+
+    fun onClickDeleteNeighborhood(){
+        GlobalScope.launch {
+            val neighborhoods = NeighborhoodRepository().getNeighborhoods()
+            _openDialogDeleteAddress.postValue(AddressObject(AddressType.NEIGHBORHOOD, neighborhoods))
+        }
+    }
+
+    fun onClickDeleteCity(){
+        GlobalScope.launch {
+            val cities = CityRepository().getCities()
+            _openDialogDeleteAddress.postValue(AddressObject(AddressType.CITY, cities))
         }
     }
 
     fun dialogDoneOpening() {
         _openDialogAddAddress.value = null
         _openDialogEditAddress.value = null
+        _openDialogDeleteAddress.value = null
     }
 }

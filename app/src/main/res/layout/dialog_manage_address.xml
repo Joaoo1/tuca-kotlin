@@ -1,26 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-    <data>
+
+        <data>
         <variable
             name="name"
-            type="String" />
+            type="java.lang.String" />
     </data>
 
     <FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_marginHorizontal="24dp"
+            android:layout_marginBottom="8dp"
             android:layout_height="wrap_content"
             android:hint="@string/dialog_edit_address_hint_name"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="@{name}"/>
-
         </com.google.android.material.textfield.TextInputLayout>
+
     </FrameLayout>
 </layout>

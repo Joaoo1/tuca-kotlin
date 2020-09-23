@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <data>
         <import type="com.joaovitor.tucaprodutosdelimpeza.util.Converter" />
         <variable
@@ -7,7 +8,8 @@
             type="com.joaovitor.tucaprodutosdelimpeza.ui.product.add.ProductAddViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -50,14 +52,12 @@
                 android:text="@={viewModel.product.price}"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <ImageView
+        <View
             android:id="@+id/divider"
             android:layout_width="0dp"
             android:layout_height="0.7dp"
             android:layout_marginTop="32dp"
-            android:contentDescription="@string/divider"
-            android:scaleType="fitXY"
-            android:src="?android:attr/listDivider"
+            android:background="?android:listDivider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/price" />

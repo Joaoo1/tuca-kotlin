@@ -24,13 +24,12 @@
                 android:layout_height="200dp"
                 android:background="@color/colorHeaderClientAddEdit">
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="match_parent"
                     android:layout_height="240dp"
                     android:layout_marginBottom="-35dp"
                     android:src="@drawable/ic_client_white"
-                    android:layout_gravity="bottom"
-                    tools:ignore="contentDescription"/>
+                    android:layout_gravity="bottom" />
 
             </LinearLayout>
 
@@ -41,35 +40,32 @@
                 android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/imageView"
                     android:layout_width="30dp"
                     android:layout_height="@dimen/input_height"
                     android:layout_marginTop="12dp"
                     android:src="@drawable/ic_input_client"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:ignore="ContentDescription" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/imageView2"
                     android:layout_width="30dp"
                     android:layout_height="@dimen/input_height"
                     android:layout_marginTop="24dp"
                     android:src="@drawable/ic_input_address"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/street"
-                    tools:ignore="ContentDescription" />
+                    app:layout_constraintTop_toBottomOf="@+id/street" />
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/imageView3"
                     android:layout_width="30dp"
                     android:layout_height="@dimen/input_height"
                     android:layout_marginTop="24dp"
                     android:src="@drawable/ic_input_phone"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/city"
-                    tools:ignore="ContentDescription" />
+                    app:layout_constraintTop_toBottomOf="@+id/city" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/name"

@@ -36,12 +36,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/switch_stock" />
 
-        <EditText
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/stock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:width="220dp"
-            android:autofillHints=""
             android:ems="10"
             android:inputType="number"
             android:enabled="false"
@@ -52,10 +51,9 @@
             app:layout_constraintBottom_toTopOf="@+id/update_stock"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider"
-            tools:ignore="LabelFor" />
+            app:layout_constraintTop_toBottomOf="@+id/divider" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/update_stock"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -74,7 +72,7 @@
             android:background="?android:listDivider"
             app:layout_constraintBottom_toTopOf="@+id/stock_history" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/stock_history"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -86,7 +84,7 @@
             app:layout_constraintStart_toStartOf="parent"
             style="@style/Headline6" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/save"
             android:layout_width="match_parent"
             android:layout_height="60dp"

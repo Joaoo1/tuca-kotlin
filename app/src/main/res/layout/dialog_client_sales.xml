@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -12,12 +13,12 @@
         android:orientation="vertical">
 
         <com.google.android.material.textview.MaterialTextView
-            style="@style/Headline6"
             android:id="@+id/headline_client_sales"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="@string/dialog_client_sales_title" />
+            android:text="@string/dialog_client_sales_title"
+            style="@style/Headline6" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/client_sales"

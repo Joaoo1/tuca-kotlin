@@ -62,8 +62,7 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginHorizontal="2dp"
-            android:background="@color/colorDivider"
-            android:src="?android:attr/divider"
+            android:background="?android:listDivider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/radio_group" />
@@ -110,7 +109,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/label_start_date" />
 
-
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/label_end_date"
             android:layout_width="wrap_content"
@@ -143,20 +141,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/label_end_date" />
 
-
         <View
             android:id="@+id/divider2"
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginHorizontal="2dp"
             android:layout_marginTop="16dp"
-            android:background="@color/colorDivider"
-            android:src="?android:attr/divider"
+            android:background="?android:listDivider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/end_date" />
-
 
         <RadioGroup
             android:id="@+id/radio_group_address"

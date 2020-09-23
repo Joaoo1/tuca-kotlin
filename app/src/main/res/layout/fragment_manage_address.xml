@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <data>
         <variable
             name="viewModel"
             type="com.joaovitor.tucaprodutosdelimpeza.ui.settings.ManageAddressViewModel" />
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -14,14 +17,14 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/label_street"
-            style="@style/Headline6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:padding="16dp"
-            android:text="Ruas"
+            android:text="@string/fragment_manage_address_label_streets"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            style="@style/Headline6"/>
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/add_street"
@@ -31,9 +34,9 @@
             android:layout_marginEnd="24dp"
             android:background="@null"
             android:src="@drawable/ic_add_gray"
+            android:onClick="@{() -> viewModel.onClickAddStreet()}"
             app:layout_constraintEnd_toStartOf="@+id/edit_street"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="ContentDescription" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/edit_street"
@@ -43,9 +46,9 @@
             android:layout_marginEnd="24dp"
             android:background="@null"
             android:src="@drawable/ic_baseline_edit"
+            android:onClick="@{() -> viewModel.onClickEditStreet()}"
             app:layout_constraintEnd_toStartOf="@+id/delete_street"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="ContentDescription"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/delete_street"
@@ -55,9 +58,9 @@
             android:layout_marginEnd="16dp"
             android:background="@null"
             android:src="@drawable/ic_delete_gray"
+            android:onClick="@{() -> viewModel.onClickDeleteStreet()}"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="ContentDescription"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <View
             android:id="@+id/divider"
@@ -65,20 +68,19 @@
             android:layout_height="0.5dp"
             android:layout_marginTop="10dp"
             android:layout_marginHorizontal="4dp"
-            android:scaleType="fitXY"
-            android:background="?android:attr/listDivider"
+            android:background="?android:listDivider"
             app:layout_constraintTop_toBottomOf="@+id/label_street" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/label_neighborhood"
-            style="@style/Headline6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:padding="16dp"
-            android:text="Bairros"
+            android:text="@string/fragment_manage_address_label_neighborhoods"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider" />
+            app:layout_constraintTop_toBottomOf="@+id/divider"
+            style="@style/Headline6"/>
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/add_neighborhood"
@@ -88,9 +90,9 @@
             android:layout_marginEnd="24dp"
             android:background="@null"
             android:src="@drawable/ic_add_gray"
+            android:onClick="@{() -> viewModel.onClickAddNeighborhood()}"
             app:layout_constraintEnd_toStartOf="@+id/edit_neighborhood"
-            app:layout_constraintTop_toBottomOf="@+id/divider"
-            tools:ignore="ContentDescription" />
+            app:layout_constraintTop_toBottomOf="@+id/divider" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/edit_neighborhood"
@@ -100,9 +102,9 @@
             android:layout_marginEnd="24dp"
             android:background="@null"
             android:src="@drawable/ic_baseline_edit"
+            android:onClick="@{() -> viewModel.onClickEditNeighborhood()}"
             app:layout_constraintEnd_toStartOf="@+id/delete_neighborhood"
-            app:layout_constraintTop_toBottomOf="@+id/divider"
-            tools:ignore="ContentDescription" />
+            app:layout_constraintTop_toBottomOf="@+id/divider" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/delete_neighborhood"
@@ -112,9 +114,9 @@
             android:layout_marginEnd="16dp"
             android:background="@null"
             android:src="@drawable/ic_delete_gray"
+            android:onClick="@{() -> viewModel.onClickDeleteNeighborhood()}"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider"
-            tools:ignore="ContentDescription" />
+            app:layout_constraintTop_toBottomOf="@+id/divider" />
 
         <View
             android:id="@+id/divider2"
@@ -122,22 +124,21 @@
             android:layout_height="0.5dp"
             android:layout_marginHorizontal="4dp"
             android:layout_marginTop="10dp"
-            android:scaleType="fitXY"
-            android:background="?android:attr/listDivider"
+            android:background="?android:listDivider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/label_neighborhood" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/label_city"
-            style="@style/Headline6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:padding="16dp"
-            android:text="Cidades"
+            android:text="@string/fragment_manage_address_label_cities"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider2" />
+            app:layout_constraintTop_toBottomOf="@+id/divider2"
+            style="@style/Headline6"/>
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/add_city"
@@ -147,9 +148,9 @@
             android:layout_marginEnd="24dp"
             android:background="@null"
             android:src="@drawable/ic_add_gray"
+            android:onClick="@{() -> viewModel.onClickAddCity()}"
             app:layout_constraintEnd_toStartOf="@+id/edit_city"
-            app:layout_constraintTop_toBottomOf="@+id/divider2"
-            tools:ignore="ContentDescription" />
+            app:layout_constraintTop_toBottomOf="@+id/divider2" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/edit_city"
@@ -159,9 +160,9 @@
             android:layout_marginEnd="24dp"
             android:background="@null"
             android:src="@drawable/ic_baseline_edit"
+            android:onClick="@{() -> viewModel.onClickEditCity()}"
             app:layout_constraintEnd_toStartOf="@+id/delete_city"
-            app:layout_constraintTop_toBottomOf="@+id/divider2"
-            tools:ignore="ContentDescription" />
+            app:layout_constraintTop_toBottomOf="@+id/divider2" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/delete_city"
@@ -171,18 +172,16 @@
             android:layout_marginEnd="16dp"
             android:background="@null"
             android:src="@drawable/ic_delete_gray"
+            android:onClick="@{() -> viewModel.onClickDeleteCity()}"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider2"
-            tools:ignore="ContentDescription" />
+            app:layout_constraintTop_toBottomOf="@+id/divider2" />
 
         <View
-            android:id="@+id/divider3"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_marginTop="10dp"
             android:layout_marginHorizontal="4dp"
-            android:scaleType="fitXY"
-            android:background="?android:attr/listDivider"
+            android:background="?android:listDivider"
             app:layout_constraintTop_toBottomOf="@+id/label_city" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

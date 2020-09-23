@@ -53,38 +53,18 @@ class ManageAddressFragment : Fragment() {
             }
         })
 
-        binding.deleteStreet.setOnClickListener {
-            val items = arrayOf("Teste", "Teste1", "teste2")
-            createDialogSelectAddress(
-                items,
-                DialogInterface.OnClickListener {
-                        _, index ->
-
-                    createDialogDeleteAddress(ManageAddressViewModel.AddressType.STREET, items[index])
-                })
-        }
-
-        binding.deleteNeighborhood.setOnClickListener {
-            val items = arrayOf("Teste", "Teste1", "teste2")
-            createDialogSelectAddress(
-                items,
-                DialogInterface.OnClickListener {
-                        _, index ->
-
-                    createDialogDeleteAddress(ManageAddressViewModel.AddressType.NEIGHBORHOOD, items[index])
-                })
-        }
-
-        binding.deleteCity.setOnClickListener {
-            val items = arrayOf("Teste", "Teste1", "teste2")
-            createDialogSelectAddress(
-                items,
-                DialogInterface.OnClickListener {
-                        _, index ->
-
-                    createDialogDeleteAddress(ManageAddressViewModel.AddressType.CITY, items[index])
-                })
-        }
+        viewModel.openDialogDeleteAddress.observe(viewLifecycleOwner, Observer {
+            it?.let{
+                createDialogSelectAddress(
+                    it.addressList.toTypedArray(),
+                    DialogInterface.OnClickListener {
+                        _, i ->
+                        createDialogDeleteAddress(it.addressType,it.addressList[i])
+                    }
+                )
+                viewModel.dialogDoneOpening()
+            }
+        })
 
         return binding.root
     }
@@ -106,16 +86,15 @@ class ManageAddressFragment : Fragment() {
                 .show()}
     }
 
-
     private fun createDialogSelectAddress(
         items: Array<String>,
         clickListener: DialogInterface.OnClickListener?
     ) {
         context?.let {
             MaterialAlertDialogBuilder(it)
-                .setTitle("Selecione um item para editar")
+                .setTitle(R.string.dialog_select_address_title)
                 .setItems(items, clickListener)
-                .setNegativeButton("Cancelar", null)
+                .setNegativeButton(R.string.dialog_select_address_negative_button, null)
                 .show()
         }
     }

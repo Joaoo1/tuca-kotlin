@@ -2,6 +2,7 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
         <variable
             name="valueToReceive"
@@ -38,5 +39,6 @@
             android:text="@string/dialog_payment_info_empty_field"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/paid_value" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

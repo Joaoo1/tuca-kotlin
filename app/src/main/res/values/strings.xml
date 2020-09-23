@@ -2,8 +2,6 @@
     <string name="app_name">Tuca Produtos de Limpeza</string>
     <string name="copyright">© João Vitor da Silva</string>
 
-    <string name="divider">Divider</string>
-
     <string name="money">R$%1$s</string>
     <string name="quantity">%1$sx</string>
     <string name="sale_id">Venda %1$s</string>
@@ -82,8 +80,6 @@
 
     <!-- StockHistory Fragment -->
     <string name="stock_history_sale">Venda %1$s</string>
-    <string name="stock_history_client">Cliente %1$s</string>
-    <string name="stock_history_seller">Vendedor %1$s</string>
 
     <!-- ClientAdd Fragment -->
     <string name="client_add_hint_name">Nome</string>
@@ -114,7 +110,6 @@
     <string name="sale_add_radio_paid">Pago</string>
     <string name="sale_add_radio_partially_paid">Parcialmente pago</string>
     <string name="sale_add_check_box_print">Imprimir recibo</string>
-    <string name="sale_add_initial_quantity">1</string>
     <string name="sale_add_date_helper_text">Data em que foi realizada a venda</string>
     <string name="sale_add_discount_helper_text">Valor descontado do valor total</string>
     <string name="sale_add_label_total">Total:</string>
@@ -177,7 +172,6 @@
 
     <string name="list_item_product_stock">Estoque disponível: %1$s</string>
     <string name="list_item_client_sale_client">Cliente %1$s</string>
-    <string name="list_item_client_sales_headline_products">Produtos:</string>
 
     <string name="dialog_info_client_button_made_buys">Compras feitas</string>
     <string name="dialog_info_client_button_call">Ligar para o número</string>
@@ -223,4 +217,10 @@
     <string name="report_sales_radio_unpaid">Não pago</string>
     <string name="dialog_select_address_title">Selecione um item</string>
     <string name="dialog_select_address_negative_button">Cancelar</string>
+    <string name="fragment_reports_button_products_sold">Relatório de produtos vendidos</string>
+    <string name="fragment_reports_button_sales">Relatório de vendas</string>
+    <string name="list_item_sale_product_headline">Produtos adicionados</string>
+    <string name="fragment_manage_address_label_streets">Ruas</string>
+    <string name="fragment_manage_address_label_neighborhoods">Bairros</string>
+    <string name="fragment_manage_address_label_cities">Cidades</string>
 </resources>

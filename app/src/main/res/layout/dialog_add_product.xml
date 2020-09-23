@@ -8,18 +8,17 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="12dp">
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
-            android:text="Adicionar produto"
+            android:text="@string/dialog_add_product_title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             style="@style/TextAppearance.MaterialComponents.Headline6"/>
@@ -31,7 +30,6 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="16dp"
             android:hint="@string/dialog_add_product_hint_product"
-            android:inputType="textPersonName"
             app:startIconDrawable="@drawable/ic_input_product"
             app:layout_constraintTop_toBottomOf="@+id/title"
             style="@style/AppTheme.OutlinedBox.ExposedDropdownMenu">
@@ -61,8 +59,7 @@
             android:background="@android:color/transparent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/product"
-            app:srcCompat="@drawable/ic_add_gray"
-            tools:ignore="ContentDescription" />
+            app:srcCompat="@drawable/ic_add_gray" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/add_quantity2"
@@ -74,8 +71,7 @@
             android:onClick="@{() -> viewModel.addQuantity()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/product"
-            app:srcCompat="@drawable/ic_add_gray"
-            tools:ignore="ContentDescription" />
+            app:srcCompat="@drawable/ic_add_gray" />
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/quantity"
@@ -89,7 +85,7 @@
             app:layout_constraintEnd_toStartOf="@+id/add_quantity"
             app:layout_constraintTop_toBottomOf="@+id/product" />
 
-        <ImageButton
+        <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/remove_quantity"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/button_height"
@@ -99,9 +95,9 @@
             android:onClick="@{() -> viewModel.removeQuantity()}"
             app:layout_constraintEnd_toStartOf="@+id/quantity"
             app:layout_constraintTop_toBottomOf="@+id/product"
-            app:srcCompat="@drawable/ic_remove_gray"
-            tools:ignore="ContentDescription" />
-        <ImageButton
+            app:srcCompat="@drawable/ic_remove_gray" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/close"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/button_height"
@@ -109,8 +105,7 @@
             android:background="@android:color/transparent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_close_gray"
-            tools:ignore="ContentDescription" />
+            app:srcCompat="@drawable/ic_close_gray" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

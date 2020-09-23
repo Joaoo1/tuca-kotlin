@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/report_products_sold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="28dp"
             android:paddingHorizontal="32dp"
-            android:text="Relatório de produtos vendidos"
+            android:text="@string/fragment_reports_button_products_sold"
             android:textSize="16sp"
             app:drawableEndCompat="@drawable/ic_chevron_right"
             app:layout_constraintEnd_toEndOf="parent"
@@ -28,13 +27,13 @@
             android:background="?android:listDivider"
             app:layout_constraintTop_toBottomOf="@+id/report_products_sold" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/report_sales"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="28dp"
             android:paddingHorizontal="32dp"
-            android:text="Relatório de vendas"
+            android:text="@string/fragment_reports_button_sales"
             android:textSize="16sp"
             app:drawableEndCompat="@drawable/ic_chevron_right"
             app:layout_constraintTop_toBottomOf="@+id/divider" />

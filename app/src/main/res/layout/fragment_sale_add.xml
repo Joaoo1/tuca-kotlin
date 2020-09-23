@@ -64,8 +64,7 @@
                     android:onClick="@{() -> viewModel.addQuantity()}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/product"
-                    app:srcCompat="@drawable/ic_add_gray"
-                    tools:ignore="ContentDescription" />
+                    app:srcCompat="@drawable/ic_add_gray" />
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/quantity"
@@ -77,10 +76,9 @@
                     android:text="@{String.valueOf(viewModel.quantity)}"
                     android:textAlignment="center"
                     app:layout_constraintEnd_toStartOf="@+id/add_quantity"
-                    app:layout_constraintTop_toBottomOf="@+id/product"
-                    android:importantForAutofill="no" />
+                    app:layout_constraintTop_toBottomOf="@+id/product" />
 
-                <ImageButton
+                <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/remove_quantity"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/button_height"
@@ -90,8 +88,7 @@
                     android:onClick="@{() -> viewModel.removeQuantity()}"
                     app:layout_constraintEnd_toStartOf="@+id/quantity"
                     app:layout_constraintTop_toBottomOf="@+id/product"
-                    app:srcCompat="@drawable/ic_remove_gray"
-                    tools:ignore="ContentDescription" />
+                    app:srcCompat="@drawable/ic_remove_gray" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/products_list"
@@ -149,14 +146,12 @@
                         />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/divider"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
                     android:layout_marginTop="24dp"
-                    android:contentDescription="@string/divider"
-                    android:scaleType="fitXY"
-                    android:src="?android:attr/listDivider"
+                    android:background="?android:listDivider"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/date" />
@@ -239,14 +234,12 @@
                         android:text="@={viewModel.discount}" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <ImageView
+                <View
                     android:id="@+id/divider2"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
                     android:layout_marginTop="24dp"
-                    android:contentDescription="@string/divider"
-                    android:scaleType="fitXY"
-                    android:src="?android:attr/listDivider"
+                    android:background="?android:listDivider"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/discount" />
@@ -265,6 +258,7 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
+
         <LinearLayout
             android:id="@+id/layout_total"
             android:layout_width="match_parent"
@@ -276,7 +270,7 @@
             android:layout_alignParentEnd="true"
             android:background="?attr/colorPrimaryDark">
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -285,7 +279,7 @@
                 android:textAlignment="textEnd"
                 android:textSize="17sp" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/total"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -294,8 +288,7 @@
                 android:textAlignment="textEnd"
                 android:textColor="@android:color/primary_text_light"
                 android:textSize="28sp" />
+
         </LinearLayout>
     </RelativeLayout>
-
-
 </layout>
