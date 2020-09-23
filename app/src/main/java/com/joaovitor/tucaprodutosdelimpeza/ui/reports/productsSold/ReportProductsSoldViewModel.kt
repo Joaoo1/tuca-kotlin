@@ -1,4 +1,4 @@
-package com.joaovitor.tucaprodutosdelimpeza.ui.reports.sales
+package com.joaovitor.tucaprodutosdelimpeza.ui.reports.productsSold
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,28 +8,21 @@ import com.joaovitor.tucaprodutosdelimpeza.data.CityRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.NeighborhoodRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.StreetRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
+import com.joaovitor.tucaprodutosdelimpeza.data.model.ProductSale
 import com.joaovitor.tucaprodutosdelimpeza.util.FormatDate
 import kotlinx.android.synthetic.main.fragment_report_sales.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 
-class ReportSalesViewModel : ViewModel() {
+class ReportProductsSoldViewModel : ViewModel() {
 
-    private val address = MutableLiveData<String>()
+    private var _navigateToProductsSoldList = MutableLiveData<List<ProductSale>>()
+    val navigateToProductsSoldList: LiveData<List<ProductSale>>
+        get() = _navigateToProductsSoldList
+
     var startDate = MutableLiveData<Date>(Date())
     var endDate = MutableLiveData<Date>(Date())
-
-    var addressRadioChecked = MutableLiveData<Int>(R.id.radio_button_no_filter)
-    var paymentRadioChecked = MutableLiveData<Int>(R.id.radio_button_all)
-
-    private var _openDialog = MutableLiveData<Boolean>()
-    val openDialog: LiveData<Boolean>
-        get() = _openDialog
-
-    private var _openSelectAddressDialog = MutableLiveData<Array<String>>()
-    val openSelectAddressDialog: LiveData<Array<String>>
-        get() = _openSelectAddressDialog
 
     private var _openStartDatePicker = MutableLiveData<Boolean>()
     val openStartDatePicker: LiveData<Boolean>
@@ -60,33 +53,10 @@ class ReportSalesViewModel : ViewModel() {
     }
 
     fun onClickFilterButton() {
-        if(addressRadioChecked.value == R.id.radio_button_no_filter) {
-            _openDialog.value = true
-        }else {
-            openSelectAddressDialog()
-        }
-    }
-
-    private fun openSelectAddressDialog() {
-        GlobalScope.launch {
-            val address: List<String> = when(addressRadioChecked.value){
-                R.id.radio_button_street ->  StreetRepository().getStreets()
-                R.id.radio_button_neighborhood ->  NeighborhoodRepository().getNeighborhoods()
-                R.id.radio_button_city ->  CityRepository().getCities()
-                else -> listOf()
-            }
-
-            _openSelectAddressDialog.postValue(address.toTypedArray())
-        }
-    }
-
-    fun onSelectAddress(name: String){
-        address.value = name
-        _openSelectAddressDialog.value = null
-        _openDialog.value = true
+        _navigateToProductsSoldList.value = listOf()
     }
 
     fun doneNavigation(){
-        _openDialog.value = false
+        _navigateToProductsSoldList.value = null
     }
 }

@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.databinding.DialogManageAddressBinding
@@ -14,11 +16,6 @@ import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentManageAddressBind
 
 class ManageAddressFragment : Fragment() {
 
-    enum class AddressType(val value: String) {
-        STREET("rua"),
-        NEIGHBORHOOD("bairro"),
-        CITY("cidade"),
-    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -27,50 +24,34 @@ class ManageAddressFragment : Fragment() {
         val binding: FragmentManageAddressBinding = DataBindingUtil.inflate(
             inflater,R.layout.fragment_manage_address, container, false)
 
-        binding.addStreet.setOnClickListener {
-            createDialogAddAddress(AddressType.STREET)
-        }
+        //Create the viewModel
+        val viewModelFactory = ManageAddressViewModelFactory()
+        val viewModel: ManageAddressViewModel = ViewModelProvider(requireActivity(), viewModelFactory)
+            .get(ManageAddressViewModel::class.java)
 
-        binding.addNeighborhood.setOnClickListener {
-            createDialogAddAddress(AddressType.NEIGHBORHOOD)
-        }
 
-        binding.addCity.setOnClickListener {
-            createDialogAddAddress(AddressType.CITY)
-        }
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
 
-        binding.editStreet.setOnClickListener {
-            val items = arrayOf("Teste", "Teste1", "teste2")
-            createDialogSelectAddress(
-                items,
-                DialogInterface.OnClickListener {
-                        _, index ->
+        viewModel.openDialogAddAddress.observe(viewLifecycleOwner, Observer {
+            it?.let{
+                createDialogAddAddress(it)
+                viewModel.dialogDoneOpening()
+            }
+        })
 
-                    createDialogEditAddress(AddressType.STREET, items[index])
-                })
-        }
-
-        binding.editNeighborhood.setOnClickListener {
-            val items = arrayOf("Teste", "Teste1", "teste2")
-            createDialogSelectAddress(
-                items,
-                DialogInterface.OnClickListener {
-                        _, index ->
-
-                    createDialogEditAddress(AddressType.NEIGHBORHOOD, items[index])
-                })
-        }
-
-        binding.editCity.setOnClickListener {
-            val items = arrayOf("Teste", "Teste1", "teste2")
-            createDialogSelectAddress(
-                items,
-                DialogInterface.OnClickListener {
-                        _, index ->
-
-                    createDialogEditAddress(AddressType.CITY, items[index])
-                })
-        }
+        viewModel.openDialogEditAddress.observe(viewLifecycleOwner, Observer {
+            it?.let{
+                createDialogSelectAddress(
+                    it.addressList.toTypedArray(),
+                    DialogInterface.OnClickListener {
+                        _, i ->
+                        createDialogEditAddress(it.addressType,it.addressList[i])
+                    }
+                )
+                viewModel.dialogDoneOpening()
+            }
+        })
 
         binding.deleteStreet.setOnClickListener {
             val items = arrayOf("Teste", "Teste1", "teste2")
@@ -79,7 +60,7 @@ class ManageAddressFragment : Fragment() {
                 DialogInterface.OnClickListener {
                         _, index ->
 
-                    createDialogDeleteAddress(AddressType.STREET, items[index])
+                    createDialogDeleteAddress(ManageAddressViewModel.AddressType.STREET, items[index])
                 })
         }
 
@@ -90,7 +71,7 @@ class ManageAddressFragment : Fragment() {
                 DialogInterface.OnClickListener {
                         _, index ->
 
-                    createDialogDeleteAddress(AddressType.NEIGHBORHOOD, items[index])
+                    createDialogDeleteAddress(ManageAddressViewModel.AddressType.NEIGHBORHOOD, items[index])
                 })
         }
 
@@ -101,27 +82,14 @@ class ManageAddressFragment : Fragment() {
                 DialogInterface.OnClickListener {
                         _, index ->
 
-                    createDialogDeleteAddress(AddressType.CITY, items[index])
+                    createDialogDeleteAddress(ManageAddressViewModel.AddressType.CITY, items[index])
                 })
         }
 
         return binding.root
     }
 
-    private fun createDialogSelectAddress(
-        items: Array<String>,
-        clickListener: DialogInterface.OnClickListener?
-    ) {
-        context?.let {
-            MaterialAlertDialogBuilder(it)
-                .setTitle("Selecione um item para editar")
-                .setItems(items, clickListener)
-                .setNegativeButton("Cancelar", null)
-                .show()
-        }
-    }
-
-    private fun createDialogAddAddress(type: AddressType) {
+    private fun createDialogAddAddress(type: ManageAddressViewModel.AddressType) {
         val binding: DialogManageAddressBinding = DataBindingUtil.inflate(
             layoutInflater,
             R.layout.dialog_manage_address,
@@ -138,7 +106,21 @@ class ManageAddressFragment : Fragment() {
                 .show()}
     }
 
-    private fun createDialogEditAddress(type: AddressType, name: String) {
+
+    private fun createDialogSelectAddress(
+        items: Array<String>,
+        clickListener: DialogInterface.OnClickListener?
+    ) {
+        context?.let {
+            MaterialAlertDialogBuilder(it)
+                .setTitle("Selecione um item para editar")
+                .setItems(items, clickListener)
+                .setNegativeButton("Cancelar", null)
+                .show()
+        }
+    }
+
+    private fun createDialogEditAddress(type: ManageAddressViewModel.AddressType, name: String) {
         val binding: DialogManageAddressBinding = DataBindingUtil.inflate(
             layoutInflater,
             R.layout.dialog_manage_address,
@@ -157,7 +139,7 @@ class ManageAddressFragment : Fragment() {
                 .show()}
     }
 
-    private fun createDialogDeleteAddress(type: AddressType, name: String) {
+    private fun createDialogDeleteAddress(type: ManageAddressViewModel.AddressType, name: String) {
         context?.let {
             MaterialAlertDialogBuilder(it)
                 .setTitle("Excluir $name")

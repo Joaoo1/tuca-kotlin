@@ -218,4 +218,9 @@
     <string name="sale_paid">PAGO</string>
     <string name="sale_unpaid">NÃO PAGO</string>
     <string name="sale_partially_paid">PARCIALMENTE PAGO</string>
+    <string name="report_sales_radio_all">Todos</string>
+    <string name="report_sales_radio_paid">Pago</string>
+    <string name="report_sales_radio_unpaid">Não pago</string>
+    <string name="dialog_select_address_title">Selecione um item</string>
+    <string name="dialog_select_address_negative_button">Cancelar</string>
 </resources>
