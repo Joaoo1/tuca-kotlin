@@ -32,7 +32,7 @@ class LoginRepository(val dataSource: LoginDataSource) {
         val result = dataSource.login(username, password)
 
         if (result is Result.Success) {
-            setLoggedInUser(result.data)
+            result.data?.let { setLoggedInUser(it) }
         }
 
         return result

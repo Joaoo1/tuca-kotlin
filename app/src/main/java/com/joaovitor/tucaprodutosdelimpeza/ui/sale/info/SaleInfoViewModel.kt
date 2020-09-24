@@ -14,6 +14,8 @@ import java.util.*
 
 class SaleInfoViewModel(mSale: Sale?) : ViewModel() {
 
+    private val saleRepository = SaleRepository()
+
     var sale = MutableLiveData(Sale())
 
     init {
@@ -57,7 +59,18 @@ class SaleInfoViewModel(mSale: Sale?) : ViewModel() {
         return ProductSale(product.name, product.price, quantity, Date(), product.id)
     }
 
+    //Database functions
+    fun deleteSale() {
+        GlobalScope.launch {
+            sale.value?.id?.let { saleRepository.deleteSale(it) }
+        }
+    }
+
     //Navigation
+    private var _openPaymentDialog = MutableLiveData<Boolean>()
+    val openPaymentDialog: LiveData<Boolean>
+        get() = _openPaymentDialog
+
     private var _navigateToEditProducts = MutableLiveData<Boolean>()
     val navigateToEditProducts: LiveData<Boolean>
         get() = _navigateToEditProducts
@@ -69,7 +82,24 @@ class SaleInfoViewModel(mSale: Sale?) : ViewModel() {
         }
     }
 
+    fun onClickRegisterPayment() {
+        if(!sale.value?.paid!!) _openPaymentDialog.value = true
+    }
+
     fun doneNavigation(){
         _navigateToEditProducts.value = false
     }
+
+    fun registerPayment(value: String) {
+        if(value.isEmpty()) {
+            GlobalScope.launch {
+                sale.value?.finishSale()
+                saleRepository.editSale(sale.value!!)
+            }
+        }else {
+
+        }
+    }
+
+
 }

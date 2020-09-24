@@ -1,5 +1,6 @@
 package com.joaovitor.tucaprodutosdelimpeza.ui.sale.info
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AlertDialog
@@ -62,6 +63,12 @@ class SaleInfoFragment : Fragment() {
             }
         })
 
+        viewModel.openPaymentDialog.observe(viewLifecycleOwner, Observer {
+            if(it) {
+                createPaymentDialog()
+            }
+        })
+
         binding.sale = sale
 
         return binding.root
@@ -74,7 +81,7 @@ class SaleInfoFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
-            R.id.action_register_payment -> createPaymentDialog()
+            R.id.action_register_payment -> viewModel.onClickRegisterPayment()
             R.id.action_delete_sale -> createDeleteSaleDialog()
             R.id.action_edit_products -> viewModel.navigateToEditProducts()
         }
@@ -91,7 +98,8 @@ class SaleInfoFragment : Fragment() {
                 .setView(view)
                 .setTitle(getString(R.string.dialog_payment_title))
                 .setNegativeButton(getString(R.string.dialog_payment_negative_button), null)
-                .setPositiveButton(getString(R.string.dialog_payment_positive_button), null)
+                .setPositiveButton(getString(R.string.dialog_payment_positive_button))
+                    {_, _ -> viewModel.registerPayment(textInput.editText!!.text.toString())}
                 .show()
         }
     }
@@ -102,7 +110,7 @@ class SaleInfoFragment : Fragment() {
                 .setTitle(getString(R.string.dialog_delete_sale_title))
                 .setMessage(getString(R.string.dialog_delete_sale_message))
                 .setNegativeButton(getString(R.string.dialog_delete_sale_negative_button), null)
-                .setPositiveButton(getString(R.string.dialog_delete_sale_positive_button), null)
+                .setPositiveButton(getString(R.string.dialog_delete_sale_positive_button)) { _, _ -> viewModel.deleteSale() }
                 .show()
         }
     }
