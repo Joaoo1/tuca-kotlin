@@ -3,7 +3,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.joaovitor.tucaprodutosdelimpeza.ui.sale.info.SaleInfoViewModel" />
+            type="com.joaovitor.tucaprodutosdelimpeza.ui.sale.editProducts.SaleEditProductsViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"

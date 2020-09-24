@@ -3,6 +3,7 @@ package com.joaovitor.tucaprodutosdelimpeza.data.model
 import com.google.firebase.firestore.Exclude
 import com.google.firebase.firestore.PropertyName
 import java.io.Serializable
+import java.util.*
 
 data class Product(
     @Exclude
@@ -24,4 +25,9 @@ data class Product(
     var stock: Int = 0,
 
     var manageStock: Boolean = false
-): Serializable
+): Serializable {
+
+    fun toProductSale(quantity: Int): ProductSale{
+        return ProductSale(this.name, this.price, quantity, Date(), this.id)
+    }
+}

@@ -93,7 +93,7 @@ data class Sale(
     @set:PropertyName("telefone")
     var clientPhone: String = "",
 
-    var products: List<ProductSale> = listOf(),
+    var products: MutableList<ProductSale> = mutableListOf(),
     var seller: String = "",
     var sellerUid: String = ""
 
@@ -118,7 +118,7 @@ data class Sale(
     }
 
     fun registerPayment(value: String){
-        TODO("Not implemented yet")
+
     }
 
     fun finishSale() {

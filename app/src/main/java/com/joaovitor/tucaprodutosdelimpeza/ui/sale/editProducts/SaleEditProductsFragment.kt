@@ -1,9 +1,12 @@
 package com.joaovitor.tucaprodutosdelimpeza.ui.sale.editProducts
 
-import android.app.AlertDialog
-import android.app.Dialog
 import android.os.Bundle
-import android.view.*
+import android.view.View
+import android.view.ViewGroup
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -15,27 +18,25 @@ import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
 import com.joaovitor.tucaprodutosdelimpeza.databinding.DialogAddProductBinding
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentSaleEditProductsBinding
-import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentSaleInfoBinding
-import com.joaovitor.tucaprodutosdelimpeza.ui.sale.info.SaleInfoFragmentArgs
 import com.joaovitor.tucaprodutosdelimpeza.ui.sale.info.SaleInfoViewModel
 import com.joaovitor.tucaprodutosdelimpeza.ui.sale.info.SaleInfoViewModelFactory
 
 class SaleEditProductsFragment : Fragment() {
 
     private lateinit var sale: Sale
-    private lateinit var viewModel: SaleInfoViewModel
+    private lateinit var viewModel: SaleEditProductsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        sale = arguments?.let { SaleEditProductsFragmentArgs.fromBundle(it).sale }!!
+        arguments?.let { sale = SaleEditProductsFragmentArgs.fromBundle(it).sale }
 
         //Create the viewModel
-        val viewModelFactory = SaleInfoViewModelFactory(sale)
+        val viewModelFactory = SaleEditProductsViewModelFactory(sale)
         viewModel = ViewModelProvider(requireActivity(),viewModelFactory)
-            .get(SaleInfoViewModel::class.java)
+            .get(SaleEditProductsViewModel::class.java)
 
         // Inflate the layout for this fragment
         val binding: FragmentSaleEditProductsBinding = DataBindingUtil.inflate(
@@ -78,6 +79,7 @@ class SaleEditProductsFragment : Fragment() {
 
             //Setting up products AutoCompleteTextView
             viewModel.allProducts.observe(viewLifecycleOwner, Observer {
+                println(it)
                 //Convert product list to a list with only the products name
                 val productsName = it?.map { product -> product.name }
 

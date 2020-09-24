@@ -10,15 +10,17 @@ import java.math.BigDecimal
 import java.util.Date
 
 @BindingAdapter("formatDateToString")
-fun formatDateToString(textView: TextView, date: Date) {
-    val formattedDate =  FormatDate.formatDateToString(date)
-    @Suppress("UsePropertyAccessSyntax")
-    textView.setText(formattedDate)
+fun formatDateToString(textView: TextView, date: Date?) {
+    date?.let {
+        val formattedDate =  FormatDate.formatDateToString(date)
+        @Suppress("UsePropertyAccessSyntax")
+        textView.setText(formattedDate)
+    }
 }
 
 @BindingAdapter("getSaleSituation")
-fun getSaleSituation(textView: MaterialTextView, sale: Sale) {
-    if (sale.paid!!) {
+fun getSaleSituation(textView: MaterialTextView, sale: Sale?) {
+    if (sale?.paid!!) {
         textView.text = textView.resources.getString(R.string.sale_paid)
         textView.setTextColor(ContextCompat.getColor(textView.context, R.color.colorPaid))
         return

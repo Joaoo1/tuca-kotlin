@@ -6,58 +6,31 @@ import androidx.lifecycle.ViewModel
 import com.joaovitor.tucaprodutosdelimpeza.data.ProductRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.SaleRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
-import com.joaovitor.tucaprodutosdelimpeza.data.model.ProductSale
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.util.*
+import java.math.BigDecimal
 
-class SaleInfoViewModel(mSale: Sale?) : ViewModel() {
+class SaleInfoViewModel : ViewModel() {
 
     private val saleRepository = SaleRepository()
 
-    var sale = MutableLiveData(Sale())
+    private var _sale =  MutableLiveData<Sale>()
+    val sale: LiveData<Sale>
+        get() = _sale
 
-    init {
-        sale.postValue(mSale)
-    }
+    private var _openPaymentDialog = MutableLiveData<Boolean>()
+    val openPaymentDialog: LiveData<Boolean>
+        get() = _openPaymentDialog
 
-    private var _allProducts = MutableLiveData<List<Product>>()
-    val allProducts: LiveData<List<Product>>
-        get() = _allProducts
+    private var _openDeleteDialog = MutableLiveData<Boolean>()
+    val openDeleteDialog: LiveData<Boolean>
+        get() = _openDeleteDialog
 
-    val quantity = MutableLiveData(1)
+    private var _navigateToEditProducts = MutableLiveData<Boolean>()
+    val navigateToEditProducts: LiveData<Boolean>
+        get() = _navigateToEditProducts
 
-    fun addQuantity() {
-        quantity.postValue(quantity.value?.plus(1))
-    }
-
-    fun removeQuantity() {
-        if(quantity.value!! > 0) {
-            quantity.postValue(quantity.value?.minus(1))
-        }
-    }
-
-    fun addProduct(text: String?) {
-        val productsName = allProducts.value?.map{ it.name }
-        val productIndex = productsName?.indexOf(text)
-        if(productIndex != null && productIndex >= 0) {
-            val productSale = convertProductToProductSale(
-                _allProducts.value!![productIndex],
-                quantity.value!!
-            )
-            val mSale = sale.value
-            mSale?.products = mSale?.products?.plus(productSale)!!
-            sale.value = mSale
-        } else {
-            //TODO: Show a error
-            return
-        }
-    }
-
-    private fun convertProductToProductSale(product: Product, quantity: Int): ProductSale {
-        return ProductSale(product.name, product.price, quantity, Date(), product.id)
-    }
 
     //Database functions
     fun deleteSale() {
@@ -66,40 +39,67 @@ class SaleInfoViewModel(mSale: Sale?) : ViewModel() {
         }
     }
 
-    //Navigation
-    private var _openPaymentDialog = MutableLiveData<Boolean>()
-    val openPaymentDialog: LiveData<Boolean>
-        get() = _openPaymentDialog
+    /** Register a payment based on the given value in [value] */
+    fun registerPayment(value: String) {
+        /**
+         * Checking if string is empty
+         * if its true, finish sale and set it as paid
+         */
+        if(value.isEmpty()) {
+                sale.value?.finishSale()
+        }else {
+            when(BigDecimal(value).compareTo(BigDecimal(sale.value!!.toReceive))){
+                /**
+                 *  Value informed by user is less than value to receive
+                 *  So just register a payment on sale
+                 */
+                -1 -> sale.value?.registerPayment(value)
 
-    private var _navigateToEditProducts = MutableLiveData<Boolean>()
-    val navigateToEditProducts: LiveData<Boolean>
-        get() = _navigateToEditProducts
+                /**
+                 *  Value informed by user is equals to value to receive
+                 *  So finish sale and set it as paid
+                 */
+                0 -> sale.value?.finishSale()
 
-    fun navigateToEditProducts() {
-        _navigateToEditProducts.value = true
+                /**
+                 * Value informed is greater than value to receive
+                 * Show a error message to user
+                 */
+                1 -> {
+                    /*TODO: Show a error: Informed value is greater than value to receive*/
+                    return
+                }
+            }
+        }
+
+        // Sale properly set, so save it into firestore
         GlobalScope.launch {
-            _allProducts.postValue(ProductRepository().getProducts())
+            saleRepository.editSale(sale.value!!)
+            _openPaymentDialog.value = false
         }
     }
 
+    /* User actions */
+    fun onClickEditProducts() {
+        _navigateToEditProducts.value = true
+    }
+
+    fun onClickDeleteSale() {
+        _openDeleteDialog.value = true
+    }
+
     fun onClickRegisterPayment() {
+        println(sale.value!!)
         if(!sale.value?.paid!!) _openPaymentDialog.value = true
     }
 
     fun doneNavigation(){
         _navigateToEditProducts.value = false
+        _openDeleteDialog.value = false
+        _openPaymentDialog.value = false
     }
 
-    fun registerPayment(value: String) {
-        if(value.isEmpty()) {
-            GlobalScope.launch {
-                sale.value?.finishSale()
-                saleRepository.editSale(sale.value!!)
-            }
-        }else {
-
-        }
+    fun setSale(sale: Sale) {
+        _sale.value = sale
     }
-
-
 }

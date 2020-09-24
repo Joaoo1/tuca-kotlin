@@ -6,8 +6,8 @@
 
     <data>
         <variable
-            name="sale"
-            type="com.joaovitor.tucaprodutosdelimpeza.data.model.Sale" />
+            name="viewModel"
+            type="com.joaovitor.tucaprodutosdelimpeza.ui.sale.info.SaleInfoViewModel" />
     </data>
 
     <ScrollView
@@ -39,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                app:formatDateToString="@{sale.saleDate}"
+                app:formatDateToString="@{viewModel.sale.saleDate}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/label_date"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -66,7 +66,7 @@
                 android:layout_marginTop="18dp"
                 android:textColor="@android:color/holo_red_dark"
                 android:textStyle="bold"
-                app:getSaleSituation="@{sale}"
+                app:getSaleSituation="@{viewModel.sale}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/label_situation"
                 app:layout_constraintTop_toBottomOf="@+id/date" />
@@ -91,7 +91,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
-                android:text="@{sale.clientName}"
+                android:text="@{viewModel.sale.clientName}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/label_client"
                 app:layout_constraintTop_toBottomOf="@+id/situation" />
@@ -116,7 +116,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
-                android:text="@{sale.seller}"
+                android:text="@{viewModel.sale.seller}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/label_seller"
                 app:layout_constraintTop_toBottomOf="@+id/client" />
@@ -195,7 +195,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="16dp"
-                android:text="@{String.format(@string/money,sale.grossValue)}"
+                android:text="@{String.format(@string/money, viewModel.sale.grossValue)}"
                 android:textColor="@color/colorBlueMoney"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/label_gross_value"
@@ -220,7 +220,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="16dp"
-                android:text="@{String.format(@string/money,sale.discount)}"
+                android:text="@{String.format(@string/money,viewModel.sale.discount)}"
                 android:textColor="@color/colorBlueMoney"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/label_discount"
@@ -256,7 +256,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
-                android:text="@{String.format(@string/money,sale.total)}"
+                android:text="@{String.format(@string/money,viewModel.sale.total)}"
                 android:textColor="@color/colorBlueMoney"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/label_net_value"
@@ -281,7 +281,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="16dp"
-                android:text="@{String.format(@string/money,sale.paidValue)}"
+                android:text="@{String.format(@string/money,viewModel.sale.paidValue)}"
                 android:textColor="@color/colorBlueMoney"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/label_paid_value"
@@ -321,7 +321,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
-                android:text="@{String.format(@string/money,sale.toReceive)}"
+                android:text="@{String.format(@string/money,viewModel.sale.toReceive)}"
                 android:textColor="@color/colorBlueMoney"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/label_receivable"
