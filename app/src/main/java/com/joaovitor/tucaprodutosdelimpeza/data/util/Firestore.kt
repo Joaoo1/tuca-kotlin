@@ -4,6 +4,7 @@ object Firestore {
     const val COL_SALES_ID = "id_vendas"
     const val COL_SALES = "vendas"
     const val SALE_ID = "idVenda"
+    const val SALE_PRODUCTS = "products"
     const val SALE_CLIENT_ID = "idCliente"
     const val SALE_CLIENT_NAME = "nomeCliente"
     const val SALE_CLIENT_PHONE = "telefone"

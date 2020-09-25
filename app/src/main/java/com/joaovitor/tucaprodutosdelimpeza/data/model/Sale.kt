@@ -7,6 +7,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException
 import com.joaovitor.tucaprodutosdelimpeza.data.util.Firestore
 import kotlinx.coroutines.tasks.await
 import java.io.Serializable
+import java.math.BigDecimal
 import java.util.Date
 
 @IgnoreExtraProperties
@@ -118,7 +119,8 @@ data class Sale(
     }
 
     fun registerPayment(value: String){
-
+        this.paidValue = BigDecimal(paidValue).plus(BigDecimal(value)).toString()
+        this.toReceive = BigDecimal(total).minus(BigDecimal(paidValue)).toString()
     }
 
     fun finishSale() {
@@ -144,6 +146,7 @@ data class Sale(
         data[Firestore.SALE_NET_VALUE] = this.total
         data[Firestore.SALE_PAID_VALUE] = this.paidValue
         data[Firestore.SALE_TO_RECEIVE] = this.toReceive
+        data[Firestore.SALE_PRODUCTS] = this.products
 
         return data.toMap()
     }

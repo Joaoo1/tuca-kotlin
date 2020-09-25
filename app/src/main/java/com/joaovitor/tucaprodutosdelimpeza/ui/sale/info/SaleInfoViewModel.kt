@@ -3,9 +3,7 @@ package com.joaovitor.tucaprodutosdelimpeza.ui.sale.info
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.joaovitor.tucaprodutosdelimpeza.data.ProductRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.SaleRepository
-import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -31,35 +29,39 @@ class SaleInfoViewModel : ViewModel() {
     val navigateToEditProducts: LiveData<Boolean>
         get() = _navigateToEditProducts
 
-
-    //Database functions
+    /* Database functions */
     fun deleteSale() {
         GlobalScope.launch {
-            sale.value?.id?.let { saleRepository.deleteSale(it) }
+            sale.value?.id?.let {
+                saleRepository.deleteSale(it)
+                //TODO: Go back and show a message to user based on Result
+            }
         }
     }
 
     /** Register a payment based on the given value in [value] */
     fun registerPayment(value: String) {
+        val mSale = sale.value!!
+
         /**
          * Checking if string is empty
          * if its true, finish sale and set it as paid
          */
         if(value.isEmpty()) {
-                sale.value?.finishSale()
+            mSale.finishSale()
         }else {
-            when(BigDecimal(value).compareTo(BigDecimal(sale.value!!.toReceive))){
+            when(BigDecimal(value).compareTo(BigDecimal(mSale.toReceive))){
                 /**
                  *  Value informed by user is less than value to receive
                  *  So just register a payment on sale
                  */
-                -1 -> sale.value?.registerPayment(value)
+                -1 -> mSale.registerPayment(value)
 
                 /**
                  *  Value informed by user is equals to value to receive
                  *  So finish sale and set it as paid
                  */
-                0 -> sale.value?.finishSale()
+                0 -> mSale.finishSale()
 
                 /**
                  * Value informed is greater than value to receive
@@ -74,13 +76,22 @@ class SaleInfoViewModel : ViewModel() {
 
         // Sale properly set, so save it into firestore
         GlobalScope.launch {
-            saleRepository.editSale(sale.value!!)
-            _openPaymentDialog.value = false
+            saleRepository.editSale(mSale)
+            //TODO: show a message to user based on Result of editSale()
+
+            _sale.postValue(mSale)
+            _openPaymentDialog.postValue(false)
         }
     }
 
     /* User actions */
     fun onClickEditProducts() {
+        /** Can't edit the products of a sale that is paid */
+        if(_sale.value?.paid!!){
+            //TODO: Show a error: Can't edit the products of a sale that is paid
+            return
+        }
+
         _navigateToEditProducts.value = true
     }
 

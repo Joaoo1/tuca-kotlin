@@ -17,11 +17,11 @@ data class ProductSale(
 
     @PropertyName("quantidade")
     @get:PropertyName("quantidade")
-    val quantity: Int = 0,
+    var quantity: Int = 0,
 
     @PropertyName("add_date")
     @get:PropertyName("add_date")
-    val addDate: Date = Date(),
+    val addDate: Date? = Date(),
 
     val parentId: String = ""
 ): Serializable {

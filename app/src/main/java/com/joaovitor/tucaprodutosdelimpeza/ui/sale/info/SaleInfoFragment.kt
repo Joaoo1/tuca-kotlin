@@ -71,6 +71,7 @@ class SaleInfoFragment : Fragment() {
             }
         })
 
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
         return binding.root
@@ -86,6 +87,7 @@ class SaleInfoFragment : Fragment() {
             R.id.action_register_payment -> viewModel.onClickRegisterPayment()
             R.id.action_delete_sale -> viewModel.onClickDeleteSale()
             R.id.action_edit_products -> viewModel.onClickEditProducts()
+            R.id.action_print -> { /* TODO: Implement print logic */ }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -95,14 +97,15 @@ class SaleInfoFragment : Fragment() {
         val textInput: TextInputLayout = view.findViewById(R.id.paid_value)
         textInput.helperText = String.format(resources
             .getString(R.string.dialog_payment_paid_value_helper_text), sale.toReceive)
+
         context?.let {
             MaterialAlertDialogBuilder(it)
                 .setView(view)
                 .setTitle(getString(R.string.dialog_payment_title))
                 .setNegativeButton(getString(R.string.dialog_payment_negative_button))
-                    { _, _ -> viewModel.doneNavigation()}
+                    { _, _ -> viewModel.doneNavigation() }
                 .setPositiveButton(getString(R.string.dialog_payment_positive_button))
-                    {_, _ -> viewModel.registerPayment(textInput.editText!!.text.toString())}
+                    { _, _ -> viewModel.registerPayment(textInput.editText!!.text.toString()) }
                 .show()
         }
     }

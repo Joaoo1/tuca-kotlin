@@ -12,14 +12,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
 import com.joaovitor.tucaprodutosdelimpeza.databinding.DialogAddProductBinding
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentSaleEditProductsBinding
-import com.joaovitor.tucaprodutosdelimpeza.ui.sale.info.SaleInfoViewModel
-import com.joaovitor.tucaprodutosdelimpeza.ui.sale.info.SaleInfoViewModelFactory
 
 class SaleEditProductsFragment : Fragment() {
 
@@ -31,27 +30,38 @@ class SaleEditProductsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        arguments?.let { sale = SaleEditProductsFragmentArgs.fromBundle(it).sale }
+        sale = SaleEditProductsFragmentArgs.fromBundle(requireArguments()).sale
 
-        //Create the viewModel
+        /* Create the viewModel */
         val viewModelFactory = SaleEditProductsViewModelFactory(sale)
-        viewModel = ViewModelProvider(requireActivity(),viewModelFactory)
+        viewModel = ViewModelProvider(this,viewModelFactory)
             .get(SaleEditProductsViewModel::class.java)
 
-        // Inflate the layout for this fragment
+        /* Inflate the layout for this fragment */
         val binding: FragmentSaleEditProductsBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_sale_edit_products, container, false)
 
+        binding.lifecycleOwner = viewLifecycleOwner
+
+        /* Setting up the recycler view */
         val adapter = SaleEditProductsListAdapter()
         binding.productsList.adapter = adapter
+        viewModel.products.observe(viewLifecycleOwner, Observer {
+            it?.let { adapter.listData = it }
+        })
 
-        viewModel.sale.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                adapter.listData = it.products
+        viewModel.openAddProductDialog.observe(viewLifecycleOwner, Observer {
+            if(it) {
+                createAddProductDialog()
+                viewModel.doneNavigation()
             }
         })
 
-        binding.sale = sale
+        viewModel.navigateBack.observe(viewLifecycleOwner, Observer {
+            if(it) this.findNavController().popBackStack()
+        })
+
+        binding.viewModel = viewModel
 
         return binding.root
     }
@@ -60,9 +70,11 @@ class SaleEditProductsFragment : Fragment() {
         inflater.inflate(R.menu.sale_edit, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
-            R.id.action_add_product -> createAddProductDialog()
+            R.id.action_add_product -> viewModel.onClickAddProduct()
+            R.id.action_save -> viewModel.onClickSave()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -77,18 +89,22 @@ class SaleEditProductsFragment : Fragment() {
             binding.lifecycleOwner = this
             binding.viewModel = viewModel
 
-            //Setting up products AutoCompleteTextView
+            /* Setting up products AutoCompleteTextView */
             viewModel.allProducts.observe(viewLifecycleOwner, Observer {
-                println(it)
-                //Convert product list to a list with only the products name
-                val productsName = it?.map { product -> product.name }
+                it?.let {
+                    /**
+                     * Set a list with only the products name
+                     * And convert it to array
+                     * So it can be used by the adapter
+                     */
+                    val arrayProductsName = it.map { product -> product.name }.toTypedArray()
 
-                //Null checking and convert list to array
-                val arrayProductsName = productsName?.toTypedArray() ?: arrayOf()
+                    val autoCompleteAdapter = ArrayAdapter(requireContext(),
+                        android.R.layout.simple_list_item_1, arrayProductsName)
 
-                val autoCompleteAdapter = ArrayAdapter(requireContext(),
-                    android.R.layout.simple_list_item_1, arrayProductsName)
-                (binding.product.editText as MaterialAutoCompleteTextView).setAdapter(autoCompleteAdapter)
+                    (binding.product.editText as MaterialAutoCompleteTextView)
+                        .setAdapter(autoCompleteAdapter)
+                }
             })
 
             binding.addProduct.setOnClickListener {

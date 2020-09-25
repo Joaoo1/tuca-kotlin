@@ -40,6 +40,7 @@ class SaleAddViewModel : ViewModel() {
         get() = _total
 
     private var _products = MutableLiveData<List<ProductSale>>(emptyList())
+    val products = MediatorLiveData<List<ProductSale>>()
 
     val quantity = MutableLiveData(1)
     val discount = MutableLiveData<String>()
@@ -47,7 +48,6 @@ class SaleAddViewModel : ViewModel() {
 
     var paymentMethod: Int = 0
 
-    val products = MediatorLiveData<List<ProductSale>>()
 
     init {
         GlobalScope.launch {

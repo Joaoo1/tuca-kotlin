@@ -10,7 +10,7 @@
         tools:ignore="AlwaysShowAction" />
 
     <item
-        android:id="@+id/save"
+        android:id="@+id/action_save"
         android:icon="@drawable/ic_check_white"
         app:showAsAction="always"
         android:title="@string/menu_item_save_title" />

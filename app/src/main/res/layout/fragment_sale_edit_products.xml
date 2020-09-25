@@ -6,8 +6,8 @@
 
     <data>
         <variable
-            name="sale"
-            type="com.joaovitor.tucaprodutosdelimpeza.data.model.Sale" />
+            name="viewModel"
+            type="com.joaovitor.tucaprodutosdelimpeza.ui.sale.editProducts.SaleEditProductsViewModel" />
     </data>
 
     <RelativeLayout
@@ -47,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"
-                android:text="@{String.format(@string/money, sale.total)}"
+                android:text="@{String.format(@string/money, viewModel.total)}"
                 android:textAlignment="textEnd"
                 android:textColor="@android:color/primary_text_light"
                 android:textSize="28sp" />
