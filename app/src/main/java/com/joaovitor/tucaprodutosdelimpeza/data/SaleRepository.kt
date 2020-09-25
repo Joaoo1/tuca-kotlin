@@ -14,6 +14,8 @@ class SaleRepository {
     private var colRef: CollectionReference =
         FirebaseFirestore.getInstance().collection("vendas")
 
+    private var saleIdRepository = SaleIdRepository()
+
     suspend fun getSales(limit: Long? = 50): List<Sale> {
         val querySnapshot = colRef
             .orderBy(Firestore.SALE_DATE, Query.Direction.DESCENDING)
@@ -37,7 +39,7 @@ class SaleRepository {
                 .whereGreaterThanOrEqualTo(Firestore.SALE_DATE, dateRange.startDate)
 
             querySnapshot = querySnapshot
-                .whereGreaterThanOrEqualTo(Firestore.SALE_DATE, dateRange.endDate)
+                .whereLessThanOrEqualTo(Firestore.SALE_DATE, dateRange.endDate)
         }
 
         paid?.let {
@@ -53,7 +55,7 @@ class SaleRepository {
     suspend fun addSale(sale: Sale): Result<Void> {
         return try {
             // Getting a unused id for sale
-            sale.generateSaleId()
+            sale.saleId = saleIdRepository.generateSaleId()
 
             colRef.add(sale).await()
 

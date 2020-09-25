@@ -39,17 +39,23 @@ class SaleEditProductsViewModel(var mSale: Sale) : ViewModel() {
         get() = _navigateBack
 
     init {
+        /**
+         * Clone product sales with a deep copy,
+         * thus avoiding altering the sale object of the infosale page
+         * and therefore doesn't showing false information if the user navigate back
+         * without saving the information
+         */
         _products.value = mSale.products.map {it.copy()}.toMutableList()
-
-        GlobalScope.launch {
-            _allProducts.postValue(ProductRepository().getProducts())
-        }
 
         /** Update @property total every time @property _products is changed */
         products.addSource(_products) {
             products.value = it
             _total.value = calculateTotalFromProductsList(it)
             quantity.value = 1
+        }
+
+        GlobalScope.launch {
+            _allProducts.postValue(ProductRepository().getProducts())
         }
     }
 

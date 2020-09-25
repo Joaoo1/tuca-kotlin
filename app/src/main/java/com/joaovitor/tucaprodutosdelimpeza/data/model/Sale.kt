@@ -2,6 +2,7 @@ package com.joaovitor.tucaprodutosdelimpeza.data.model
 
 import com.google.firebase.firestore.PropertyName
 import com.google.firebase.firestore.IgnoreExtraProperties
+import com.google.firebase.firestore.Exclude
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.joaovitor.tucaprodutosdelimpeza.data.util.Firestore
@@ -10,9 +11,9 @@ import java.io.Serializable
 import java.math.BigDecimal
 import java.util.Date
 
-@IgnoreExtraProperties
 data class Sale(
-    var id: String = "",
+
+    @get:Exclude var id: String = "",
 
     @PropertyName("idVenda")
     @get:PropertyName("idVenda")
@@ -99,24 +100,6 @@ data class Sale(
     var sellerUid: String = ""
 
 ) : Serializable {
-    suspend fun generateSaleId(){
-        val result  = FirebaseFirestore
-            .getInstance()
-            .collection(Firestore.COL_SALES_ID)
-            .get()
-            .await()
-
-        // Get all used IDs
-        val ids: List<Int> = result.map { Integer.parseInt(it.get("venda") as String) }
-
-        for(i in 1..99999) {
-            if(!ids.contains(i)) this.saleId = i
-            return
-        }
-
-        throw FirebaseFirestoreException("error finding an available sale id ",
-            FirebaseFirestoreException.Code.UNKNOWN)
-    }
 
     fun registerPayment(value: String){
         this.paidValue = BigDecimal(paidValue).plus(BigDecimal(value)).toString()
@@ -149,5 +132,15 @@ data class Sale(
         data[Firestore.SALE_PRODUCTS] = this.products
 
         return data.toMap()
+    }
+
+    fun bindClient(client: Client) {
+        this.clientName = client.name
+        this.clientNeighborhood = client.neighborhood
+        this.clientStreet = client.street
+        this.clientCity = client.city
+        this.clientComplement = client.complement
+        this.clientId = client.id
+        this.clientPhone = client.phone
     }
 }

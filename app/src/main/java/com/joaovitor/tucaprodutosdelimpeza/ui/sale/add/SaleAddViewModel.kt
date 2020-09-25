@@ -4,17 +4,22 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.data.ClientRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.ProductRepository
+import com.joaovitor.tucaprodutosdelimpeza.data.SaleRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Client
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
 import com.joaovitor.tucaprodutosdelimpeza.data.model.ProductSale
+import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.util.Date
 
 class SaleAddViewModel : ViewModel() {
+
+    val saleRepository = SaleRepository()
 
     //All options available for AutoCompleteTextView
     private val _allProducts =  MutableLiveData<List<Product>>()
@@ -27,7 +32,7 @@ class SaleAddViewModel : ViewModel() {
         get() = _allClients
 
     //Fields form
-    private var _client = MutableLiveData<Client>(Client())
+    private var _client = MutableLiveData<Client>()
     val client: LiveData<Client>
         get() = _client
 
@@ -42,12 +47,19 @@ class SaleAddViewModel : ViewModel() {
     private var _products = MutableLiveData<List<ProductSale>>(emptyList())
     val products = MediatorLiveData<List<ProductSale>>()
 
+    var paymentMethod = MutableLiveData<Int>(R.id.radio_button_unpaid)
+
     val quantity = MutableLiveData(1)
     val discount = MutableLiveData<String>()
     val paidValue = MutableLiveData<String>()
 
-    var paymentMethod: Int = 0
+    private var _navigateToSelectClient = MutableLiveData<Boolean>()
+    val navigateToSelectClient: LiveData<Boolean>
+        get() = _navigateToSelectClient
 
+    private var _navigateBackToAdd = MutableLiveData<Boolean>()
+    val navigateBackToAdd: LiveData<Boolean>
+        get() = _navigateBackToAdd
 
     init {
         GlobalScope.launch {
@@ -61,20 +73,10 @@ class SaleAddViewModel : ViewModel() {
         //Update total every time _products is changed
         products.addSource(_products) {
             products.value = it
-            _total.value = calculateTotalFromProductsList(it)
+            _total.value = calculateTotalFromProductsList(it).minus(BigDecimal(discount.value?: "0.00"))
             quantity.value = 1
         }
     }
-
-/*    private fun bindClientOnSale(client: Client) {
-        sale.value?.clientName = client.name
-        sale.value?.clientNeighborhood = client.neighborhood
-        sale.value?.clientStreet = client.name
-        sale.value?.clientCity = client.name
-        sale.value?.clientComplement = client.name
-        sale.value?.clientId = client.name
-        sale.value?.clientPhone = client.phone
-    }*/
 
     fun addQuantity() {
         quantity.postValue(quantity.value?.plus(1))
@@ -86,6 +88,88 @@ class SaleAddViewModel : ViewModel() {
         }
     }
 
+    suspend fun addSale() {
+        if(validateFields()){
+            val sale = Sale()
+            sale.products = _products.value!!.toMutableList()
+            sale.bindClient(_client.value!!)
+            sale.saleDate = _saleDate.value!!
+            sale.discount = BigDecimal(discount.value?: "0.00").toString()
+            sale.grossValue = calculateTotalFromProductsList(_products.value!!).toString()
+            sale.total = _total.value.toString()
+
+            when(paymentMethod.value!!) {
+                R.id.radio_button_paid -> {
+                    sale.paid = true
+                    sale.paymentDate = Date()
+                    sale.paidValue = _total.value.toString()
+                    sale.toReceive = "0.00"
+                }
+
+                R.id.radio_button_unpaid -> {
+                    sale.paid = false
+                    sale.paymentDate = null
+                    sale.paidValue = "0.00"
+                    sale.toReceive = _total.value.toString()
+                }
+
+                R.id.radio_button_partially_paid -> {
+                    sale.paid = false
+                    sale.paymentDate = null
+                    sale.paidValue = BigDecimal(paidValue.value!!).toString()
+                    sale.toReceive = _total.value?.minus(BigDecimal(paidValue.value)).toString()
+                }
+
+                else -> return //TODO: Show a error: Error unknown on payment situation
+            }
+
+            //TODO: Set seller and seller UID on sale
+            sale.seller = "João Vitor"
+            sale.sellerUid = "asd"
+            sale.generateSaleId()
+
+            saleRepository.addSale(sale) //TODO: Get result and show a respective message
+
+            reset()
+        }
+    }
+
+    private fun reset() {
+        _products.postValue(emptyList())
+        _client.postValue(null)
+        _saleDate.postValue(Date())
+        discount.postValue(null)
+        paidValue.postValue(null)
+        paymentMethod.postValue(R.id.radio_button_unpaid)
+    }
+
+    /** Check the input fields */
+    private fun validateFields(): Boolean {
+        if(_products.value!!.isEmpty()) {
+            //TODO: Show a message error: No products added
+            return false
+        }
+
+        if(_client.value == null) {
+            //TODO: Show a message error: No selected client
+            return false
+        }
+
+        if(paymentMethod.value == R.id.radio_button_partially_paid) {
+            if(paidValue.value == null || paidValue.value!!.isEmpty()) {
+                //TODO: Show a message error: Inform the paid value
+                return false
+            }
+
+            if(BigDecimal(paidValue.value!!) >= _total.value) {
+                //TODO: Show a message error: Paid value is greater than total
+                return false
+            }
+        }
+
+        return true
+    }
+
     fun onSaleDateSelect(millis: Long) {
         _saleDate.postValue(Date(millis))
     }
@@ -94,20 +178,14 @@ class SaleAddViewModel : ViewModel() {
         if(products != null && products.isNotEmpty()) {
             val productsTotal =
                 products.map { BigDecimal(it.price).multiply(BigDecimal(it.quantity)) }
+
             return productsTotal.reduce { acc, productTotal -> acc.plus(productTotal) }
         }
+
         return BigDecimal(0)
     }
 
     // Navigation functions
-    private var _navigateToSelectClient = MutableLiveData<Boolean>()
-    val navigateToSelectClient: LiveData<Boolean>
-        get() = _navigateToSelectClient
-
-    private var _navigateBackToAdd = MutableLiveData<Boolean>()
-    val navigateBackToAdd: LiveData<Boolean>
-        get() = _navigateBackToAdd
-
     fun navigateToSelectClient(){
         _navigateToSelectClient.value = true
     }
@@ -139,5 +217,11 @@ class SaleAddViewModel : ViewModel() {
 
     private fun convertProductToProductSale(product: Product, quantity: Int): ProductSale {
         return ProductSale(product.name, product.price, quantity, Date(), product.id)
+    }
+
+    fun onClickAddSale() {
+        GlobalScope.launch {
+            addSale()
+        }
     }
 }

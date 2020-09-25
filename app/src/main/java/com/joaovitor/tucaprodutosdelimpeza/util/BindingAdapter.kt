@@ -10,11 +10,13 @@ import java.math.BigDecimal
 import java.util.Date
 
 @BindingAdapter("formatDateToString")
+@Suppress("UsePropertyAccessSyntax")
 fun formatDateToString(textView: TextView, date: Date?) {
-    date?.let {
+    if (date != null){
         val formattedDate =  FormatDate.formatDateToString(date)
-        @Suppress("UsePropertyAccessSyntax")
         textView.setText(formattedDate)
+    } else {
+        textView.setText("")
     }
 }
 

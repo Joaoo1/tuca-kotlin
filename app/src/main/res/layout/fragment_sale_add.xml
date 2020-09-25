@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View"/>
         <variable
             name="viewModel"
             type="com.joaovitor.tucaprodutosdelimpeza.ui.sale.add.SaleAddViewModel" />
@@ -161,7 +162,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:checkedButton="@+id/radio_button_unpaid"
+                    android:checkedButton="@={viewModel.paymentMethod}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/divider">
 
@@ -176,6 +177,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingHorizontal="12dp"
+                        android:checked="true"
                         android:text="@string/sale_add_radio_unpaid" />
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
@@ -191,6 +193,7 @@
                         android:layout_height="wrap_content"
                         android:paddingHorizontal="12dp"
                         android:text="@string/sale_add_radio_partially_paid" />
+
                 </RadioGroup>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -199,7 +202,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
                     android:hint="@string/sale_add_hint_paid_value"
-                    android:visibility="gone"
+                    android:visibility="@{viewModel.paymentMethod == radioButtonPartiallyPaid.getId() ? View.VISIBLE : View.GONE}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/radio_group"
                     app:startIconDrawable="@drawable/ic_money"

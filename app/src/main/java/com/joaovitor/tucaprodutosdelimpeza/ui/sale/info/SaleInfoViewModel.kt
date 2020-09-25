@@ -100,7 +100,6 @@ class SaleInfoViewModel : ViewModel() {
     }
 
     fun onClickRegisterPayment() {
-        println(sale.value!!)
         if(!sale.value?.paid!!) _openPaymentDialog.value = true
     }
 

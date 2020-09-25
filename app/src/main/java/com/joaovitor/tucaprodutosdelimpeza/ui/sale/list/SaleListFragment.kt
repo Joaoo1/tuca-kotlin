@@ -39,16 +39,12 @@ class SaleListFragment : Fragment() {
         listAdapter = SaleListAdapter(SaleListAdapter.SaleListener { sale ->
             viewModel.onSaleClicked(sale)
         })
-
         binding.salesList.adapter = listAdapter
         viewModel.sales.observe(viewLifecycleOwner, Observer {
             it?.let {
                 listAdapter.saleList = it
             }
         })
-
-        //Floating button click
-        binding.fab.setOnClickListener { viewModel.onClickFab() }
 
         //Navigate to Add Fragment listener
         viewModel.navigateToAdd.observe(viewLifecycleOwner, Observer { navigate ->
@@ -64,27 +60,27 @@ class SaleListFragment : Fragment() {
             sale?.let {
                 findNavController()
                     .navigate(
-                        SaleListFragmentDirections.actionSalesListFragmentToSalesInfoFragment(
-                            sale
-                        )
+                        SaleListFragmentDirections.actionSalesListFragmentToSalesInfoFragment(sale)
                     )
                 viewModel.doneNavigation()
             }
         })
+
+        binding.viewModel = viewModel
 
         return binding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.sale_list, menu)
-        searchOnList(menu.findItem(R.id.action_search_sales))
         super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             R.id.action_filter_sales -> createFiltersDialog()
-            R.id.action_refresh_sales -> viewModel.refreshSalesList()
+            R.id.action_search_sales -> searchOnList(item)
+            R.id.action_refresh_sales -> viewModel.onClickRefreshList()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -112,6 +108,6 @@ class SaleListFragment : Fragment() {
 
     private fun createFiltersDialog() {
         FilterSalesDialog(this).show()
+        viewModel.doneDialogClosing()
     }
-
 }
