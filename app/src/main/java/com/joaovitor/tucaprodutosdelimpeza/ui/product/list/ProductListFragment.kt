@@ -21,6 +21,7 @@ import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentProductListBindin
 class ProductListFragment : Fragment() {
 
     private lateinit var listAdapter: ProductListAdapter
+    private lateinit var viewModel: ProductListViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,7 +35,7 @@ class ProductListFragment : Fragment() {
 
         // Create the viewModel
         val viewModelFactory = ProductListViewModelFactory()
-        val viewModel = ViewModelProvider(this,viewModelFactory)
+        viewModel = ViewModelProvider(this,viewModelFactory)
             .get(ProductListViewModel::class.java)
 
         //Setting up the recycler view
@@ -76,6 +77,14 @@ class ProductListFragment : Fragment() {
         inflater.inflate(R.menu.search_list, menu)
         searchOnList(menu.findItem(R.id.action_search))
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.action_refresh_list -> viewModel.onClickRefreshList()
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onResume() {

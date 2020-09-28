@@ -1,6 +1,5 @@
-package com.joaovitor.tucaprodutosdelimpeza.ui.client.list
+package com.joaovitor.tucaprodutosdelimpeza.ui.client.info
 
-import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
 import com.joaovitor.tucaprodutosdelimpeza.databinding.ListItemClientSaleProductBinding
 
 import android.view.LayoutInflater

@@ -35,7 +35,7 @@ class SaleAddFragment : Fragment() {
         viewModel = ViewModelProvider(requireActivity(), viewModelFactory)
             .get(SaleAddViewModel::class.java)
 
-        binding.lifecycleOwner = viewLifecycleOwner
+        binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
         // Setting up the RecyclerView
@@ -57,8 +57,8 @@ class SaleAddFragment : Fragment() {
         }
 
         binding.addProduct.setOnClickListener {
-            viewModel.addProduct(binding.product.editText?.text.toString())
-            binding.product.editText?.setText("")
+            viewModel.addProduct(binding.product.editText.text.toString())
+            binding.product.editText.setText("")
         }
 
         /* Setting up products AutoCompleteTextView */

@@ -50,7 +50,7 @@ class SaleListFragment : Fragment() {
         viewModel.navigateToAdd.observe(viewLifecycleOwner, Observer { navigate ->
             if (navigate) {
                 findNavController()
-                    .navigate(SaleListFragmentDirections.actionSalesListFragmentToSalesAddFragment())
+                    .navigate(SaleListFragmentDirections.actionSaleListFragmentToSalesAddFragment())
                 viewModel.doneNavigation()
             }
         })

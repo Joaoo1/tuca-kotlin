@@ -1,13 +1,12 @@
-package com.joaovitor.tucaprodutosdelimpeza.ui.client.list
+package com.joaovitor.tucaprodutosdelimpeza.ui.client.info
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
 import com.joaovitor.tucaprodutosdelimpeza.databinding.ListItemClientSaleBinding
 
-class ClientSalesAdapter : RecyclerView.Adapter<ClientSalesAdapter.ViewHolder>() {
+class ClientSalesAdapter(var viewModel: ClientInfoViewModel) : RecyclerView.Adapter<ClientSalesAdapter.ViewHolder>() {
     var listData = listOf<Sale>()
         set(value) {
             field = value
@@ -20,7 +19,7 @@ class ClientSalesAdapter : RecyclerView.Adapter<ClientSalesAdapter.ViewHolder>()
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = listData[position]
-        holder.bind(item)
+        holder.bind(item, viewModel)
     }
 
     override fun getItemCount() = listData.size
@@ -28,9 +27,10 @@ class ClientSalesAdapter : RecyclerView.Adapter<ClientSalesAdapter.ViewHolder>()
     class ViewHolder private constructor(private val binding: ListItemClientSaleBinding)
         : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Sale) {
+        fun bind(item: Sale, viewModel: ClientInfoViewModel) {
             binding.sale = item
-            binding.productsList.adapter = item.products?.let { ClientSaleProductsAdapter(it) }
+            binding.viewModel = viewModel
+            binding.productsList.adapter = ClientSaleProductsAdapter(item.products)
             binding.executePendingBindings()
         }
 

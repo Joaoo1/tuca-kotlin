@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View" />
         <variable
             name="viewModel"
             type="com.joaovitor.tucaprodutosdelimpeza.ui.sale.info.SaleInfoViewModel" />
@@ -44,32 +45,60 @@
                 app:layout_constraintStart_toEndOf="@+id/label_date"
                 app:layout_constraintTop_toTopOf="parent" />
 
+
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/label_situation"
+                android:id="@+id/label_payment_day"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:drawableStart="@drawable/ic_input_payment"
                 android:drawablePadding="8dp"
                 android:gravity="center"
-                android:text="@string/sale_info_label_situation"
+                android:text="@string/sale_info_label_payment_day"
+                android:visibility="@{viewModel.sale.paymentDate == null ? View.GONE : View.VISIBLE}"
                 android:textColor="@android:color/primary_text_light"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
-                app:layout_constraintEnd_toStartOf="@+id/situation"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/label_date" />
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/payment_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:visibility="@{viewModel.sale.paymentDate == null ? View.GONE : View.VISIBLE}"
+                app:formatDateToString="@{viewModel.sale.paymentDate}"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/label_payment_day"
+                app:layout_constraintTop_toBottomOf="@+id/date" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/label_situation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:drawableStart="@drawable/ic_input_payment_situation"
+                android:drawablePadding="8dp"
+                android:gravity="center"
+                android:text="@string/sale_info_label_situation"
+                android:textColor="@android:color/primary_text_light"
+                app:layout_constraintEnd_toStartOf="@+id/situation"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/label_payment_day" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/situation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                android:textColor="@android:color/holo_red_dark"
+                android:layout_marginTop="14dp"
                 android:textStyle="bold"
                 app:getSaleSituation="@{viewModel.sale}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/label_situation"
-                app:layout_constraintTop_toBottomOf="@+id/date" />
+                app:layout_constraintTop_toBottomOf="@+id/payment_day" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/label_client"
@@ -90,7 +119,7 @@
                 android:id="@+id/client"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="14dp"
                 android:text="@{viewModel.sale.clientName}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/label_client"
@@ -115,7 +144,7 @@
                 android:id="@+id/seller"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="14dp"
                 android:text="@{viewModel.sale.seller}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/label_seller"

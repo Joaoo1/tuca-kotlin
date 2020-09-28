@@ -19,7 +19,7 @@ import java.util.Date
 
 class SaleAddViewModel : ViewModel() {
 
-    val saleRepository = SaleRepository()
+    private val saleRepository = SaleRepository()
 
     //All options available for AutoCompleteTextView
     private val _allProducts =  MutableLiveData<List<Product>>()
@@ -50,7 +50,9 @@ class SaleAddViewModel : ViewModel() {
     var paymentMethod = MutableLiveData<Int>(R.id.radio_button_unpaid)
 
     val quantity = MutableLiveData(1)
+
     val discount = MutableLiveData<String>()
+
     val paidValue = MutableLiveData<String>()
 
     private var _navigateToSelectClient = MutableLiveData<Boolean>()
@@ -73,7 +75,7 @@ class SaleAddViewModel : ViewModel() {
         //Update total every time _products is changed
         products.addSource(_products) {
             products.value = it
-            _total.value = calculateTotalFromProductsList(it).minus(BigDecimal(discount.value?: "0.00"))
+            _total.value = calculateTotalFromProductsList(it)
             quantity.value = 1
         }
     }
@@ -88,7 +90,7 @@ class SaleAddViewModel : ViewModel() {
         }
     }
 
-    suspend fun addSale() {
+    private suspend fun addSale() {
         if(validateFields()){
             val sale = Sale()
             sale.products = _products.value!!.toMutableList()
@@ -96,7 +98,7 @@ class SaleAddViewModel : ViewModel() {
             sale.saleDate = _saleDate.value!!
             sale.discount = BigDecimal(discount.value?: "0.00").toString()
             sale.grossValue = calculateTotalFromProductsList(_products.value!!).toString()
-            sale.total = _total.value.toString()
+            sale.total = _total.value!!.minus(BigDecimal(discount.value?: "0.00")).toString()
 
             when(paymentMethod.value!!) {
                 R.id.radio_button_paid -> {
@@ -110,14 +112,16 @@ class SaleAddViewModel : ViewModel() {
                     sale.paid = false
                     sale.paymentDate = null
                     sale.paidValue = "0.00"
-                    sale.toReceive = _total.value.toString()
+                    sale.toReceive = _total.value?.minus(BigDecimal(discount.value?:"0.00")).toString()
                 }
 
                 R.id.radio_button_partially_paid -> {
                     sale.paid = false
                     sale.paymentDate = null
                     sale.paidValue = BigDecimal(paidValue.value!!).toString()
-                    sale.toReceive = _total.value?.minus(BigDecimal(paidValue.value)).toString()
+                    sale.toReceive = _total.value?.
+                        minus(BigDecimal(paidValue.value))?.
+                        minus(BigDecimal(discount.value?: "0.00")).toString()
                 }
 
                 else -> return //TODO: Show a error: Error unknown on payment situation
@@ -126,7 +130,6 @@ class SaleAddViewModel : ViewModel() {
             //TODO: Set seller and seller UID on sale
             sale.seller = "João Vitor"
             sale.sellerUid = "asd"
-            sale.generateSaleId()
 
             saleRepository.addSale(sale) //TODO: Get result and show a respective message
 
@@ -161,10 +164,20 @@ class SaleAddViewModel : ViewModel() {
                 return false
             }
 
+            if(paidValue.value!!.last() == '.' ) {
+                //TODO: Show a error message: value invalid
+                return false
+            }
+
             if(BigDecimal(paidValue.value!!) >= _total.value) {
                 //TODO: Show a message error: Paid value is greater than total
                 return false
             }
+        }
+
+        if(discount.value!!.isNotEmpty() && discount.value!!.last() == '.' ) {
+            //TODO: Show a error message: price invalid
+            return false
         }
 
         return true
@@ -208,6 +221,21 @@ class SaleAddViewModel : ViewModel() {
                 _allProducts.value!![productIndex],
                 quantity.value!!
             )
+
+            /**
+             * Check if the new product is already on list
+             * If so, just increment the quantity of existing product
+             * Otherwise, add the product to list
+             */
+            val mProducts = _products.value!!
+            for(product in mProducts) {
+                if(productSale.parentId == product.parentId){
+                    product.quantity += quantity.value!!
+                    _products.value = mProducts
+                    return
+                }
+            }
+
             _products.value = _products.value?.plus(productSale)
         } else {
             //TODO: Show a error

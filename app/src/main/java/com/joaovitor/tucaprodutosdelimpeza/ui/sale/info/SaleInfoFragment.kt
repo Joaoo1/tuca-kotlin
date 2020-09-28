@@ -29,19 +29,19 @@ class SaleInfoFragment : Fragment() {
             resources.getString(R.string.title_fragment_sale_info),
             sale.saleId)
 
-        //Create the viewModel
-        val viewModelFactory = SaleInfoViewModelFactory()
-        viewModel = ViewModelProvider(requireActivity(),viewModelFactory)
-            .get(SaleInfoViewModel::class.java)
-
-        viewModel.setSale(sale)
-
         // Inflate the layout for this fragment
         val binding: FragmentSaleInfoBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_sale_info, container, false)
 
         val adapter = SaleInfoListAdapter()
         binding.productsList.adapter = adapter
+
+        //Create the viewModel
+        val viewModelFactory = SaleInfoViewModelFactory()
+        viewModel = ViewModelProvider(requireActivity(),viewModelFactory)
+            .get(SaleInfoViewModel::class.java)
+        
+        viewModel.setSale(sale)
 
         viewModel.sale.observe(viewLifecycleOwner, Observer {
             it?.let {
@@ -53,6 +53,13 @@ class SaleInfoFragment : Fragment() {
             if(it) {
                 findNavController()
                     .navigate(SaleInfoFragmentDirections.actionSalesInfoFragmentToSaleEditProductsFragment(sale))
+                viewModel.doneNavigation()
+            }
+        })
+
+        viewModel.navigateBack.observe(viewLifecycleOwner, Observer {
+            if(it) {
+                findNavController().popBackStack()
                 viewModel.doneNavigation()
             }
         })

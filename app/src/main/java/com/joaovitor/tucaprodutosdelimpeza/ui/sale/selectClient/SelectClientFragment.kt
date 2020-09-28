@@ -2,6 +2,8 @@ package com.joaovitor.tucaprodutosdelimpeza.ui.sale.selectClient
 
 import android.os.Bundle
 import android.view.*
+import android.view.inputmethod.EditorInfo
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -13,6 +15,8 @@ import com.joaovitor.tucaprodutosdelimpeza.ui.sale.add.SaleAddViewModel
 import com.joaovitor.tucaprodutosdelimpeza.ui.sale.add.SaleAddViewModelFactory
 
 class SelectClientFragment : Fragment() {
+
+    private lateinit var listAdapter: SelectClientListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,14 +34,12 @@ class SelectClientFragment : Fragment() {
             .get(SaleAddViewModel::class.java)
 
         //Setting up Recycler View
-        val adapter = SelectClientListAdapter(SelectClientListAdapter.SelectClientListener { client ->
+        listAdapter = SelectClientListAdapter(SelectClientListAdapter.SelectClientListener { client ->
             viewModel.onClientClicked(client)
         })
-        binding.clientsList.adapter = adapter
+        binding.clientsList.adapter = listAdapter
         viewModel.allClients.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                adapter.listData = it
-            }
+            it?.let { listAdapter.allClients = it }
         })
 
         viewModel.navigateBackToAdd.observe(viewLifecycleOwner, Observer {
@@ -53,6 +55,24 @@ class SelectClientFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.search_list, menu)
+        //Implement SearchView
+        searchOnList(menu.findItem(R.id.action_search))
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    private fun searchOnList(search: MenuItem) {
+        val searchView = search.actionView as SearchView
+        searchView.imeOptions = EditorInfo.IME_ACTION_DONE
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                listAdapter.filter.filter(newText)
+                listAdapter.notifyDataSetChanged()
+                return false
+            }
+        })
     }
 }

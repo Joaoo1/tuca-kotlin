@@ -138,6 +138,7 @@
                         android:layout_height="wrap_content"
                         android:focusable="false"
                         android:hint="@string/client_edit_hint_neighborhood"
+                        android:onClick="@{() -> viewModel.onClickSelectNeighborhood()}"
                         android:text="@={viewModel.client.neighborhood}"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -159,6 +160,7 @@
                         android:layout_height="wrap_content"
                         android:focusable="false"
                         android:hint="@string/client_edit_hint_city"
+                        android:onClick="@{() -> viewModel.onClickSelectCity()}"
                         android:text="@={viewModel.client.city}"/>
                 </com.google.android.material.textfield.TextInputLayout>
 

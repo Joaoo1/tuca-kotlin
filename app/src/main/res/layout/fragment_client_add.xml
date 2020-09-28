@@ -81,6 +81,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/client_add_hint_name"
+                        android:maxLines="1"
+                        android:inputType="textCapWords"
                         android:text="@={viewModel.client.name}"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -99,6 +101,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/client_add_hint_street"
+                        android:maxLines="1"
                         android:text="@={viewModel.client.street}"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -117,6 +120,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/client_add_hint_complement"
+                        android:maxLines="1"
                         android:text="@={viewModel.client.complement}"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -138,6 +142,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/client_add_hint_neighborhood"
                         android:focusable="false"
+                        android:onClick="@{() -> viewModel.onClickSelectNeighborhood()}"
                         android:text="@={viewModel.client.neighborhood}"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -159,6 +164,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/client_add_hint_city"
                         android:focusable="false"
+                        android:onClick="@{() -> viewModel.onClickSelectCity()}"
                         android:text="@={viewModel.client.city}"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -177,6 +183,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/client_add_hint_phone"
+                        android:maxLines="1"
+                        android:inputType="phone"
                         android:text="@={viewModel.client.phone}"/>
                 </com.google.android.material.textfield.TextInputLayout>
 

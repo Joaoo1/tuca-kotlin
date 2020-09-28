@@ -2,6 +2,7 @@ package com.joaovitor.tucaprodutosdelimpeza.data
 
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
 import com.joaovitor.tucaprodutosdelimpeza.data.model.StockHistory
@@ -30,5 +31,16 @@ class ProductRepository {
             .get()
             .await()
             .toObjects(StockHistory::class.java)
+    }
+
+    suspend fun addProduct(product: Product): Result<Any> {
+        return try {
+            colRef.add(product).await()
+
+            //product successful added
+            Result.Success(null)
+        }catch (e: FirebaseFirestoreException) {
+            Result.Error(e)
+        }
     }
 }

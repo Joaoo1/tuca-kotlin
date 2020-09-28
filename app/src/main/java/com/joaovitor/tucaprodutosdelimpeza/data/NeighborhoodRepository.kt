@@ -2,6 +2,7 @@ package com.joaovitor.tucaprodutosdelimpeza.data
 
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.coroutines.tasks.await
 
 class NeighborhoodRepository {
@@ -19,5 +20,16 @@ class NeighborhoodRepository {
             neighborhoods.add(neighborhood)
         }
         return neighborhoods
+    }
+
+    suspend fun addNeighborhood(neighborhood: String): Result<Any> {
+        return try {
+            colRef.add(neighborhood).await()
+
+            //product successful added
+            Result.Success(null)
+        }catch (e: FirebaseFirestoreException) {
+            Result.Error(e)
+        }
     }
 }

@@ -14,16 +14,11 @@ import java.util.*
 class ClientListViewModel : ViewModel() {
 
     var clients = MutableLiveData<List<Client>>(emptyList())
-    // var clientSales = MutableLiveData<List<Sale>>(emptyList())
 
-    private fun fetchClients(){
+    init {
         GlobalScope.launch {
             clients.postValue(ClientRepository().getClients())
         }
-    }
-
-    init {
-        fetchClients()
     }
 
     //navigation
@@ -31,29 +26,20 @@ class ClientListViewModel : ViewModel() {
     val navigateToAdd: LiveData<Boolean>
         get() = _navigateToAdd
 
-    private var _navigateToEdit = MutableLiveData<Client>()
-    val navigateToEdit: LiveData<Client>
-        get() = _navigateToEdit
-
-    private var _openInfoDialog = MutableLiveData<Client>()
-    val openInfoDialog: LiveData<Client>
-        get() = _openInfoDialog
+    private var _navigateToInfo = MutableLiveData<Client>()
+    val navigateToInfo: LiveData<Client>
+        get() = _navigateToInfo
 
     fun onClickFab(){
         _navigateToAdd.value = true
     }
 
     fun onClientClicked(client: Client) {
-        _openInfoDialog.value = client
-    }
-
-    fun openEditClient(client: Client) {
-        _navigateToEdit.value = client
+        _navigateToInfo.value = client
     }
 
     fun doneNavigation(){
         _navigateToAdd.value = false
-        _navigateToEdit.value = null
-        _openInfoDialog.value = null
+        _navigateToInfo.value = null
     }
 }

@@ -3,6 +3,7 @@ package com.joaovitor.tucaprodutosdelimpeza.ui.sale.info
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.joaovitor.tucaprodutosdelimpeza.data.Result
 import com.joaovitor.tucaprodutosdelimpeza.data.SaleRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
 import kotlinx.coroutines.GlobalScope
@@ -29,12 +30,22 @@ class SaleInfoViewModel : ViewModel() {
     val navigateToEditProducts: LiveData<Boolean>
         get() = _navigateToEditProducts
 
+    private var _navigateBack = MutableLiveData<Boolean>()
+    val navigateBack: LiveData<Boolean>
+        get() = _navigateBack
+
     /* Database functions */
     fun deleteSale() {
         GlobalScope.launch {
             sale.value?.id?.let {
-                saleRepository.deleteSale(it)
-                //TODO: Go back and show a message to user based on Result
+                val result = saleRepository.deleteSale(it)
+                if (result is Result.Success) {
+                    //TODO: Show a success message
+                    _navigateBack.postValue(true)
+                } else {
+                    //TODO: Show a error message
+                    return@launch
+                }
             }
         }
     }
@@ -49,30 +60,40 @@ class SaleInfoViewModel : ViewModel() {
          */
         if(value.isEmpty()) {
             mSale.finishSale()
-        }else {
-            when(BigDecimal(value).compareTo(BigDecimal(mSale.toReceive))){
-                /**
-                 *  Value informed by user is less than value to receive
-                 *  So just register a payment on sale
-                 */
-                -1 -> mSale.registerPayment(value)
+            return
+        }
+        /**
+         * Check if the informed value last letter is not a dot
+         * A value with dot, crash the app when try to convert it to BigDecimal
+         */
+        if(value.last() == '.') {
+            //TODO: Show a message error: Invalid value
+            return
+        }
 
-                /**
-                 *  Value informed by user is equals to value to receive
-                 *  So finish sale and set it as paid
-                 */
-                0 -> mSale.finishSale()
+        when(BigDecimal(value).compareTo(BigDecimal(mSale.toReceive))){
+            /**
+             *  Value informed by user is less than value to receive
+             *  So just register a payment on sale
+             */
+            -1 -> mSale.registerPayment(value)
 
-                /**
-                 * Value informed is greater than value to receive
-                 * Show a error message to user
-                 */
-                1 -> {
-                    /*TODO: Show a error: Informed value is greater than value to receive*/
-                    return
-                }
+            /**
+             *  Value informed by user is equals to value to receive
+             *  So finish sale and set it as paid
+             */
+            0 -> mSale.finishSale()
+
+            /**
+             * Value informed is greater than value to receive
+             * Show a error message to user
+             */
+            1 -> {
+                /*TODO: Show a error: Informed value is greater than value to receive*/
+                return
             }
         }
+
 
         // Sale properly set, so save it into firestore
         GlobalScope.launch {
@@ -105,6 +126,7 @@ class SaleInfoViewModel : ViewModel() {
 
     fun doneNavigation(){
         _navigateToEditProducts.value = false
+        _navigateBack.value = false
         _openDeleteDialog.value = false
         _openPaymentDialog.value = false
     }

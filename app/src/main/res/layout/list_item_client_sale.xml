@@ -8,6 +8,10 @@
         <variable
             name="sale"
             type="com.joaovitor.tucaprodutosdelimpeza.data.model.Sale" />
+
+        <variable
+            name="viewModel"
+            type="com.joaovitor.tucaprodutosdelimpeza.ui.client.info.ClientInfoViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -77,8 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="@{String.valueOf(sale.paid)}"
-            android:textColor="@android:color/holo_red_dark"
+            app:getSaleSituation="@{sale}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/total"/>
 
@@ -90,6 +93,7 @@
             android:layout_marginBottom="8dp"
             android:padding="4dp"
             android:background="@android:color/transparent"
+            android:onClick="@{() -> viewModel.onClickInfoSale(sale)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/situation"
@@ -104,6 +108,7 @@
             android:layout_marginBottom="8dp"
             android:padding="4dp"
             android:background="@android:color/transparent"
+            android:onClick="@{() -> viewModel.onClickFinishSale(sale)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/info_sale"
             app:srcCompat="@drawable/ic_check_black" />

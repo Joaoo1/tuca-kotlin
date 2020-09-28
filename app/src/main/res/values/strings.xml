@@ -223,4 +223,7 @@
     <string name="fragment_manage_address_label_streets">Ruas</string>
     <string name="fragment_manage_address_label_neighborhoods">Bairros</string>
     <string name="fragment_manage_address_label_cities">Cidades</string>
+    <string name="menu_item_edit_client_title">Editar cliente</string>
+    <string name="menu_item_call_client_title">Ligar para o cliente</string>
+    <string name="sale_info_label_payment_day">Data do pagamento</string>
 </resources>

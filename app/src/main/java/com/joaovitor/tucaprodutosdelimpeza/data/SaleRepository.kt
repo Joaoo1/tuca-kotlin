@@ -52,6 +52,20 @@ class SaleRepository {
         return result.toObjects(Sale::class.java)
     }
 
+    suspend fun getSalesByClient(clientId: String): List<Sale> {
+        val querySnapshot = colRef
+            .whereEqualTo(Firestore.SALE_CLIENT_ID, clientId)
+            .orderBy(Firestore.SALE_DATE, Query.Direction.DESCENDING)
+            .get()
+            .await()
+
+        return querySnapshot.map {
+            val sale = it.toObject(Sale::class.java)
+            sale.id = it.id
+            sale
+        }
+    }
+
     suspend fun addSale(sale: Sale): Result<Void> {
         return try {
             // Getting a unused id for sale
@@ -60,17 +74,11 @@ class SaleRepository {
             colRef.add(sale).await()
 
             //Sale successful added
-            setIdAsUsed(sale.saleId)
+            SaleIdRepository().setIdAsUsed(sale.saleId)
             Result.Success(null)
         }catch (e: FirebaseFirestoreException) {
             Result.Error(e)
         }
-    }
-
-    private fun setIdAsUsed(saleId: Int) {
-        val data: MutableMap<String, Int> = HashMap()
-        data["venda"] = saleId
-        FirebaseFirestore.getInstance().collection(Firestore.COL_SALES_ID).add(data)
     }
 
     suspend fun editSale(sale: Sale): Result<Void> {

@@ -6,8 +6,8 @@ import java.io.Serializable
 import java.util.*
 
 data class Product(
-    @Exclude
-    var id: String = "",
+
+    @get:Exclude var id: String = "",
 
     @PropertyName("nome")
     @get:PropertyName("nome")

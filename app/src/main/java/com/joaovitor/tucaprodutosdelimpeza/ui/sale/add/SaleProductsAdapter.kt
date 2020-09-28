@@ -30,6 +30,7 @@ class SaleProductsAdapter : ListAdapter<SaleProductsAdapter.DataItem,
             }
             withContext(Dispatchers.Main) {
                 submitList(items)
+                notifyDataSetChanged()
             }
         }
     }
@@ -56,6 +57,9 @@ class SaleProductsAdapter : ListAdapter<SaleProductsAdapter.DataItem,
 
         fun bind(productItem: DataItem.ProductItem) {
             binding.product = productItem.product
+            binding.deleteItem.setOnClickListener{
+                
+            }
         }
 
         companion object {
@@ -106,4 +110,6 @@ class SaleProductsAdapter : ListAdapter<SaleProductsAdapter.DataItem,
 
         abstract val id: String
     }
+
+    interface deleteSaleClickListener
 }

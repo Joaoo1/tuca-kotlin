@@ -6,8 +6,7 @@ import java.io.Serializable
 
 data class Client(
 
-    @Exclude
-    var id: String = "",
+    @get:Exclude var id: String = "",
 
     @PropertyName("nome")
     @get:PropertyName("nome")
@@ -39,4 +38,15 @@ data class Client(
     @set:PropertyName("telefone")
     var phone: String = ""
 
-) : Serializable
+) : Serializable {
+
+    fun bind(client: Client) {
+        this.id = client.id
+        this.name = client.name
+        this.street = client.street
+        this.complement = client.complement
+        this.neighborhood = client.neighborhood
+        this.city = client.city
+        this.phone = client.phone
+    }
+}

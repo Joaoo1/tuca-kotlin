@@ -12,12 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.joaovitor.tucaprodutosdelimpeza.R
-import com.joaovitor.tucaprodutosdelimpeza.data.model.Client
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentClientAddBinding
-import com.joaovitor.tucaprodutosdelimpeza.ui.client.edit.ClientEditFragmentDirections
-import com.joaovitor.tucaprodutosdelimpeza.ui.client.edit.ClientEditViewModel
-import com.joaovitor.tucaprodutosdelimpeza.ui.client.edit.ClientEditViewModelFactory
-import com.joaovitor.tucaprodutosdelimpeza.ui.settings.ManageAddressFragment
 
 class ClientAddFragment : Fragment() {
 
@@ -29,48 +24,24 @@ class ClientAddFragment : Fragment() {
     ): View? {
         setHasOptionsMenu(true)
 
-        //Create the viewModel
-        val viewModelFactory = ClientAddViewModelFactory()
-        viewModel = ViewModelProvider(requireActivity(), viewModelFactory)
-            .get(ClientAddViewModel::class.java)
 
         // Inflate the layout for this fragment
         val binding: FragmentClientAddBinding = DataBindingUtil.inflate(
             inflater,R.layout.fragment_client_add, container, false)
 
+        //Create the viewModel
+        val viewModelFactory = ClientAddViewModelFactory()
+        viewModel = ViewModelProvider(requireActivity(), viewModelFactory)
+            .get(ClientAddViewModel::class.java)
 
         viewModel.streets.observe(viewLifecycleOwner, Observer {
             it?.let {
-                val arrayProductsName = it.toTypedArray()
                 val autoCompleteAdapter = ArrayAdapter(requireContext(),
-                    android.R.layout.simple_list_item_1, arrayProductsName)
+                    android.R.layout.simple_list_item_1, it.toTypedArray())
 
                 (binding.street.editText as MaterialAutoCompleteTextView).setAdapter(autoCompleteAdapter)
             }
         })
-
-        binding.lifecycleOwner = viewLifecycleOwner
-        binding.viewModel = viewModel
-
-        binding.neighborhood.editText?.setOnClickListener {
-            val neighborhoods = viewModel.neighborhoods
-            createDialogSelectAddress(
-                neighborhoods,
-                DialogInterface.OnClickListener {
-                        _, index ->
-                    viewModel.onNeighborhoodSelected(neighborhoods[index])
-                })
-        }
-
-        binding.city.editText?.setOnClickListener {
-            val cities = viewModel.cities
-            createDialogSelectAddress(
-                cities,
-                DialogInterface.OnClickListener {
-                        _, index ->
-                    viewModel.onCitySelected(cities[index])
-                })
-        }
 
         viewModel.navigateToManageAddress.observe(viewLifecycleOwner, Observer {
             if(it){
@@ -79,6 +50,31 @@ class ClientAddFragment : Fragment() {
                 viewModel.doneNavigation()
             }
         })
+
+       viewModel.openSelectNeighborhood.observe(viewLifecycleOwner, Observer {
+           if (it) {
+            createDialogSelectAddress(
+                viewModel.neighborhoods,
+                DialogInterface.OnClickListener {
+                        _, index ->
+                    viewModel.onNeighborhoodSelected(viewModel.neighborhoods[index]) })
+            viewModel.doneNavigation()
+           }
+       })
+
+        viewModel.openSelectCity.observe(viewLifecycleOwner, Observer {
+           if (it) {
+            createDialogSelectAddress(
+                viewModel.cities,
+                DialogInterface.OnClickListener {
+                        _, index ->
+                    viewModel.onCitySelected(viewModel.cities[index]) })
+            viewModel.doneNavigation()
+           }
+       })
+
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
 
         return binding.root
     }
@@ -90,9 +86,20 @@ class ClientAddFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
-            R.id.action_add_address -> viewModel.onClickMenuItemAddAddress()
+            R.id.action_add_address -> viewModel.onClickAddAddress()
+            R.id.action_save -> viewModel.onClickSave()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        /**
+         * In the case that a address is added
+         * it ensures that the address fields are up to date
+         * when user backs to screen
+         */
+        viewModel.fetchAddress()
     }
 
     private fun createDialogSelectAddress(
@@ -101,9 +108,9 @@ class ClientAddFragment : Fragment() {
     ) {
         context?.let {
             MaterialAlertDialogBuilder(it)
-                .setTitle("Selecione um item")
+                .setTitle(getString(R.string.dialog_select_address_title))
                 .setItems(items, clickListener)
-                .setNegativeButton("Cancelar", null)
+                .setNegativeButton(getString(R.string.dialog_select_address_negative_button), null)
                 .show()
         }
     }

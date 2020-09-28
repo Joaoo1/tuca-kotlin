@@ -36,14 +36,11 @@
         android:label="@string/title_fragment_client_list"
         tools:layout="@layout/fragment_client_list">
         <action
-            android:id="@+id/action_clientListFragment_to_clientEditFragment"
-            app:destination="@id/client_edit_fragment" />
-        <action
             android:id="@+id/action_clientListFragment_to_clientAddFragment"
             app:destination="@id/client_add_fragment" />
         <action
-            android:id="@+id/action_client_list_fragment_to_sales_info_fragment"
-            app:destination="@id/sales_info_fragment" />
+            android:id="@+id/action_client_list_fragment_to_client_info_fragment"
+            app:destination="@id/client_info_fragment" />
     </fragment>
 
     <fragment
@@ -118,11 +115,11 @@
         android:label="@string/title_fragment_sale_list"
         tools:layout="@layout/fragment_sale_list">
         <action
-            android:id="@+id/action_sales_list_fragment_to_sales_add_fragment"
-            app:destination="@id/sales_add_fragment" />
-        <action
             android:id="@+id/action_sales_list_fragment_to_sales_info_fragment"
             app:destination="@id/sales_info_fragment" />
+        <action
+            android:id="@+id/action_sale_list_fragment_to_sales_add_fragment"
+            app:destination="@id/sales_add_fragment" />
     </fragment>
 
     <fragment
@@ -219,5 +216,20 @@
         android:name="com.joaovitor.tucaprodutosdelimpeza.ui.settings.ManageAddressFragment"
         android:label="@string/title_fragment_manage_address"
         tools:layout="@layout/fragment_manage_address" />
+   <fragment
+        android:id="@+id/client_info_fragment"
+        android:name="com.joaovitor.tucaprodutosdelimpeza.ui.client.info.ClientInfoFragment"
+        android:label=""
+        tools:layout="@layout/fragment_client_info">
+        <argument
+            android:name="client"
+            app:argType="com.joaovitor.tucaprodutosdelimpeza.data.model.Client" />
+        <action
+            android:id="@+id/action_client_info_fragment_to_client_edit_fragment"
+            app:destination="@id/client_edit_fragment" />
+       <action
+           android:id="@+id/action_client_info_fragment_to_sales_info_fragment"
+           app:destination="@id/sales_info_fragment" />
+   </fragment>
 
 </navigation>

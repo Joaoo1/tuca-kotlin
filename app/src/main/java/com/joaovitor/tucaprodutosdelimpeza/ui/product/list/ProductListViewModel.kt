@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.joaovitor.tucaprodutosdelimpeza.data.ProductRepository
-import com.joaovitor.tucaprodutosdelimpeza.data.SaleRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -17,6 +16,10 @@ class ProductListViewModel : ViewModel() {
     private var productRepository = ProductRepository()
 
     init {
+       fetchProducts()
+    }
+
+    private fun fetchProducts() {
         GlobalScope.launch {
             products.postValue(productRepository.getProducts())
         }
@@ -43,6 +46,10 @@ class ProductListViewModel : ViewModel() {
 
     fun onProductClicked(product: Product) {
         _navigateToEdit.value = product
+    }
+
+    fun onClickRefreshList() {
+        fetchProducts()
     }
 
 }

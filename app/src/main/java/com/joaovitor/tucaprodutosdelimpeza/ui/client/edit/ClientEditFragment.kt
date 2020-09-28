@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.navigateUp
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.joaovitor.tucaprodutosdelimpeza.R
@@ -21,7 +22,6 @@ import com.joaovitor.tucaprodutosdelimpeza.ui.sale.add.SaleAddViewModelFactory
 
 class ClientEditFragment : Fragment() {
 
-    private lateinit var client: Client
     private lateinit var viewModel: ClientEditViewModel
 
     override fun onCreateView(
@@ -31,17 +31,13 @@ class ClientEditFragment : Fragment() {
         setHasOptionsMenu(true)
 
         //Create the viewModel
-        client = arguments?.let { ClientEditFragmentArgs.fromBundle(it).client }!!
-        val viewModelFactory = ClientEditViewModelFactory(client)
-        viewModel = ViewModelProvider(requireActivity(), viewModelFactory)
+        val viewModelFactory = ClientEditViewModelFactory(ClientEditFragmentArgs.fromBundle(requireArguments()).client)
+        viewModel = ViewModelProvider(this, viewModelFactory)
             .get(ClientEditViewModel::class.java)
 
         // Inflate the layout for this fragment
         val binding: FragmentClientEditBinding = DataBindingUtil.inflate(
             inflater,R.layout.fragment_client_edit, container, false)
-
-        binding.lifecycleOwner = viewLifecycleOwner
-        binding.viewModel = viewModel
 
         viewModel.streets.observe(viewLifecycleOwner, Observer {
             it?.let {
@@ -53,34 +49,44 @@ class ClientEditFragment : Fragment() {
             }
         })
 
-        binding.neighborhood.editText?.setOnClickListener {
-            val neighborhoods = viewModel.neighborhoods.toTypedArray()
-            createDialogSelectAddress(
-                neighborhoods,
-                DialogInterface.OnClickListener {
-                        _, index ->
-                    viewModel.onNeighborhoodSelected(neighborhoods[index])
-                })
-        }
+        viewModel.openSelectNeighborhood.observe(viewLifecycleOwner, Observer {
+            if(it) {
+                createDialogSelectAddress(
+                    viewModel.neighborhoods,
+                    DialogInterface.OnClickListener {
+                            _, index ->
+                        viewModel.onNeighborhoodSelected(viewModel.neighborhoods[index])
+                    })
+            }
+        })
 
-        binding.city.editText?.setOnClickListener {
-            val cities = viewModel.cities.toTypedArray()
-            createDialogSelectAddress(
-                cities,
-                DialogInterface.OnClickListener {
-                        _, index ->
-                   viewModel.onCitySelected(cities[index])
-                })
-        }
+        viewModel.openSelectCity.observe(viewLifecycleOwner, Observer {
+            if(it) {
+                createDialogSelectAddress(
+                    viewModel.cities,
+                    DialogInterface.OnClickListener {
+                            _, index ->
+                        viewModel.onCitySelected(viewModel.cities[index])
+                    })
+            }
+        })
 
         viewModel.navigateToManageAddress.observe(viewLifecycleOwner, Observer {
             if(it){
                 findNavController().navigate(
                     ClientEditFragmentDirections.actionClientEditFragmentToManageAddressFragment())
                 viewModel.doneNavigation()
-
             }
         })
+        viewModel.navigateBack.observe(viewLifecycleOwner, Observer {
+            if(it){
+                findNavController().navigateUp()
+                viewModel.doneNavigation()
+            }
+        })
+
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
 
         return binding.root
     }
@@ -94,6 +100,7 @@ class ClientEditFragment : Fragment() {
         when(item.itemId) {
             R.id.action_delete_client -> createDeleteClientDialog()
             R.id.action_add_address -> viewModel.onClickMenuItemAddAddress()
+            R.id.action_save -> viewModel.onClickSave()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -105,8 +112,7 @@ class ClientEditFragment : Fragment() {
                 .setMessage(getString(R.string.dialog_delete_client_message))
                 .setNegativeButton(getString(R.string.dialog_delete_client_negative_button),
                     null)
-                .setPositiveButton(getString(R.string.dialog_delete_client_positive_button),
-                    null)
+                .setPositiveButton(getString(R.string.dialog_delete_client_positive_button)) { _, _ -> viewModel.onClickDeleteClient() }
                 .show()
         }
     }

@@ -90,7 +90,7 @@ class SaleEditProductsViewModel(var mSale: Sale) : ViewModel() {
         /**
          * Check if the new product is already on list
          * If so, just increment the quantity of existing product
-         * Otherwise, add the zproduct to list
+         * Otherwise, add the product to list
          */
         val mProducts = _products.value!!
         for(product in mProducts) {
@@ -128,6 +128,7 @@ class SaleEditProductsViewModel(var mSale: Sale) : ViewModel() {
 
         GlobalScope.launch(Dispatchers.Default) {
             SaleRepository().editSale(mSale)
+            _navigateBack.postValue(true)
             //TODO: Show a success message: Products added successfully
         }
     }
@@ -138,5 +139,6 @@ class SaleEditProductsViewModel(var mSale: Sale) : ViewModel() {
 
     fun doneNavigation(){
         _openAddProductDialog.value = false
+        _navigateBack.value = false
     }
 }

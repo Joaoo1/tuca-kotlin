@@ -1,10 +1,9 @@
 package com.joaovitor.tucaprodutosdelimpeza.data
 
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.*
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Client
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
+import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
 import kotlinx.coroutines.tasks.await
 
 class ClientRepository {
@@ -24,4 +23,39 @@ class ClientRepository {
             client
         }
     }
+
+    suspend fun addClient(client: Client): Result<Void> {
+        return try {
+            colRef.add(client).await()
+
+            //client successful added
+            Result.Success(null)
+        }catch (e: FirebaseFirestoreException) {
+            Result.Error(e)
+        }
+    }
+
+     suspend fun editClient(client: Client): Result<Void> {
+        return try {
+            colRef.document(client.id).set(client, SetOptions.merge()).await()
+
+            //client successful edit
+            Result.Success(null)
+        }catch (e: FirebaseFirestoreException) {
+            Result.Error(e)
+        }
+    }
+
+    suspend fun deleteClient(clientId: String): Result<Void> {
+        return try {
+            colRef.document(clientId).delete().await()
+
+            //client successful added
+            Result.Success(null)
+        }catch (e: FirebaseFirestoreException) {
+            Result.Error(e)
+        }
+    }
+
+
 }
