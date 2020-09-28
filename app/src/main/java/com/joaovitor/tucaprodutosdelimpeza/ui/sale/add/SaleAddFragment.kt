@@ -57,8 +57,8 @@ class SaleAddFragment : Fragment() {
         }
 
         binding.addProduct.setOnClickListener {
-            viewModel.addProduct(binding.product.editText.text.toString())
-            binding.product.editText.setText("")
+            viewModel.addProduct(binding.product.editText?.text.toString())
+            binding.product.editText?.setText("")
         }
 
         /* Setting up products AutoCompleteTextView */

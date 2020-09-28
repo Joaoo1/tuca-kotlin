@@ -3,20 +3,23 @@ package com.joaovitor.tucaprodutosdelimpeza.data
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
+import com.joaovitor.tucaprodutosdelimpeza.data.model.City
+import com.joaovitor.tucaprodutosdelimpeza.data.util.Firestore
 import kotlinx.coroutines.tasks.await
 
 class CityRepository {
 
     private var colRef: CollectionReference =
-        FirebaseFirestore.getInstance().collection("cidades")
+        FirebaseFirestore.getInstance().collection(Firestore.COL_CITIES)
 
-    suspend fun getCities(): List<String> {
-        val querySnapshot = colRef.orderBy("nome_cidade").get().await()
+    suspend fun getCities(): List<City> {
+        val querySnapshot = colRef.orderBy(Firestore.CITY_NAME).get().await()
 
-        val cities: ArrayList<String> = arrayListOf()
+        val cities: MutableList<City> = mutableListOf()
 
         for (doc in querySnapshot){
-            val city = doc.get("nome_cidade") as String
+            val city = doc.toObject(City::class.java)
+            city.id = doc.id
             cities.add(city)
         }
         return cities
@@ -26,7 +29,7 @@ class CityRepository {
         return try {
             colRef.add(city).await()
 
-            //product successful added
+            //city successful added
             Result.Success(null)
         }catch (e: FirebaseFirestoreException) {
             Result.Error(e)

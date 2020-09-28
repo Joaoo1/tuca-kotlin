@@ -22,4 +22,14 @@ object Firestore {
     const val SALE_TO_RECEIVE = "valorAReceber"
     const val SALE_SELLER = "seller"
     const val SALE_SELLER_UID = "sellerUid"
+
+    const val COL_STREETS = "ruas"
+    const val STREET_NAME = "nome_rua"
+
+    const val COL_NEIGHBORHOODS = "bairros"
+    const val NEIGHBORHOOD_NAME = "nome_bairro"
+
+    const val COL_CITIES = "bairros"
+    const val CITY_NAME = "nome_bairro"
+
 }

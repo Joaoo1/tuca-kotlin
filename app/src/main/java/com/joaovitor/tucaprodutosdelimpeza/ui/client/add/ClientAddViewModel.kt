@@ -8,9 +8,7 @@ import com.joaovitor.tucaprodutosdelimpeza.data.ClientRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.NeighborhoodRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.Result
 import com.joaovitor.tucaprodutosdelimpeza.data.StreetRepository
-import com.joaovitor.tucaprodutosdelimpeza.data.model.Client
-import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
-import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
+import com.joaovitor.tucaprodutosdelimpeza.data.model.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
@@ -21,16 +19,16 @@ class ClientAddViewModel : ViewModel() {
 
     var client = MutableLiveData(Client())
 
-    private var _streets = MutableLiveData<List<String>>()
-    val streets: LiveData<List<String>>
+    private var _streets = MutableLiveData<List<Street>>()
+    val streets: LiveData<List<Street>>
         get() = _streets
 
-    private var _neighborhoods: MutableList<String> = mutableListOf()
-    val neighborhoods: Array<String>
+    private var _neighborhoods: MutableList<Neighborhood> = mutableListOf()
+    val neighborhoods: Array<Neighborhood>
         get() = _neighborhoods.toTypedArray()
 
-    private var _cities: MutableList<String> = mutableListOf()
-    val cities: Array<String>
+    private var _cities: MutableList<City> = mutableListOf()
+    val cities: Array<City>
         get() = _cities.toTypedArray()
 
     private var _navigateToManageAddress = MutableLiveData<Boolean>()
