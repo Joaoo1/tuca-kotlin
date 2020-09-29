@@ -3,6 +3,8 @@
 
     <data>
         <import type="com.joaovitor.tucaprodutosdelimpeza.util.Converter" />
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="com.joaovitor.tucaprodutosdelimpeza.ui.product.edit.ProductEditViewModel" />
@@ -43,12 +45,12 @@
             android:layout_height="wrap_content"
             android:width="220dp"
             android:ems="10"
-            android:enabled="false"
-            android:textColor="@color/colorLightGray"
+            android:textColor="@color/colorGreenStock"
             android:inputType="number"
             android:text="@={Converter.intToString(viewModel.product.stock)}"
             android:textAlignment="center"
             android:textSize="80sp"
+            android:visibility="@{viewModel.product.manageStock ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toTopOf="@+id/update_stock"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

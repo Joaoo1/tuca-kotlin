@@ -1,6 +1,6 @@
 package com.joaovitor.tucaprodutosdelimpeza.ui.product.edit
 
-import androidx.lifecycle.LiveData
+import androidx.databinding.BaseObservable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.joaovitor.tucaprodutosdelimpeza.data.ProductRepository
@@ -8,8 +8,10 @@ import com.joaovitor.tucaprodutosdelimpeza.data.Result
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
+import java.math.RoundingMode
 
-class ProductEditViewModel(var mProduct: Product) : ViewModel() {
+class ProductEditViewModel(private var mProduct: Product) : ViewModel() {
 
     var product = MutableLiveData<Product>(mProduct.copy())
 
@@ -19,7 +21,15 @@ class ProductEditViewModel(var mProduct: Product) : ViewModel() {
             return
         }
 
+        if(product.value!!.price.last() == '.' ) {
+            //TODO: Show a error message: value invalid
+            return
+        }
+
         GlobalScope.launch {
+            product.value!!.price = BigDecimal(product.value!!.price)
+                .setScale(2, RoundingMode.FLOOR).toString()
+
             val result = ProductRepository().editProduct(product.value!!)
 
             if(result is Result.Success) {
@@ -49,6 +59,10 @@ class ProductEditViewModel(var mProduct: Product) : ViewModel() {
                 return@launch
             }
         }
+    }
+
+    fun setManageStock(checked: Boolean) {
+        product.value?.manageStock = checked
     }
 
 }
