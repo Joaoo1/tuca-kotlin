@@ -52,9 +52,9 @@ class ClientEditViewModel(var mClient: Client) : ViewModel() {
 
     init {
         GlobalScope.launch {
-            _streets.postValue(StreetRepository().getStreets())
-            _neighborhoods.addAll(NeighborhoodRepository().getNeighborhoods())
-            _cities.addAll(CityRepository().getCities())
+            _streets.postValue(StreetRepository().getStreets().map { it.name })
+            _neighborhoods.addAll(NeighborhoodRepository().getNeighborhoods().map { it.name })
+            _cities.addAll(CityRepository().getCities().map { it.name })
         }
     }
 

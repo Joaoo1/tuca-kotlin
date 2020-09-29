@@ -70,9 +70,9 @@ class ReportSalesViewModel : ViewModel() {
     private fun openSelectAddressDialog() {
         GlobalScope.launch {
             val address: List<String> = when(addressRadioChecked.value){
-                R.id.radio_button_street ->  StreetRepository().getStreets()
-                R.id.radio_button_neighborhood ->  NeighborhoodRepository().getNeighborhoods()
-                R.id.radio_button_city ->  CityRepository().getCities()
+                R.id.radio_button_street ->  StreetRepository().getStreets().map { it.name }
+                R.id.radio_button_neighborhood ->  NeighborhoodRepository().getNeighborhoods().map { it.name }
+                R.id.radio_button_city ->  CityRepository().getCities().map { it.name }
                 else -> listOf()
             }
 

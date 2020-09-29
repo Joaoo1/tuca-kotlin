@@ -24,11 +24,11 @@ class ManageAddressViewModel : ViewModel() {
         CITY("cidade"),
     }
 
-    private var streets: List<Street> = emptyList()
+    private var streets: MutableList<Street> = mutableListOf()
 
-    private var neighborhoods: List<Neighborhood> = emptyList()
+    private var neighborhoods: MutableList<Neighborhood> = mutableListOf()
 
-    private var cities: List<City> = emptyList()
+    private var cities: MutableList<City> = mutableListOf()
 
     private var _openDialogAddAddress = MutableLiveData<AddressType>()
     val openDialogAddAddress: LiveData<AddressType>
@@ -56,43 +56,43 @@ class ManageAddressViewModel : ViewModel() {
 
     fun onClickEditStreet(){
         GlobalScope.launch {
-            streets = StreetRepository().getStreets()
-            _openDialogEditAddress.postValue(AddressObject(AddressType.STREET, streets.map { it.name }))
+            streets = StreetRepository().getStreets().toMutableList()
+            _openDialogEditAddress.postValue(AddressObject(AddressType.STREET, streets.map{it.copy()}))
         }
     }
 
     fun onClickEditNeighborhood(){
         GlobalScope.launch {
-            neighborhoods = NeighborhoodRepository().getNeighborhoods()
-            _openDialogEditAddress.postValue(AddressObject(AddressType.NEIGHBORHOOD, neighborhoods.map { it.name }))
+            neighborhoods = NeighborhoodRepository().getNeighborhoods().toMutableList()
+            _openDialogEditAddress.postValue(AddressObject(AddressType.NEIGHBORHOOD, neighborhoods.map{it.copy()}))
         }
     }
 
     fun onClickEditCity(){
         GlobalScope.launch {
-            cities = CityRepository().getCities()
-            _openDialogEditAddress.postValue(AddressObject(AddressType.CITY, cities.map { it.name }))
+            cities = CityRepository().getCities().toMutableList()
+            _openDialogEditAddress.postValue(AddressObject(AddressType.CITY, cities.map{it.copy()}))
         }
     }
 
     fun onClickDeleteStreet(){
         GlobalScope.launch {
-            streets = StreetRepository().getStreets()
-            _openDialogDeleteAddress.postValue(AddressObject(AddressType.STREET, streets.map { it.name }))
+            streets = StreetRepository().getStreets().toMutableList()
+            _openDialogDeleteAddress.postValue(AddressObject(AddressType.STREET, streets.map{it.copy()}))
         }
     }
 
     fun onClickDeleteNeighborhood(){
         GlobalScope.launch {
-            neighborhoods = NeighborhoodRepository().getNeighborhoods()
-            _openDialogDeleteAddress.postValue(AddressObject(AddressType.NEIGHBORHOOD, neighborhoods.map { it.name }))
+            neighborhoods = NeighborhoodRepository().getNeighborhoods().toMutableList()
+            _openDialogDeleteAddress.postValue(AddressObject(AddressType.NEIGHBORHOOD, neighborhoods.map{it.copy()}))
         }
     }
 
     fun onClickDeleteCity(){
         GlobalScope.launch {
-            cities = CityRepository().getCities()
-            _openDialogDeleteAddress.postValue(AddressObject(AddressType.CITY, cities.map { it.name }))
+            cities = CityRepository().getCities().toMutableList()
+            _openDialogDeleteAddress.postValue(AddressObject(AddressType.CITY, cities.map{it.copy()}))
         }
     }
 
@@ -102,7 +102,7 @@ class ManageAddressViewModel : ViewModel() {
         _openDialogDeleteAddress.value = null
     }
 
-    fun onClickAddAddresstPositiveButton(addressName: String, type: AddressType) {
+    fun onClickAddAddressPositiveButton(addressName: String, type: AddressType) {
         if(addressName.isEmpty()) {
             //TODO: Show error message: field name can't be empty
             return
@@ -110,9 +110,59 @@ class ManageAddressViewModel : ViewModel() {
 
         GlobalScope.launch {
             val result = when(type){
-                AddressType.STREET -> StreetRepository().addStreet(addressName)
-                AddressType.NEIGHBORHOOD -> NeighborhoodRepository().addNeighborhood(addressName)
-                AddressType.CITY -> CityRepository().addCity(addressName)
+                AddressType.STREET -> StreetRepository().addStreet(Street("", addressName))
+                AddressType.NEIGHBORHOOD -> NeighborhoodRepository().addNeighborhood(Neighborhood("", addressName))
+                AddressType.CITY -> CityRepository().addCity(City("", addressName))
+            }
+
+            if(result is Result.Success) {
+                //TODO: Show success message
+            } else {
+                //TODO: Show error message
+                return@launch
+            }
+        }
+    }
+
+    fun onClickEditAddressPositiveButton(address: Address, type: AddressType) {
+        if(address.name.isEmpty()) {
+            //TODO: Show error message: field name can't be empty
+            return
+        }
+
+        val addressAlreadyExists: Int = when(type) {
+            AddressType.STREET -> streets.map { it.name }.indexOf(address.name)
+            AddressType.NEIGHBORHOOD -> neighborhoods.map { it.name }.indexOf(address.name)
+            AddressType.CITY -> cities.map { it.name }.indexOf(address.name)
+        }
+
+        if(addressAlreadyExists != -1) {
+            //TODO: Show error message: address already exists
+            return
+        }
+
+        GlobalScope.launch {
+            val result = when(type){
+                AddressType.STREET -> StreetRepository().editStreet(address as Street)
+                AddressType.NEIGHBORHOOD -> NeighborhoodRepository().editNeighborhood(address as Neighborhood)
+                AddressType.CITY -> CityRepository().editCity(address as City)
+            }
+
+            if(result is Result.Success) {
+                //TODO: Show success message
+            } else {
+                //TODO: Show error message
+                return@launch
+            }
+        }
+    }
+
+    fun onClickDeleteAddressPositiveButton(addressId: String, type: AddressType) {
+        GlobalScope.launch {
+            val result = when(type){
+                AddressType.STREET -> StreetRepository().deleteStreet(addressId)
+                AddressType.NEIGHBORHOOD -> NeighborhoodRepository().deleteNeighborhood(addressId)
+                AddressType.CITY -> CityRepository().deleteCity(addressId)
             }
 
             if(result is Result.Success) {

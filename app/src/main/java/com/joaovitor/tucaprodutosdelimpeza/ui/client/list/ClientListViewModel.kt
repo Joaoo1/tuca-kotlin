@@ -15,13 +15,6 @@ class ClientListViewModel : ViewModel() {
 
     var clients = MutableLiveData<List<Client>>(emptyList())
 
-    init {
-        GlobalScope.launch {
-            clients.postValue(ClientRepository().getClients())
-        }
-    }
-
-    //navigation
     private var _navigateToAdd = MutableLiveData<Boolean>()
     val navigateToAdd: LiveData<Boolean>
         get() = _navigateToAdd
@@ -29,6 +22,20 @@ class ClientListViewModel : ViewModel() {
     private var _navigateToInfo = MutableLiveData<Client>()
     val navigateToInfo: LiveData<Client>
         get() = _navigateToInfo
+
+    init {
+       fetchClients()
+    }
+
+    private fun fetchClients() {
+        GlobalScope.launch {
+            clients.postValue(ClientRepository().getClients())
+        }
+    }
+
+    fun onClickRefreshList() {
+        fetchClients()
+    }
 
     fun onClickFab(){
         _navigateToAdd.value = true

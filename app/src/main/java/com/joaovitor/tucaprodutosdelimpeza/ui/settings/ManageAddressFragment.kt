@@ -86,7 +86,7 @@ class ManageAddressFragment : Fragment() {
                 .setView(binding.root)
                 .setNegativeButton("Cancelar", null)
                 .setPositiveButton("Salvar") { _,_ ->
-                    viewModel.onClickAddAddresstPositiveButton(
+                    viewModel.onClickAddAddressPositiveButton(
                         binding.addressName.editText!!.text.toString(),
                         type
                     )
@@ -117,22 +117,26 @@ class ManageAddressFragment : Fragment() {
         binding.name = address.name
 
         context?.let {
+
             MaterialAlertDialogBuilder(it)
                 .setTitle("Editar "+type.value)
                 .setMessage("Digite o novo nome do(a) "+type.value)
                 .setView(binding.root)
                 .setNegativeButton("Cancelar", null)
-                .setPositiveButton("Salvar", null)
+                .setPositiveButton("Salvar") { _, _ ->
+                    address.name = binding.addressName.editText!!.text.toString()
+                    viewModel.onClickEditAddressPositiveButton(address, type)}
                 .show()}
     }
 
-    private fun createDialogDeleteAddress(type: ManageAddressViewModel.AddressType, address: Any) {
+    private fun createDialogDeleteAddress(type: ManageAddressViewModel.AddressType, address: Address) {
         context?.let {
             MaterialAlertDialogBuilder(it)
-                .setTitle("Excluir $address.name")
+                .setTitle("Excluir "+address.name)
                 .setMessage("Esta ação irá deletar o(a) "+type.value+" permanentemente")
                 .setNegativeButton("Cancelar", null)
-                .setPositiveButton("Salvar", null)
+                .setPositiveButton("Salvar") { _, _ ->
+                    viewModel.onClickDeleteAddressPositiveButton(address.id, type)}
                 .show()}
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
-        <data>
+    <data>
         <variable
             name="name"
             type="java.lang.String" />
@@ -24,7 +24,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@{name}"/>
+                android:text="@={name}"/>
         </com.google.android.material.textfield.TextInputLayout>
 
     </FrameLayout>

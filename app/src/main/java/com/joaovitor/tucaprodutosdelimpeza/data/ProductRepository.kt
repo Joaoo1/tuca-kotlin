@@ -43,4 +43,15 @@ class ProductRepository {
             Result.Error(e)
         }
     }
+
+    suspend fun editProduct(product: Product): Result<Any> {
+        return try {
+            colRef.document(product.id).set(product).await()
+
+            //product successful added
+            Result.Success(null)
+        }catch (e: FirebaseFirestoreException) {
+            Result.Error(e)
+        }
+    }
 }

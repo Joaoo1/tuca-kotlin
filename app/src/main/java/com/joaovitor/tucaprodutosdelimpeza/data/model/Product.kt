@@ -30,4 +30,12 @@ data class Product(
     fun toProductSale(quantity: Int): ProductSale{
         return ProductSale(this.name, this.price, quantity, Date(), this.id)
     }
+
+    fun bind(product: Product) {
+        this.id = product.id
+        this.name = product.name
+        this.price = product.price
+        this.manageStock = product.manageStock
+        this.stock = product.stock
+    }
 }

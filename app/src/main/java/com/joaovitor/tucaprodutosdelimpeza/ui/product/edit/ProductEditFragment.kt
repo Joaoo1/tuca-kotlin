@@ -1,16 +1,17 @@
 package com.joaovitor.tucaprodutosdelimpeza.ui.product.edit
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentProductEditBinding
-import com.joaovitor.tucaprodutosdelimpeza.ui.product.list.ProductListViewModel
-import com.joaovitor.tucaprodutosdelimpeza.ui.product.list.ProductListViewModelFactory
-import com.joaovitor.tucaprodutosdelimpeza.ui.sale.info.SaleInfoFragmentArgs
 
 class ProductEditFragment : Fragment() {
 

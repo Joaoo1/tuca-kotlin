@@ -2,9 +2,10 @@
 <layout>
 
     <data>
+        <import type="com.joaovitor.tucaprodutosdelimpeza.util.Converter" />
         <variable
-            name="product"
-            type="com.joaovitor.tucaprodutosdelimpeza.data.model.Product" />
+            name="viewModel"
+            type="com.joaovitor.tucaprodutosdelimpeza.ui.product.edit.ProductEditViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="12dp"
-            android:checked="@{product.manageStock}"
+            android:checked="@{viewModel.product.manageStock}"
             android:text="@string/product_edit_label_switch_stock"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -42,11 +43,11 @@
             android:layout_height="wrap_content"
             android:width="220dp"
             android:ems="10"
-            android:inputType="number"
             android:enabled="false"
-            android:text="@{String.valueOf(product.stock)}"
-            android:textAlignment="center"
             android:textColor="@color/colorLightGray"
+            android:inputType="number"
+            android:text="@={Converter.intToString(viewModel.product.stock)}"
+            android:textAlignment="center"
             android:textSize="80sp"
             app:layout_constraintBottom_toTopOf="@+id/update_stock"
             app:layout_constraintEnd_toEndOf="parent"
@@ -89,6 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:text="@string/product_edit_save_product"
+            android:onClick="@{() -> viewModel.onClickSaveEditStock()}"
             android:layout_marginHorizontal="16dp"
             app:layout_constraintBottom_toBottomOf="parent" />
 

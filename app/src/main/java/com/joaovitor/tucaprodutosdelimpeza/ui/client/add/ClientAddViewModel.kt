@@ -19,16 +19,16 @@ class ClientAddViewModel : ViewModel() {
 
     var client = MutableLiveData(Client())
 
-    private var _streets = MutableLiveData<List<Street>>()
-    val streets: LiveData<List<Street>>
+    private var _streets = MutableLiveData<List<String>>()
+    val streets: LiveData<List<String>>
         get() = _streets
 
-    private var _neighborhoods: MutableList<Neighborhood> = mutableListOf()
-    val neighborhoods: Array<Neighborhood>
+    private var _neighborhoods: MutableList<String> = mutableListOf()
+    val neighborhoods: Array<String>
         get() = _neighborhoods.toTypedArray()
 
-    private var _cities: MutableList<City> = mutableListOf()
-    val cities: Array<City>
+    private var _cities: MutableList<String> = mutableListOf()
+    val cities: Array<String>
         get() = _cities.toTypedArray()
 
     private var _navigateToManageAddress = MutableLiveData<Boolean>()
@@ -45,9 +45,9 @@ class ClientAddViewModel : ViewModel() {
 
     fun fetchAddress() {
         GlobalScope.launch {
-            _streets.postValue(StreetRepository().getStreets())
-            _neighborhoods.addAll(NeighborhoodRepository().getNeighborhoods())
-            _cities.addAll(CityRepository().getCities())
+            _streets.postValue(StreetRepository().getStreets().map { it.name })
+            _neighborhoods.addAll(NeighborhoodRepository().getNeighborhoods().map { it.name })
+            _cities.addAll(CityRepository().getCities().map { it.name })
         }
     }
 

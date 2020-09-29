@@ -9,7 +9,6 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentProductEditStockBinding
@@ -20,6 +19,7 @@ class ProductEditStockFragment(val product: Product) : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         // Inflate the layout for this fragment
         val binding: FragmentProductEditStockBinding = DataBindingUtil.inflate(
             inflater,
@@ -45,17 +45,11 @@ class ProductEditStockFragment(val product: Product) : Fragment() {
             .get(ProductEditViewModel::class.java)
 
         viewModel.product.observe(viewLifecycleOwner, Observer {
-            binding.product = it
+            println("teste")
         })
 
-        viewModel.product.value?.let {
-            if(it.manageStock) binding.switchStock.isChecked = true
-        }
-
-        binding.stockHistory.setOnClickListener {
-            this.findNavController()
-                .navigate(ProductEditFragmentDirections.actionProductEditFragmentToStockHistoryFragment(product.id))
-        }
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
 
         return binding.root
     }

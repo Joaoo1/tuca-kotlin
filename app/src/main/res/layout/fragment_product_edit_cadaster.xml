@@ -2,8 +2,8 @@
 <layout>
     <data>
         <variable
-            name="product"
-            type="com.joaovitor.tucaprodutosdelimpeza.data.model.Product" />
+            name="viewModel"
+            type="com.joaovitor.tucaprodutosdelimpeza.ui.product.edit.ProductEditViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,7 +27,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{product.name}"
+                android:text="@={viewModel.product.name}"
                 android:inputType="textCapWords"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -44,7 +44,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{product.price}"
+                android:text="@={viewModel.product.price}"
                 android:inputType="numberDecimal"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -52,6 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:text="@string/product_edit_save_product"
+            android:onClick="@{() -> viewModel.onClickSaveEditCadaster()}"
             app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

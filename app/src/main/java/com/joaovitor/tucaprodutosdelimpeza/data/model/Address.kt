@@ -1,6 +1,8 @@
 package com.joaovitor.tucaprodutosdelimpeza.data.model
 
-interface Address {
+import java.io.Serializable
+
+interface Address: Serializable {
     var id: String
     var name: String
 }

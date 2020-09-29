@@ -27,11 +27,33 @@ class StreetRepository {
         return streets
     }
 
-    suspend fun addStreet(street: String): Result<Any> {
+    suspend fun addStreet(street: Street): Result<Any> {
         return try {
             colRef.add(street).await()
 
             //street successful added
+            Result.Success(null)
+        }catch (e: FirebaseFirestoreException) {
+            Result.Error(e)
+        }
+    }
+
+    suspend fun editStreet(street: Street): Result<Any> {
+        return try {
+            colRef.document(street.id).set(street).await()
+
+            //street successful edited
+            Result.Success(null)
+        }catch (e: FirebaseFirestoreException) {
+            Result.Error(e)
+        }
+    }
+
+    suspend fun deleteStreet(streetId: String): Result<Any> {
+        return try {
+            colRef.document(streetId).delete().await()
+
+            //street successful deleted
             Result.Success(null)
         }catch (e: FirebaseFirestoreException) {
             Result.Error(e)

@@ -4,6 +4,7 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.joaovitor.tucaprodutosdelimpeza.data.model.City
+import com.joaovitor.tucaprodutosdelimpeza.data.model.Street
 import com.joaovitor.tucaprodutosdelimpeza.data.util.Firestore
 import kotlinx.coroutines.tasks.await
 
@@ -25,11 +26,33 @@ class CityRepository {
         return cities
     }
 
-    suspend fun addCity(city: String): Result<Any> {
+    suspend fun addCity(city: City): Result<Any> {
         return try {
             colRef.add(city).await()
 
             //city successful added
+            Result.Success(null)
+        }catch (e: FirebaseFirestoreException) {
+            Result.Error(e)
+        }
+    }
+
+    suspend fun editCity(city: City): Result<Any> {
+        return try {
+            colRef.document(city.id).set(city).await()
+
+            //city successful edited
+            Result.Success(null)
+        }catch (e: FirebaseFirestoreException) {
+            Result.Error(e)
+        }
+    }
+
+    suspend fun deleteCity(cityId: String): Result<Any> {
+        return try {
+            colRef.document(cityId).delete().await()
+
+            //street successful deleted
             Result.Success(null)
         }catch (e: FirebaseFirestoreException) {
             Result.Error(e)

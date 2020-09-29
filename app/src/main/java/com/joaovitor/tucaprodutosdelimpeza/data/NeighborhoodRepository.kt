@@ -25,11 +25,34 @@ class NeighborhoodRepository {
         return neighborhoods
     }
 
-    suspend fun addNeighborhood(neighborhood: String): Result<Any> {
+    suspend fun addNeighborhood(neighborhood: Neighborhood): Result<Any> {
         return try {
             colRef.add(neighborhood).await()
 
             //neighborhood successful added
+            Result.Success(null)
+        }catch (e: FirebaseFirestoreException) {
+            Result.Error(e)
+        }
+    }
+
+
+    suspend fun editNeighborhood(neighborhood: Neighborhood): Result<Any> {
+        return try {
+            colRef.document(neighborhood.id).set(neighborhood).await()
+
+            //neighborhood successful edited
+            Result.Success(null)
+        }catch (e: FirebaseFirestoreException) {
+            Result.Error(e)
+        }
+    }
+
+    suspend fun deleteNeighborhood(neighborhoodId: String): Result<Any> {
+        return try {
+            colRef.document(neighborhoodId).delete().await()
+
+            //street successful deleted
             Result.Success(null)
         }catch (e: FirebaseFirestoreException) {
             Result.Error(e)

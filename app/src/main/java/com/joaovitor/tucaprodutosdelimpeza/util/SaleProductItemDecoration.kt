@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
@@ -68,7 +69,7 @@ class SaleProductItemDecoration(ctx: Context) :
     }
 
     init {
-        paint.color = ctx.resources.getColor(R.color.colorGray)
+        paint.color = ContextCompat.getColor(ctx, R.color.colorGray)
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = 3.toFloat()
         dividerHeight = 0

@@ -29,7 +29,7 @@ object Firestore {
     const val COL_NEIGHBORHOODS = "bairros"
     const val NEIGHBORHOOD_NAME = "nome_bairro"
 
-    const val COL_CITIES = "bairros"
-    const val CITY_NAME = "nome_bairro"
+    const val COL_CITIES = "cidades"
+    const val CITY_NAME = "nome_cidade"
 
 }

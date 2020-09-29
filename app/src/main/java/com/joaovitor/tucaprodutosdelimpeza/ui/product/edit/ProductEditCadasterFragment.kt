@@ -31,9 +31,7 @@ class ProductEditCadasterFragment(val product: Product) : Fragment() {
         val viewModel = ViewModelProvider(this,viewModelFactory)
             .get(ProductEditViewModel::class.java)
 
-        viewModel.product.observe(viewLifecycleOwner, Observer {
-            binding.product = it
-        })
+        binding.viewModel = viewModel
 
         return binding.root
     }
