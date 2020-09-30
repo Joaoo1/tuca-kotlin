@@ -124,16 +124,16 @@ class ManageAddressViewModel : ViewModel() {
         }
     }
 
-    fun onClickEditAddressPositiveButton(address: Address, type: AddressType) {
-        if(address.name.isEmpty()) {
+    fun onClickEditAddressPositiveButton(address: Address, newName:String, type: AddressType) {
+        if(newName.isEmpty()) {
             //TODO: Show error message: field name can't be empty
             return
         }
 
         val addressAlreadyExists: Int = when(type) {
-            AddressType.STREET -> streets.map { it.name }.indexOf(address.name)
-            AddressType.NEIGHBORHOOD -> neighborhoods.map { it.name }.indexOf(address.name)
-            AddressType.CITY -> cities.map { it.name }.indexOf(address.name)
+            AddressType.STREET -> streets.map { it.name }.indexOf(newName)
+            AddressType.NEIGHBORHOOD -> neighborhoods.map { it.name }.indexOf(newName)
+            AddressType.CITY -> cities.map { it.name }.indexOf(newName)
         }
 
         if(addressAlreadyExists != -1) {
@@ -143,9 +143,9 @@ class ManageAddressViewModel : ViewModel() {
 
         GlobalScope.launch {
             val result = when(type){
-                AddressType.STREET -> StreetRepository().editStreet(address as Street)
-                AddressType.NEIGHBORHOOD -> NeighborhoodRepository().editNeighborhood(address as Neighborhood)
-                AddressType.CITY -> CityRepository().editCity(address as City)
+                AddressType.STREET -> StreetRepository().editStreet(address as Street, newName)
+                AddressType.NEIGHBORHOOD -> NeighborhoodRepository().editNeighborhood(address as Neighborhood, newName)
+                AddressType.CITY -> CityRepository().editCity(address as City, newName)
             }
 
             if(result is Result.Success) {

@@ -40,12 +40,12 @@ class NeighborhoodRepository {
     }
 
 
-    suspend fun editNeighborhood(neighborhood: Neighborhood): Result<Any> {
+    suspend fun editNeighborhood(neighborhood: Neighborhood, newName: String): Result<Any> {
         return try {
-            colRef.document(neighborhood.id).set(neighborhood).await()
+            colRef.document(neighborhood.id).update(Firestore.NEIGHBORHOOD_NAME, newName).await()
 
             //neighborhood successful edited
-            updateSaleNeighborhoods(neighborhood.name)
+            updateSaleNeighborhoods(neighborhood.name, newName)
             Result.Success(null)
         }catch (e: FirebaseFirestoreException) {
             Result.Error(e)
@@ -64,16 +64,16 @@ class NeighborhoodRepository {
     }
 
 
-    private fun updateSaleNeighborhoods(neighborhoodName: String) {
+    private fun updateSaleNeighborhoods(neighborhoodName: String, newName: String) {
         GlobalScope.launch {
-            val clients = ClientRepository().getClientsByNeighborhood(neighborhoodName)
+            val clients = ClientRepository().updateClientsByNeighborhood(neighborhoodName, newName)
 
             for (client in clients) {
                 val querySnapshotSales = colSalesRef
                     .whereEqualTo(Firestore.SALE_CLIENT_ID, client.id).get().await()
 
                 for (doc in querySnapshotSales) {
-                    doc.reference.update(Firestore.SALE_CLIENT_NEIGHBORHOOD, neighborhoodName)
+                    doc.reference.update(Firestore.SALE_CLIENT_NEIGHBORHOOD, newName)
                 }
             }
         }

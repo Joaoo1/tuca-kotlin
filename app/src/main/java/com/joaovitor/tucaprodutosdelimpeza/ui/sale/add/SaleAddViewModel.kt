@@ -90,7 +90,7 @@ class SaleAddViewModel : ViewModel() {
         }
     }
 
-    private suspend fun addSale() {
+    private fun addSale() {
         if(validateFields()){
             val sale = Sale()
             sale.products = _products.value!!.toMutableList()
@@ -131,9 +131,11 @@ class SaleAddViewModel : ViewModel() {
             sale.seller = "João Vitor"
             sale.sellerUid = "asd"
 
-            saleRepository.addSale(sale) //TODO: Get result and show a respective message
+            GlobalScope.launch {
+                saleRepository.addSale(sale) //TODO: Get result and show a respective message
 
-            reset()
+                reset()
+            }
         }
     }
 
@@ -178,6 +180,10 @@ class SaleAddViewModel : ViewModel() {
         if(discount.value != null && discount.value!!.isNotEmpty() && discount.value!!.last() == '.' ) {
             //TODO: Show a error message: price invalid
             return false
+        }
+
+        if(discount.value != null && discount.value!!.isEmpty()){
+            discount.value = "0.00"
         }
 
         return true
@@ -248,8 +254,6 @@ class SaleAddViewModel : ViewModel() {
     }
 
     fun onClickAddSale() {
-        GlobalScope.launch {
-            addSale()
-        }
+        addSale()
     }
 }

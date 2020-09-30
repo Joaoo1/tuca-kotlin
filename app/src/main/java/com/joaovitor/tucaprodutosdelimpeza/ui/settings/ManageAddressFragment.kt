@@ -124,8 +124,8 @@ class ManageAddressFragment : Fragment() {
                 .setView(binding.root)
                 .setNegativeButton("Cancelar", null)
                 .setPositiveButton("Salvar") { _, _ ->
-                    address.name = binding.addressName.editText!!.text.toString()
-                    viewModel.onClickEditAddressPositiveButton(address, type)}
+                    val newName= binding.addressName.editText!!.text.toString()
+                    viewModel.onClickEditAddressPositiveButton(address, newName, type)}
                 .show()}
     }
 

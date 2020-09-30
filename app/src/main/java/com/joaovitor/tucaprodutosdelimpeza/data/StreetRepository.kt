@@ -39,12 +39,12 @@ class StreetRepository {
         }
     }
 
-    suspend fun editStreet(street: Street): Result<Any> {
+    suspend fun editStreet(street: Street, newName: String): Result<Any> {
         return try {
-            colRef.document(street.id).set(street).await()
+            colRef.document(street.id).update(Firestore.STREET_NAME, newName).await()
 
             //street successful edited
-            updateSaleStreets(street.name)
+            updateSaleStreets(street.name,newName)
             Result.Success(null)
         }catch (e: FirebaseFirestoreException) {
             Result.Error(e)
@@ -63,16 +63,16 @@ class StreetRepository {
     }
 
 
-    private fun updateSaleStreets(streetName: String) {
+    private fun updateSaleStreets(streetName: String, newName: String) {
         GlobalScope.launch {
-            val clients = ClientRepository().getClientsByStreet(streetName)
+            val clients = ClientRepository().updateClientsByStreet(streetName, newName)
 
             for (client in clients) {
                 val querySnapshotSales = colSalesRef
                     .whereEqualTo(Firestore.SALE_CLIENT_ID, client.id).get().await()
 
                 for (doc in querySnapshotSales) {
-                    doc.reference.update(Firestore.SALE_CLIENT_STREET, streetName)
+                    doc.reference.update(Firestore.SALE_CLIENT_STREET, newName)
                 }
             }
         }

@@ -40,12 +40,12 @@ class CityRepository {
         }
     }
 
-    suspend fun editCity(city: City): Result<Any> {
+    suspend fun editCity(city: City, newName: String): Result<Any> {
         return try {
-            colRef.document(city.id).set(city).await()
+            colRef.document(city.id).update(Firestore.CITY_NAME, newName).await()
 
             //city successful edited
-            updateSaleCities(city.name)
+            updateSaleCities(city.name, newName)
             Result.Success(null)
         }catch (e: FirebaseFirestoreException) {
             Result.Error(e)
@@ -63,15 +63,16 @@ class CityRepository {
         }
     }
 
-    private fun updateSaleCities(cityName: String) {
+    private fun updateSaleCities(cityName: String, newName: String) {
         GlobalScope.launch {
-            val clients = ClientRepository().getClientsByCity(cityName)
+            val clients = ClientRepository().updateClientsByCity(cityName, newName)
 
             for (client in clients) {
-                val querySnapshotSales = colSalesRef.get().await()
+                val querySnapshotSales = colSalesRef
+                    .whereEqualTo(Firestore.SALE_CLIENT_ID, client.id).get().await()
 
                 for (doc in querySnapshotSales) {
-                    doc.reference.update(Firestore.SALE_CLIENT_CITY, cityName)
+                    doc.reference.update(Firestore.SALE_CLIENT_CITY, newName)
                 }
             }
         }

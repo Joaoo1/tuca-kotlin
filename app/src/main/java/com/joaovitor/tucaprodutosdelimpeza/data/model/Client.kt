@@ -2,6 +2,7 @@ package com.joaovitor.tucaprodutosdelimpeza.data.model
 
 import com.google.firebase.firestore.Exclude
 import com.google.firebase.firestore.PropertyName
+import com.joaovitor.tucaprodutosdelimpeza.data.util.Firestore
 import java.io.Serializable
 
 data class Client(
@@ -48,5 +49,17 @@ data class Client(
         this.neighborhood = client.neighborhood
         this.city = client.city
         this.phone = client.phone
+    }
+
+    fun toSaleHashMap(): Map<String, Any?> {
+        val data: MutableMap<String, Any?> = HashMap()
+        data[Firestore.SALE_CLIENT_NAME] = this.name
+        data[Firestore.SALE_CLIENT_PHONE] = this.phone
+        data[Firestore.SALE_CLIENT_STREET] = this.street
+        data[Firestore.SALE_CLIENT_NEIGHBORHOOD] = this.neighborhood
+        data[Firestore.SALE_CLIENT_CITY] = this.city
+        data[Firestore.SALE_CLIENT_COMPLEMENT] = this.complement
+
+        return data.toMap()
     }
 }
