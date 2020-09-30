@@ -111,7 +111,7 @@ class ClientAddViewModel : ViewModel() {
         addClient()
     }
 
-    fun doneNavigation(){
+    fun doneNavigating(){
         _navigateToManageAddress.value = false
         _openSelectNeighborhood.value = false
         _openSelectCity.value = false

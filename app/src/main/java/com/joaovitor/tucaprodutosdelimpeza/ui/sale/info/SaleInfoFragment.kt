@@ -53,28 +53,28 @@ class SaleInfoFragment : Fragment() {
             if(it) {
                 findNavController()
                     .navigate(SaleInfoFragmentDirections.actionSalesInfoFragmentToSaleEditProductsFragment(sale))
-                viewModel.doneNavigation()
+                viewModel.doneNavigating()
             }
         })
 
         viewModel.navigateBack.observe(viewLifecycleOwner, Observer {
             if(it) {
                 findNavController().popBackStack()
-                viewModel.doneNavigation()
+                viewModel.doneNavigating()
             }
         })
 
         viewModel.openPaymentDialog.observe(viewLifecycleOwner, Observer {
             if(it) {
                 createPaymentDialog()
-                viewModel.doneNavigation()
+                viewModel.doneNavigating()
             }
         })
 
         viewModel.openDeleteDialog.observe(viewLifecycleOwner, Observer {
             if(it) {
                 createDeleteDialog()
-                viewModel.doneNavigation()
+                viewModel.doneNavigating()
             }
         })
 
@@ -110,7 +110,7 @@ class SaleInfoFragment : Fragment() {
                 .setView(view)
                 .setTitle(getString(R.string.dialog_payment_title))
                 .setNegativeButton(getString(R.string.dialog_payment_negative_button))
-                    { _, _ -> viewModel.doneNavigation() }
+                    { _, _ -> viewModel.doneNavigating() }
                 .setPositiveButton(getString(R.string.dialog_payment_positive_button))
                     { _, _ -> viewModel.registerPayment(textInput.editText!!.text.toString()) }
                 .show()

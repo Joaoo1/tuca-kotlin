@@ -57,7 +57,7 @@ class ProductListFragment : Fragment() {
             if(navigate) {
                 this.findNavController()
                     .navigate(ProductListFragmentDirections.actionProductListFragmentToProductAddFragment())
-                viewModel.doneNavigation()
+                viewModel.doneNavigating()
             }
         })
 
@@ -66,7 +66,7 @@ class ProductListFragment : Fragment() {
             product?.let {
                 this.findNavController()
                     .navigate(ProductListFragmentDirections.actionProductListFragmentToProductEditFragment(it))
-                viewModel.doneNavigation()
+                viewModel.doneNavigating()
             }
         })
 

@@ -47,7 +47,7 @@ class ClientAddFragment : Fragment() {
             if(it){
                 findNavController().navigate(
                     ClientAddFragmentDirections.actionClientAddFragmentToManageAddressFragment())
-                viewModel.doneNavigation()
+                viewModel.doneNavigating()
             }
         })
 
@@ -58,7 +58,7 @@ class ClientAddFragment : Fragment() {
                 DialogInterface.OnClickListener {
                         _, index ->
                     viewModel.onNeighborhoodSelected(viewModel.neighborhoods[index]) })
-            viewModel.doneNavigation()
+            viewModel.doneNavigating()
            }
        })
 
@@ -69,7 +69,7 @@ class ClientAddFragment : Fragment() {
                 DialogInterface.OnClickListener {
                         _, index ->
                     viewModel.onCitySelected(viewModel.cities[index]) })
-            viewModel.doneNavigation()
+            viewModel.doneNavigating()
            }
        })
 

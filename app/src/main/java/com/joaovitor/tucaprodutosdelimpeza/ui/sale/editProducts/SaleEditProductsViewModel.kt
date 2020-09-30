@@ -137,7 +137,7 @@ class SaleEditProductsViewModel(var mSale: Sale) : ViewModel() {
         _openAddProductDialog.value = true
     }
 
-    fun doneNavigation(){
+    fun doneNavigating(){
         _openAddProductDialog.value = false
         _navigateBack.value = false
     }

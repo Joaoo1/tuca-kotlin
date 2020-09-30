@@ -46,7 +46,7 @@ class SelectClientFragment : Fragment() {
             if(it) {
                 this.findNavController()
                     .popBackStack()
-                viewModel.doneNavigation()
+                viewModel.doneNavigating()
             }
         })
 

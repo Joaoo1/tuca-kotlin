@@ -53,7 +53,7 @@ class ClientListFragment : Fragment() {
             if (it) {
                 findNavController()
                     .navigate(ClientListFragmentDirections.actionClientListFragmentToClientAddFragment())
-                viewModel.doneNavigation()
+                viewModel.doneNavigating()
             }
         })
 
@@ -61,7 +61,7 @@ class ClientListFragment : Fragment() {
             client?.let {
                 findNavController()
                 .navigate(ClientListFragmentDirections.actionClientListFragmentToClientInfoFragment(it))
-                viewModel.doneNavigation()
+                viewModel.doneNavigating()
             }
         })
 

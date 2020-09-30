@@ -60,7 +60,7 @@ class ClientInfoViewModel(mClient: Client) : ViewModel() {
         _navigateToInfoSale.value = sale
     }
 
-    fun doneNavigation(){
+    fun doneNavigating(){
         _navigateToEditClient.value = null
         _navigateToInfoSale.value = null
     }

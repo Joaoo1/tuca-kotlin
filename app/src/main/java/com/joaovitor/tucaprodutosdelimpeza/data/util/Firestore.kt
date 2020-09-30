@@ -23,6 +23,16 @@ object Firestore {
     const val SALE_SELLER = "seller"
     const val SALE_SELLER_UID = "sellerUid"
 
+    const val COL_PRODUCTS = "produtos"
+
+    const val COL_CLIENTS = "clientes"
+    const val CLIENT_NAME = "nome"
+    const val CLIENT_PHONE = "telefone"
+    const val CLIENT_STREET = "endereco"
+    const val CLIENT_NEIGHBORHOOD = "bairro"
+    const val CLIENT_CITY = "cidade"
+    const val CLIENT_COMPLEMENT = "complemento"
+
     const val COL_STREETS = "ruas"
     const val STREET_NAME = "nome_rua"
 

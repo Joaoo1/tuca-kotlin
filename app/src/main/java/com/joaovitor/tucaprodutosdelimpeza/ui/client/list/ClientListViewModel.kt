@@ -45,7 +45,7 @@ class ClientListViewModel : ViewModel() {
         _navigateToInfo.value = client
     }
 
-    fun doneNavigation(){
+    fun doneNavigating(){
         _navigateToAdd.value = false
         _navigateToInfo.value = null
     }

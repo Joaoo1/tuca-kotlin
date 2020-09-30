@@ -28,9 +28,9 @@ class SaleListViewModel : ViewModel() {
     //Filters
     private var isFiltered = false
 
-    private var _closeDialog = MutableLiveData<Boolean>(false)
-    val closeDialog: LiveData<Boolean>
-        get() = _closeDialog
+    private var _closeFiltersDialog = MutableLiveData<Boolean>(false)
+    val closeFiltersDialog: LiveData<Boolean>
+        get() = _closeFiltersDialog
 
     private var _startDate = MutableLiveData<Date?>(null)
     val startDate: LiveData<Date?>
@@ -55,15 +55,15 @@ class SaleListViewModel : ViewModel() {
         _endDate.postValue(selectedDate)
     }
 
-    fun filterSalesList(){
+    private fun filterSalesList(){
         isFiltered = true
         val dateRange = getDateRange()
         val paidFilter: Boolean? = getPaidFilter()
 
         GlobalScope.launch {
             sales.postValue(saleRepository.getFilteredSales(dateRange, paidFilter))
+            _closeFiltersDialog.postValue( true)
         }
-
         doneDialogClosing()
         return
     }
@@ -125,17 +125,21 @@ class SaleListViewModel : ViewModel() {
         _navigateToAdd.value = true
     }
 
+    fun onClickFilterButton() {
+        filterSalesList()
+    }
+
     fun onSaleClicked(sale: Sale) {
         _navigateToInfo.value = sale
     }
 
-    fun doneNavigation(){
+    fun doneNavigating(){
         _navigateToAdd.value = false
         _navigateToInfo.value = null
     }
 
     fun doneDialogClosing() {
-        _closeDialog.value = false
+        _closeFiltersDialog.value = false
 
         if(!isFiltered) {
             cleanFilters()

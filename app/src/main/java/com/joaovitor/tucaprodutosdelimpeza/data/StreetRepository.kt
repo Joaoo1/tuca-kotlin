@@ -1,18 +1,19 @@
 package com.joaovitor.tucaprodutosdelimpeza.data
 
-import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
-import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Street
 import com.joaovitor.tucaprodutosdelimpeza.data.util.Firestore
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 
 class StreetRepository {
 
-    private var colRef: CollectionReference =
-        FirebaseFirestore.getInstance().collection(Firestore.COL_STREETS)
+    private var colRef = FirebaseFirestore.getInstance().collection(Firestore.COL_STREETS)
+
+    private var colSalesRef = FirebaseFirestore.getInstance().collection(Firestore.COL_SALES)
 
     suspend fun getStreets(): List<Street> {
         val querySnapshot = colRef.orderBy(Firestore.STREET_NAME).get().await()
@@ -43,6 +44,7 @@ class StreetRepository {
             colRef.document(street.id).set(street).await()
 
             //street successful edited
+            updateSaleStreets(street.name)
             Result.Success(null)
         }catch (e: FirebaseFirestoreException) {
             Result.Error(e)
@@ -57,6 +59,22 @@ class StreetRepository {
             Result.Success(null)
         }catch (e: FirebaseFirestoreException) {
             Result.Error(e)
+        }
+    }
+
+
+    private fun updateSaleStreets(streetName: String) {
+        GlobalScope.launch {
+            val clients = ClientRepository().getClientsByStreet(streetName)
+
+            for (client in clients) {
+                val querySnapshotSales = colSalesRef
+                    .whereEqualTo(Firestore.SALE_CLIENT_ID, client.id).get().await()
+
+                for (doc in querySnapshotSales) {
+                    doc.reference.update(Firestore.SALE_CLIENT_STREET, streetName)
+                }
+            }
         }
     }
 }

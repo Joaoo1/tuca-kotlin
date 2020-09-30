@@ -7,6 +7,7 @@ import com.google.firebase.firestore.Query
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
 import com.joaovitor.tucaprodutosdelimpeza.data.util.DateRange
 import com.joaovitor.tucaprodutosdelimpeza.data.util.Firestore
+import com.joaovitor.tucaprodutosdelimpeza.util.FormatDate
 import kotlinx.coroutines.tasks.await
 
 class SaleRepository {
@@ -39,7 +40,7 @@ class SaleRepository {
                 .whereGreaterThanOrEqualTo(Firestore.SALE_DATE, dateRange.startDate)
 
             querySnapshot = querySnapshot
-                .whereLessThanOrEqualTo(Firestore.SALE_DATE, dateRange.endDate)
+                .whereLessThan(Firestore.SALE_DATE, FormatDate.addOneDay(dateRange.endDate))
         }
 
         paid?.let {

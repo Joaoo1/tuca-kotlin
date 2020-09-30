@@ -4,6 +4,7 @@ import com.google.firebase.firestore.*
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Client
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
+import com.joaovitor.tucaprodutosdelimpeza.data.util.Firestore
 import kotlinx.coroutines.tasks.await
 
 class ClientRepository {
@@ -56,6 +57,49 @@ class ClientRepository {
             Result.Error(e)
         }
     }
+
+    suspend fun getClientsByStreet(streetName: String): List<Client> {
+        val querySnapshot = colRef
+            .orderBy("nome", Query.Direction.ASCENDING)
+            .whereEqualTo(Firestore.CLIENT_STREET, streetName)
+            .get()
+            .await()
+
+        return querySnapshot.map {
+            val client = it.toObject(Client::class.java)
+            client.id = it.id
+            client
+        }
+    }
+
+    suspend fun getClientsByNeighborhood(neighborhoodName: String): List<Client> {
+        val querySnapshot = colRef
+            .orderBy("nome", Query.Direction.ASCENDING)
+            .whereEqualTo(Firestore.CLIENT_NEIGHBORHOOD, neighborhoodName)
+            .get()
+            .await()
+
+        return querySnapshot.map {
+            val client = it.toObject(Client::class.java)
+            client.id = it.id
+            client
+        }
+    }
+
+    suspend fun getClientsByCity(cityName: String): List<Client> {
+        val querySnapshot = colRef
+            .orderBy("nome", Query.Direction.ASCENDING)
+            .whereEqualTo(Firestore.CLIENT_CITY, cityName)
+            .get()
+            .await()
+
+        return querySnapshot.map {
+            val client = it.toObject(Client::class.java)
+            client.id = it.id
+            client
+        }
+    }
+
 
 
 }

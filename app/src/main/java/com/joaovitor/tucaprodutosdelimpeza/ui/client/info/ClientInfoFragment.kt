@@ -39,7 +39,7 @@ class ClientInfoFragment : Fragment() {
             it?.let {
                 findNavController().navigate(
                     ClientInfoFragmentDirections.actionClientInfoFragmentToClientEditFragment(it))
-                viewModel.doneNavigation()
+                viewModel.doneNavigating()
             }
         })
 
@@ -47,7 +47,7 @@ class ClientInfoFragment : Fragment() {
             it?.let {
                 findNavController().navigate(
                     ClientInfoFragmentDirections.actionClientInfoFragmentToSalesInfoFragment(it))
-                viewModel.doneNavigation()
+                viewModel.doneNavigating()
             }
         })
 

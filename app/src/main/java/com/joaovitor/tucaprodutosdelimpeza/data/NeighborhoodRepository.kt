@@ -5,12 +5,15 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Neighborhood
 import com.joaovitor.tucaprodutosdelimpeza.data.util.Firestore
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 class NeighborhoodRepository {
 
-    private var colRef: CollectionReference =
-        FirebaseFirestore.getInstance().collection(Firestore.COL_NEIGHBORHOODS)
+    private var colRef = FirebaseFirestore.getInstance().collection(Firestore.COL_NEIGHBORHOODS)
+
+    private var colSalesRef = FirebaseFirestore.getInstance().collection(Firestore.COL_SALES)
 
     suspend fun getNeighborhoods(): List<Neighborhood> {
         val querySnapshot = colRef.orderBy(Firestore.NEIGHBORHOOD_NAME).get().await()
@@ -42,6 +45,7 @@ class NeighborhoodRepository {
             colRef.document(neighborhood.id).set(neighborhood).await()
 
             //neighborhood successful edited
+            updateSaleNeighborhoods(neighborhood.name)
             Result.Success(null)
         }catch (e: FirebaseFirestoreException) {
             Result.Error(e)
@@ -56,6 +60,22 @@ class NeighborhoodRepository {
             Result.Success(null)
         }catch (e: FirebaseFirestoreException) {
             Result.Error(e)
+        }
+    }
+
+
+    private fun updateSaleNeighborhoods(neighborhoodName: String) {
+        GlobalScope.launch {
+            val clients = ClientRepository().getClientsByNeighborhood(neighborhoodName)
+
+            for (client in clients) {
+                val querySnapshotSales = colSalesRef
+                    .whereEqualTo(Firestore.SALE_CLIENT_ID, client.id).get().await()
+
+                for (doc in querySnapshotSales) {
+                    doc.reference.update(Firestore.SALE_CLIENT_NEIGHBORHOOD, neighborhoodName)
+                }
+            }
         }
     }
 }

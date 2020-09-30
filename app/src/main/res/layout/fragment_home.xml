@@ -5,7 +5,7 @@
 
     <data>
         <variable
-            name="homeViewModel"
+            name="viewModel"
             type="com.joaovitor.tucaprodutosdelimpeza.ui.home.HomeViewModel" />
     </data>
 
@@ -30,7 +30,7 @@
                    android:layout_width="0dp"
                    android:layout_height="@dimen/home_button_height"
                    android:background="@drawable/btn_home_client"
-                   android:onClick="@{() -> homeViewModel.navigateToClient()}"
+                   android:onClick="@{() -> viewModel.onClickClientsButton()}"
                    app:layout_constraintEnd_toStartOf="@+id/btnSales"
                    app:layout_constraintStart_toStartOf="parent"
                    app:layout_constraintTop_toTopOf="parent">
@@ -58,7 +58,7 @@
                    android:layout_height="@dimen/home_button_height"
                    android:layout_marginStart="@dimen/home_button_margin"
                    android:background="@drawable/btn_home_sales"
-                   android:onClick="@{() -> homeViewModel.navigateToSale()}"
+                   android:onClick="@{() -> viewModel.onClickSalesButton()}"
                    app:layout_constraintEnd_toEndOf="parent"
                    app:layout_constraintStart_toEndOf="@+id/btn_clients"
                    app:layout_constraintTop_toTopOf="parent">
@@ -88,7 +88,7 @@
                    android:layout_height="@dimen/home_button_height"
                    android:layout_marginTop="@dimen/home_button_margin"
                    android:background="@drawable/btn_home_reports"
-                   android:onClick="@{() -> homeViewModel.navigateToReport()}"
+                   android:onClick="@{() -> viewModel.onClickReportsButton()}"
                    app:layout_constraintEnd_toStartOf="@+id/btn_products"
                    app:layout_constraintStart_toStartOf="parent"
                    app:layout_constraintTop_toBottomOf="@+id/btn_clients">
@@ -122,7 +122,7 @@
                    app:layout_constraintEnd_toEndOf="parent"
                    app:layout_constraintStart_toEndOf="@+id/btn_reports"
                    app:layout_constraintTop_toBottomOf="@+id/btnSales"
-                   android:onClick="@{() -> homeViewModel.navigateToProduct()}">
+                   android:onClick="@{() -> viewModel.onClickProductsButton()}">
 
                    <com.google.android.material.textview.MaterialTextView
                        android:layout_width="wrap_content"
@@ -181,16 +181,29 @@
                        android:layout_height="32dp"
                        android:layout_gravity="end"
                        android:background="@android:color/transparent"
+                       android:onClick="@{() -> viewModel.onClickUpdateGeneralInfo()}"
                        android:src="@drawable/ic_home_refresh_general_info" />
 
-                   <com.google.android.material.textview.MaterialTextView
-                       android:id="@+id/updated_at_general_info"
-                       android:layout_width="match_parent"
+                   <LinearLayout
+                       android:orientation="horizontal"
+                       android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
-                       android:textStyle="italic"
-                       android:text="@string/home_updated_at"
-                       android:textAlignment="textEnd"
-                       android:textSize="12sp" />
+                       android:layout_gravity="end">
+                       <com.google.android.material.textview.MaterialTextView
+                           android:id="@+id/updated_at_general_info"
+                           android:layout_width="match_parent"
+                           android:layout_height="wrap_content"
+                           android:fontFamily="@font/poppins_light"
+                           android:text="@string/home_updated_at"
+                           android:textAlignment="textEnd"
+                           android:textSize="12sp" />
+
+                       <com.google.android.material.textview.MaterialTextView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:textSize="12sp"
+                           app:formatDateToString="@{viewModel.generalInfo.updatedAt}" />
+                   </LinearLayout>
 
                    <!-- Cards general info-->
                    <androidx.cardview.widget.CardView
@@ -217,7 +230,8 @@
                            android:layout_height="wrap_content"
                            android:layout_gravity="center_vertical"
                            android:paddingHorizontal="20dp"
-                           android:text="4000"
+                           android:layout_marginTop="4dp"
+                           android:text="@{String.valueOf(viewModel.generalInfo.sales)}"
                            android:textColor="@android:color/primary_text_light"
                            android:textSize="24sp"
                            android:textStyle="bold" />
@@ -227,7 +241,6 @@
                            android:layout_height="wrap_content"
                            android:text="@string/home_card_description_sales"
                            android:textColor="@android:color/primary_text_light"
-                           android:textSize="12sp"
                            android:layout_gravity="bottom"
                            android:paddingHorizontal="20dp"
                            android:layout_marginBottom="10dp"/>
@@ -263,7 +276,8 @@
                            android:layout_height="wrap_content"
                            android:layout_gravity="center_vertical"
                            android:paddingHorizontal="20dp"
-                           android:text="1500"
+                           android:layout_marginTop="4dp"
+                           android:text="@{String.valueOf(viewModel.generalInfo.clients)}"
                            android:textColor="@android:color/primary_text_light"
                            android:textSize="24sp"
                            android:textStyle="bold" />
@@ -273,7 +287,6 @@
                            android:layout_height="wrap_content"
                            android:text="@string/home_card_description_clients"
                            android:textColor="@android:color/primary_text_light"
-                           android:textSize="12sp"
                            android:layout_gravity="bottom"
                            android:paddingHorizontal="20dp"
                            android:layout_marginBottom="10dp"/>
@@ -309,7 +322,8 @@
                            android:layout_height="wrap_content"
                            android:layout_gravity="center_vertical"
                            android:paddingHorizontal="20dp"
-                           android:text="100"
+                           android:layout_marginTop="4dp"
+                           android:text="@{String.valueOf(viewModel.generalInfo.products)}"
                            android:textColor="@android:color/primary_text_light"
                            android:textSize="24sp"
                            android:textStyle="bold" />
@@ -319,7 +333,6 @@
                            android:layout_height="wrap_content"
                            android:text="@string/home_card_description_products"
                            android:textColor="@android:color/primary_text_light"
-                           android:textSize="12sp"
                            android:layout_gravity="bottom"
                            android:paddingHorizontal="20dp"
                            android:layout_marginBottom="10dp"/>
@@ -342,7 +355,7 @@
            android:layout_height="wrap_content"
            android:layout_gravity="bottom|end"
            android:layout_margin="@dimen/fab_margin"
-           android:onClick="@{() -> homeViewModel.navigateToAddSale()}"
+           android:onClick="@{() -> viewModel.onClickFab()}"
            app:srcCompat="@drawable/ic_add_sale_white" />
 
    </androidx.coordinatorlayout.widget.CoordinatorLayout>

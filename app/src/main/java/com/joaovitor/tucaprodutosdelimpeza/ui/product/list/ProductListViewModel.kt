@@ -39,7 +39,7 @@ class ProductListViewModel : ViewModel() {
         _navigateToAdd.value = true
     }
 
-    fun doneNavigation(){
+    fun doneNavigating(){
         _navigateToAdd.value = false
         _navigateToEdit.value = null
     }

@@ -87,7 +87,7 @@ class  ReportSalesFragment : Fragment() {
                 this.findNavController()
                     .navigate(ReportSalesFragmentDirections.actionReportSalesFragmentToFilteredSalesFragment())
 
-                viewModel.doneNavigation()
+                viewModel.doneNavigating()
             }
             .setNegativeButton(R.string.dialog_print_sales_print_button, null)
             .show()

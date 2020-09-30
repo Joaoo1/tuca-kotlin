@@ -175,7 +175,7 @@ class SaleAddViewModel : ViewModel() {
             }
         }
 
-        if(discount.value!!.isNotEmpty() && discount.value!!.last() == '.' ) {
+        if(discount.value != null && discount.value!!.isNotEmpty() && discount.value!!.last() == '.' ) {
             //TODO: Show a error message: price invalid
             return false
         }
@@ -208,7 +208,7 @@ class SaleAddViewModel : ViewModel() {
         _client.postValue(client)
     }
 
-    fun doneNavigation(){
+    fun doneNavigating(){
         _navigateToSelectClient.value = false
         _navigateBackToAdd.value = false
     }

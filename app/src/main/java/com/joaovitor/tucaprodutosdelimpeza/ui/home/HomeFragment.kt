@@ -8,7 +8,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.navigation.NavigationView
-import com.google.firebase.firestore.FirebaseFirestore
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentHomeBinding
 
@@ -19,52 +18,57 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val binding: FragmentHomeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
+        val binding: FragmentHomeBinding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_home,
+            container,
+            false)
 
         val viewModelFactory = HomeViewModelFactory()
-        val homeViewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
+        val viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
 
-        binding.homeViewModel = homeViewModel
-
-        homeViewModel.navigateToProduct.observe(viewLifecycleOwner, Observer {
-            if (it == true) {
+        viewModel.navigateToProduct.observe(viewLifecycleOwner, Observer {
+            if (it) {
                 this.findNavController()
                     .navigate(HomeFragmentDirections.actionHomeFragmentToProductListFragment())
-                homeViewModel.doneNavigating()
+                viewModel.doneNavigating()
             }
         })
 
-        homeViewModel.navigateToClient.observe(viewLifecycleOwner, Observer {
-            if(it == true) {
+        viewModel.navigateToClient.observe(viewLifecycleOwner, Observer {
+            if(it) {
                 this.findNavController()
                     .navigate(HomeFragmentDirections.actionHomeFragmentToClientListFragment())
-                homeViewModel.doneNavigating()
+                viewModel.doneNavigating()
             }
         })
 
-        homeViewModel.navigateToSale.observe(viewLifecycleOwner, Observer {
-            if(it == true) {
+        viewModel.navigateToSale.observe(viewLifecycleOwner, Observer {
+            if(it) {
                 this.findNavController()
                     .navigate(HomeFragmentDirections.actionHomeFragmentToSalesListFragment())
-                homeViewModel.doneNavigating()
+                viewModel.doneNavigating()
             }
         })
 
-        homeViewModel.navigateToAddSale.observe(viewLifecycleOwner, Observer {
-            if(it == true) {
+        viewModel.navigateToAddSale.observe(viewLifecycleOwner, Observer {
+            if(it) {
                 this.findNavController()
                     .navigate(HomeFragmentDirections.actionHomeFragmentToSalesAddFragment())
-                homeViewModel.doneNavigating()
+                viewModel.doneNavigating()
             }
         })
 
-        homeViewModel.navigateToReport.observe(viewLifecycleOwner, Observer {
-            if(it == true) {
+        viewModel.navigateToReport.observe(viewLifecycleOwner, Observer {
+            if(it) {
                 this.findNavController()
                     .navigate(HomeFragmentDirections.actionHomeFragmentToReportsFragment())
-                homeViewModel.doneNavigating()
+                viewModel.doneNavigating()
             }
         })
+
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
 
         return binding.root
     }

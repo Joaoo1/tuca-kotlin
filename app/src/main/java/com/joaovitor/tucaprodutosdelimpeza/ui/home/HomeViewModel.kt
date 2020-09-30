@@ -3,41 +3,58 @@ package com.joaovitor.tucaprodutosdelimpeza.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.joaovitor.tucaprodutosdelimpeza.data.DashboardRepository
+import com.joaovitor.tucaprodutosdelimpeza.data.Result
+import com.joaovitor.tucaprodutosdelimpeza.data.model.GeneralInfo
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class HomeViewModel : ViewModel() {
 
-    private val _navigateToProduct = MutableLiveData<Boolean?>()
-    val navigateToProduct: LiveData<Boolean?> get() = _navigateToProduct
+    var generalInfo = MutableLiveData(GeneralInfo())
 
-    private val _navigateToClient = MutableLiveData<Boolean?>()
-    val navigateToClient: LiveData<Boolean?> get() = _navigateToClient
+    private val _navigateToProduct = MutableLiveData<Boolean>()
+    val navigateToProduct: LiveData<Boolean> get() = _navigateToProduct
 
-    private val _navigateToSale = MutableLiveData<Boolean?>()
-    val navigateToSale: LiveData<Boolean?> get() = _navigateToSale
+    private val _navigateToClient = MutableLiveData<Boolean>()
+    val navigateToClient: LiveData<Boolean> get() = _navigateToClient
 
-    private val _navigateToAddSale = MutableLiveData<Boolean?>()
-    val navigateToAddSale: LiveData<Boolean?> get() = _navigateToAddSale
+    private val _navigateToSale = MutableLiveData<Boolean>()
+    val navigateToSale: LiveData<Boolean> get() = _navigateToSale
 
-    private val _navigateToReport = MutableLiveData<Boolean?>()
-    val navigateToReport: LiveData<Boolean?> get() = _navigateToReport
+    private val _navigateToAddSale = MutableLiveData<Boolean>()
+    val navigateToAddSale: LiveData<Boolean> get() = _navigateToAddSale
 
-    fun navigateToProduct() {
+    private val _navigateToReport = MutableLiveData<Boolean>()
+    val navigateToReport: LiveData<Boolean> get() = _navigateToReport
+
+    init {
+        GlobalScope.launch {
+            val result = DashboardRepository().getGeneralInfo()
+            if(result is Result.Success) {
+                generalInfo.postValue(result.data)
+            }
+        }
+    }
+
+    /* User actions */
+    fun onClickProductsButton() {
         _navigateToProduct.value = true
     }
 
-    fun navigateToClient() {
+    fun onClickClientsButton() {
         _navigateToClient.value = true
     }
 
-    fun navigateToSale() {
+    fun onClickSalesButton() {
         _navigateToSale.value = true
     }
 
-    fun navigateToAddSale() {
+    fun onClickFab() {
         _navigateToAddSale.value = true
     }
 
-    fun navigateToReport() {
+    fun onClickReportsButton() {
         _navigateToReport.value = true
     }
 
@@ -47,5 +64,15 @@ class HomeViewModel : ViewModel() {
         _navigateToSale.value = false
         _navigateToReport.value = false
         _navigateToAddSale.value = false
+    }
+
+    /* Database functions*/
+    fun onClickUpdateGeneralInfo() {
+        GlobalScope.launch {
+            val result = DashboardRepository().updateGeneralInfo()
+            if(result is Result.Success) {
+                generalInfo.postValue(result.data)
+            }
+        }
     }
 }

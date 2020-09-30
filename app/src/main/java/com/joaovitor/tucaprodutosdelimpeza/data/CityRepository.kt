@@ -6,12 +6,15 @@ import com.google.firebase.firestore.FirebaseFirestoreException
 import com.joaovitor.tucaprodutosdelimpeza.data.model.City
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Street
 import com.joaovitor.tucaprodutosdelimpeza.data.util.Firestore
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 class CityRepository {
 
-    private var colRef: CollectionReference =
-        FirebaseFirestore.getInstance().collection(Firestore.COL_CITIES)
+    private var colRef = FirebaseFirestore.getInstance().collection(Firestore.COL_CITIES)
+
+    private var colSalesRef = FirebaseFirestore.getInstance().collection(Firestore.COL_SALES)
 
     suspend fun getCities(): List<City> {
         val querySnapshot = colRef.orderBy(Firestore.CITY_NAME).get().await()
@@ -42,6 +45,7 @@ class CityRepository {
             colRef.document(city.id).set(city).await()
 
             //city successful edited
+            updateSaleCities(city.name)
             Result.Success(null)
         }catch (e: FirebaseFirestoreException) {
             Result.Error(e)
@@ -56,6 +60,20 @@ class CityRepository {
             Result.Success(null)
         }catch (e: FirebaseFirestoreException) {
             Result.Error(e)
+        }
+    }
+
+    private fun updateSaleCities(cityName: String) {
+        GlobalScope.launch {
+            val clients = ClientRepository().getClientsByCity(cityName)
+
+            for (client in clients) {
+                val querySnapshotSales = colSalesRef.get().await()
+
+                for (doc in querySnapshotSales) {
+                    doc.reference.update(Firestore.SALE_CLIENT_CITY, cityName)
+                }
+            }
         }
     }
 

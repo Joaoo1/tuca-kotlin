@@ -124,7 +124,7 @@ class SaleInfoViewModel : ViewModel() {
         if(!sale.value?.paid!!) _openPaymentDialog.value = true
     }
 
-    fun doneNavigation(){
+    fun doneNavigating(){
         _navigateToEditProducts.value = false
         _navigateBack.value = false
         _openDeleteDialog.value = false

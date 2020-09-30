@@ -31,7 +31,7 @@ class ProductAddFragment : Fragment() {
         viewModel.navigateBack.observe(viewLifecycleOwner, Observer {
             if(it) {
                 findNavController().popBackStack()
-                viewModel.doneNavigation()
+                viewModel.doneNavigating()
             }
         })
         // Inflate the layout for this fragment

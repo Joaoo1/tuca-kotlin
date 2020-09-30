@@ -26,7 +26,7 @@ class ReportProductsSoldFragment : Fragment() {
 
         //Create the viewModel
         val viewModelFactory = ReportProductsSoldViewModelFactory()
-        val viewModel = ViewModelProvider(this,viewModelFactory)
+        val viewModel = ViewModelProvider(requireActivity(),viewModelFactory)
             .get(ReportProductsSoldViewModel::class.java)
 
         binding.lifecycleOwner = viewLifecycleOwner
@@ -51,11 +51,11 @@ class ReportProductsSoldFragment : Fragment() {
         })
 
         viewModel.navigateToProductsSoldList.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                this.findNavController()
+            if(it) {
+                findNavController()
                     .navigate(ReportProductsSoldFragmentDirections
                         .actionReportProductsSoldFragmentToProductsSoldListFragment())
-                viewModel.doneNavigation()
+                viewModel.doneNavigating()
             }
         })
 

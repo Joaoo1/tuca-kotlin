@@ -51,7 +51,7 @@ class SaleListFragment : Fragment() {
             if (navigate) {
                 findNavController()
                     .navigate(SaleListFragmentDirections.actionSaleListFragmentToSalesAddFragment())
-                viewModel.doneNavigation()
+                viewModel.doneNavigating()
             }
         })
 
@@ -62,7 +62,7 @@ class SaleListFragment : Fragment() {
                     .navigate(
                         SaleListFragmentDirections.actionSalesListFragmentToSalesInfoFragment(sale)
                     )
-                viewModel.doneNavigation()
+                viewModel.doneNavigating()
             }
         })
 
@@ -108,6 +108,5 @@ class SaleListFragment : Fragment() {
 
     private fun createFiltersDialog() {
         FilterSalesDialog(this).show()
-        viewModel.doneDialogClosing()
     }
 }

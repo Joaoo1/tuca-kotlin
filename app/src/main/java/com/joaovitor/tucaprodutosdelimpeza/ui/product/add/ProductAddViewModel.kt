@@ -25,7 +25,7 @@ class ProductAddViewModel: ViewModel() {
         addProduct()
     }
 
-    fun doneNavigation() {
+    fun doneNavigating() {
         _navigateBack.value = false
     }
     private fun addProduct() {

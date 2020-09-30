@@ -75,13 +75,13 @@ class ClientEditFragment : Fragment() {
             if(it){
                 findNavController().navigate(
                     ClientEditFragmentDirections.actionClientEditFragmentToManageAddressFragment())
-                viewModel.doneNavigation()
+                viewModel.doneNavigating()
             }
         })
         viewModel.navigateBack.observe(viewLifecycleOwner, Observer {
             if(it){
                 findNavController().navigateUp()
-                viewModel.doneNavigation()
+                viewModel.doneNavigating()
             }
         })
 

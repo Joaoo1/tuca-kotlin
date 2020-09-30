@@ -56,7 +56,7 @@
     <string name="home_button_reports">Relatórios</string>
     <string name="home_button_products">Produtos</string>
     <string name="home_headline_general_info">Informações gerais</string>
-    <string name="home_updated_at">Informações atualizadas em 12/08/2020 ás 21:00\u00A0</string>
+    <string name="home_updated_at">Informações atualizadas em\u00A0</string>
     <string name="home_card_title_sales">Vendas</string>
     <string name="home_card_description_sales">Número total de vendas</string>
     <string name="home_card_title_clients">Clientes</string>
@@ -226,4 +226,5 @@
     <string name="menu_item_edit_client_title">Editar cliente</string>
     <string name="menu_item_call_client_title">Ligar para o cliente</string>
     <string name="sale_info_label_payment_day">Data do pagamento</string>
+    <string name="list_item_product_sold_label_quantity">Qtd vendida:</string>
 </resources>

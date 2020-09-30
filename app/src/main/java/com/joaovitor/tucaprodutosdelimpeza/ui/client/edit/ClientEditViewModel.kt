@@ -113,7 +113,7 @@ class ClientEditViewModel(var mClient: Client) : ViewModel() {
         client.value = client.value
     }
 
-    fun doneNavigation() {
+    fun doneNavigating() {
         _navigateToManageAddress.value = false
         _navigateBack.value = false
     }

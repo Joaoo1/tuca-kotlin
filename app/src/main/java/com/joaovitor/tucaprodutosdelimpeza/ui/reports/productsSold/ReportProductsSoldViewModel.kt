@@ -3,26 +3,25 @@ package com.joaovitor.tucaprodutosdelimpeza.ui.reports.productsSold
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.joaovitor.tucaprodutosdelimpeza.R
-import com.joaovitor.tucaprodutosdelimpeza.data.CityRepository
-import com.joaovitor.tucaprodutosdelimpeza.data.NeighborhoodRepository
-import com.joaovitor.tucaprodutosdelimpeza.data.StreetRepository
-import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
-import com.joaovitor.tucaprodutosdelimpeza.data.model.ProductSale
+import com.joaovitor.tucaprodutosdelimpeza.data.ReportRepository
+import com.joaovitor.tucaprodutosdelimpeza.data.Result
+import com.joaovitor.tucaprodutosdelimpeza.data.model.ProductSold
+import com.joaovitor.tucaprodutosdelimpeza.data.util.DateRange
 import com.joaovitor.tucaprodutosdelimpeza.util.FormatDate
-import kotlinx.android.synthetic.main.fragment_report_sales.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.Date
 
 class ReportProductsSoldViewModel : ViewModel() {
 
-    private var _navigateToProductsSoldList = MutableLiveData<List<ProductSale>>()
-    val navigateToProductsSoldList: LiveData<List<ProductSale>>
+    var productsSoldList = MutableLiveData<List<ProductSold>>()
+
+    private var _navigateToProductsSoldList = MutableLiveData<Boolean>()
+    val navigateToProductsSoldList: LiveData<Boolean>
         get() = _navigateToProductsSoldList
 
-    var startDate = MutableLiveData<Date>(Date())
-    var endDate = MutableLiveData<Date>(Date())
+    var startDate = MutableLiveData<Date>(null)
+    var endDate = MutableLiveData<Date>(null)
 
     private var _openStartDatePicker = MutableLiveData<Boolean>()
     val openStartDatePicker: LiveData<Boolean>
@@ -31,6 +30,38 @@ class ReportProductsSoldViewModel : ViewModel() {
     private var _openEndDatePicker = MutableLiveData<Boolean>()
     val openEndDatePicker: LiveData<Boolean>
         get() = _openEndDatePicker
+
+    private fun generateReport() {
+        if(validateFields()) {
+            //TODO: Progress bar
+            GlobalScope.launch {
+                val result = ReportRepository().generateProductsSoldReport(
+                    DateRange(startDate.value!!, endDate.value!!))
+
+                if (result is Result.Success) {
+                    _navigateToProductsSoldList.postValue(true)
+                    productsSoldList.postValue(result.data)
+                } else {
+                    //TODO: Show error message
+                    return@launch
+                }
+            }
+        }
+    }
+
+    private fun validateFields() : Boolean {
+        if(startDate.value == null || endDate.value == null) {
+            //TODO: Show error message: select the date range
+            return false
+        }
+        if(startDate.value!! != endDate.value!!
+            && startDate.value!!.compareTo(endDate.value!!) == 1) {
+            //TODO: Show error message: start date is greater than end date
+            return false
+        }
+
+        return true
+    }
 
     fun openStartDatePicker(){
         _openStartDatePicker.value = true
@@ -53,10 +84,10 @@ class ReportProductsSoldViewModel : ViewModel() {
     }
 
     fun onClickFilterButton() {
-        _navigateToProductsSoldList.value = listOf()
+       generateReport()
     }
 
-    fun doneNavigation(){
-        _navigateToProductsSoldList.value = null
+    fun doneNavigating(){
+        _navigateToProductsSoldList.value = false
     }
 }

@@ -53,7 +53,7 @@ class SaleEditProductsFragment : Fragment() {
         viewModel.openAddProductDialog.observe(viewLifecycleOwner, Observer {
             if(it) {
                 createAddProductDialog()
-                viewModel.doneNavigation()
+                viewModel.doneNavigating()
             }
         })
 

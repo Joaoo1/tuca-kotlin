@@ -1,7 +1,9 @@
 package com.joaovitor.tucaprodutosdelimpeza.util
 
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Calendar
+import java.util.Locale
 
 object FormatDate {
 
@@ -14,5 +16,12 @@ object FormatDate {
 
     fun add3HoursToTimestamp(millis: Long): Long {
         return millis + 10800000
+    }
+
+    fun addOneDay(date: Date): Date {
+        val c = Calendar.getInstance()
+        c.time = date
+        c.add(Calendar.DATE, 1)
+        return c.time
     }
 }

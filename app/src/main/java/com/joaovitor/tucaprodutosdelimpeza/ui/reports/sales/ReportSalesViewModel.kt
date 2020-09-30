@@ -86,7 +86,7 @@ class ReportSalesViewModel : ViewModel() {
         _openDialog.value = true
     }
 
-    fun doneNavigation(){
+    fun doneNavigating(){
         _openDialog.value = false
     }
 }

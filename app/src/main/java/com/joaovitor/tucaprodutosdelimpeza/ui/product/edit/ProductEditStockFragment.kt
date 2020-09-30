@@ -5,14 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentProductEditStockBinding
+import kotlinx.android.synthetic.main.app_bar_main.view.*
 
 /**
  * FIXME: Two way data binding not working properly in this fragment
@@ -25,7 +23,6 @@ class ProductEditStockFragment(val product: Product) : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         // Inflate the layout for this fragment
         val binding: FragmentProductEditStockBinding = DataBindingUtil.inflate(
             inflater,

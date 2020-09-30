@@ -83,7 +83,7 @@ class SaleAddFragment : Fragment() {
             if (it) {
                 findNavController()
                     .navigate(SaleAddFragmentDirections.actionSalesAddFragmentToSelectClientFragment())
-                viewModel.doneNavigation()
+                viewModel.doneNavigating()
             }
         })
         return binding.root
