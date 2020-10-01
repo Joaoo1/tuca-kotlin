@@ -176,7 +176,11 @@
         android:id="@+id/filtered_sales_fragment"
         android:name="com.joaovitor.tucaprodutosdelimpeza.ui.reports.sales.FilteredSalesFragment"
         android:label="@string/title_fragment_report_filtered_sales"
-        tools:layout="@layout/fragment_filtered_sales"/>
+        tools:layout="@layout/fragment_filtered_sales">
+        <action
+            android:id="@+id/action_filtered_sales_fragment_to_sales_info_fragment"
+            app:destination="@id/sales_info_fragment" />
+    </fragment>
     <fragment
         android:id="@+id/reports_fragment"
         android:name="com.joaovitor.tucaprodutosdelimpeza.ui.reports.ReportsFragment"

@@ -1,17 +1,19 @@
 package com.joaovitor.tucaprodutosdelimpeza.data
 
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestoreException
 import com.joaovitor.tucaprodutosdelimpeza.data.model.LoggedInUser
+import kotlinx.coroutines.tasks.await
 
 /**
- * Class that requests authentication and user information from the remote data source and
+ * Class that requests authentication and user information from the firestore and
  * maintains an in-memory cache of login status and user credentials information.
  */
 
-class LoginRepository(val dataSource: LoginDataSource) {
+class LoginRepository {
 
     // in-memory cache of the loggedInUser object
-    var user: LoggedInUser? = null
-        private set
+    private var user: LoggedInUser? = null
 
     val isLoggedIn: Boolean
         get() = user != null
@@ -24,18 +26,21 @@ class LoginRepository(val dataSource: LoginDataSource) {
 
     fun logout() {
         user = null
-        dataSource.logout()
     }
 
-    fun login(username: String, password: String): Result<LoggedInUser> {
-        // handle login
-        val result = dataSource.login(username, password)
+    suspend fun login(email: String, password: String): Result<LoggedInUser> {
+        return try {
+            // handle login
+            val firebaseUser = FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password).await().user
+            val user = LoggedInUser(firebaseUser?.uid, firebaseUser?.email!!)
 
-        if (result is Result.Success) {
-            result.data?.let { setLoggedInUser(it) }
+            setLoggedInUser(user)
+
+            Result.Success(user)
+        } catch (e: FirebaseFirestoreException) {
+            Result.Error(e)
         }
 
-        return result
     }
 
     private fun setLoggedInUser(loggedInUser: LoggedInUser) {

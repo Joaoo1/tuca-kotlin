@@ -8,21 +8,16 @@ import com.joaovitor.tucaprodutosdelimpeza.data.NeighborhoodRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.Result
 import com.joaovitor.tucaprodutosdelimpeza.data.StreetRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Address
-import com.joaovitor.tucaprodutosdelimpeza.data.model.City
-import com.joaovitor.tucaprodutosdelimpeza.data.model.Neighborhood
+import com.joaovitor.tucaprodutosdelimpeza.data.model.AddressType
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Street
+import com.joaovitor.tucaprodutosdelimpeza.data.model.Neighborhood
+import com.joaovitor.tucaprodutosdelimpeza.data.model.City
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class ManageAddressViewModel : ViewModel() {
 
     data class AddressObject(var addressType: AddressType, var addressList: List<Address>)
-
-    enum class AddressType(val value: String) {
-        STREET("rua"),
-        NEIGHBORHOOD("bairro"),
-        CITY("cidade"),
-    }
 
     private var streets: MutableList<Street> = mutableListOf()
 
@@ -124,13 +119,13 @@ class ManageAddressViewModel : ViewModel() {
         }
     }
 
-    fun onClickEditAddressPositiveButton(address: Address, newName:String, type: AddressType) {
+    fun onClickEditAddressPositiveButton(address: Address, newName:String) {
         if(newName.isEmpty()) {
             //TODO: Show error message: field name can't be empty
             return
         }
 
-        val addressAlreadyExists: Int = when(type) {
+        val addressAlreadyExists: Int = when(address.type!!) {
             AddressType.STREET -> streets.map { it.name }.indexOf(newName)
             AddressType.NEIGHBORHOOD -> neighborhoods.map { it.name }.indexOf(newName)
             AddressType.CITY -> cities.map { it.name }.indexOf(newName)
@@ -142,7 +137,7 @@ class ManageAddressViewModel : ViewModel() {
         }
 
         GlobalScope.launch {
-            val result = when(type){
+            val result = when(address.type!!){
                 AddressType.STREET -> StreetRepository().editStreet(address as Street, newName)
                 AddressType.NEIGHBORHOOD -> NeighborhoodRepository().editNeighborhood(address as Neighborhood, newName)
                 AddressType.CITY -> CityRepository().editCity(address as City, newName)
@@ -157,12 +152,12 @@ class ManageAddressViewModel : ViewModel() {
         }
     }
 
-    fun onClickDeleteAddressPositiveButton(addressId: String, type: AddressType) {
+    fun onClickDeleteAddressPositiveButton(address: Address) {
         GlobalScope.launch {
-            val result = when(type){
-                AddressType.STREET -> StreetRepository().deleteStreet(addressId)
-                AddressType.NEIGHBORHOOD -> NeighborhoodRepository().deleteNeighborhood(addressId)
-                AddressType.CITY -> CityRepository().deleteCity(addressId)
+            val result = when(address.type!!){
+                AddressType.STREET -> StreetRepository().deleteStreet(address.id)
+                AddressType.NEIGHBORHOOD -> NeighborhoodRepository().deleteNeighborhood(address.id)
+                AddressType.CITY -> CityRepository().deleteCity(address.id)
             }
 
             if(result is Result.Success) {

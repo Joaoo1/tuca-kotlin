@@ -11,6 +11,8 @@ data class Street(
     @PropertyName("nome_rua")
     @get:PropertyName("nome_rua")
     @set:PropertyName("nome_rua")
-    override var name: String = ""
+    override var name: String = "",
+
+    @get:Exclude override var type: AddressType? = null
 
 ): Serializable, Address

@@ -11,6 +11,8 @@ data class City(
     @PropertyName("nome_cidade")
     @get:PropertyName("nome_cidade")
     @set:PropertyName("nome_cidade")
-    override var name: String = ""
+    override var name: String = "",
+
+    @get:Exclude override var type: AddressType? = null
 
 ): Serializable, Address

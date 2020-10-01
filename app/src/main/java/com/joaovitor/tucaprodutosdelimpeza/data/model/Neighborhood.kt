@@ -11,6 +11,8 @@ data class Neighborhood(
     @PropertyName("nome_bairro")
     @get:PropertyName("nome_bairro")
     @set:PropertyName("nome_bairro")
-    override var name: String = ""
+    override var name: String = "",
+
+    @get:Exclude override var type: AddressType? = null
 
 ): Serializable, Address

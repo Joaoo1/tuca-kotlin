@@ -4,6 +4,8 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
+import com.joaovitor.tucaprodutosdelimpeza.data.model.Address
+import com.joaovitor.tucaprodutosdelimpeza.data.model.AddressType
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
 import com.joaovitor.tucaprodutosdelimpeza.data.util.DateRange
 import com.joaovitor.tucaprodutosdelimpeza.data.util.Firestore
@@ -31,7 +33,7 @@ class SaleRepository {
         }
     }
 
-    suspend fun getFilteredSales(dateRange: DateRange?, paid: Boolean?): List<Sale> {
+    suspend fun getFilteredSales(dateRange: DateRange?, paid: Boolean? = null, address: Address? = null): List<Sale> {
         var querySnapshot = colRef
             .orderBy(Firestore.SALE_DATE, Query.Direction.DESCENDING)
 
@@ -48,9 +50,24 @@ class SaleRepository {
                  .whereEqualTo(Firestore.SALE_PAID, paid)
         }
 
+        when(address?.type) {
+            AddressType.STREET -> querySnapshot = querySnapshot
+                .whereEqualTo(Firestore.SALE_CLIENT_STREET, address.name)
+
+            AddressType.NEIGHBORHOOD -> querySnapshot = querySnapshot
+                .whereEqualTo(Firestore.SALE_CLIENT_NEIGHBORHOOD, address.name)
+
+            AddressType.CITY -> querySnapshot = querySnapshot
+                .whereEqualTo(Firestore.SALE_CLIENT_CITY, address.name)
+        }
+
         val result = querySnapshot.get().await()
 
-        return result.toObjects(Sale::class.java)
+        return result.map {
+            val sale = it.toObject(Sale::class.java)
+            sale.id = it.id
+            sale
+        }
     }
 
     suspend fun getSalesByClient(clientId: String): List<Sale> {

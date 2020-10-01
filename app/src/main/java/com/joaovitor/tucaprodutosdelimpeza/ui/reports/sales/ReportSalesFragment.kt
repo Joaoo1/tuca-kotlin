@@ -30,7 +30,7 @@ class  ReportSalesFragment : Fragment() {
 
         //Create the viewModel
         val viewModelFactory = ReportSalesViewModelFactory()
-        viewModel = ViewModelProvider(this,viewModelFactory)
+        viewModel = ViewModelProvider(requireActivity(),viewModelFactory)
             .get(ReportSalesViewModel::class.java)
 
         binding.lifecycleOwner = viewLifecycleOwner
@@ -38,7 +38,8 @@ class  ReportSalesFragment : Fragment() {
 
         viewModel.openSelectAddressDialog.observe(viewLifecycleOwner, Observer {
             it?.let {
-                showSelectAddressDialog(it, DialogInterface.OnClickListener { _, i ->
+                showSelectAddressDialog(it.map { address ->  address.name }.toTypedArray(),
+                    DialogInterface.OnClickListener { _, i ->
                     viewModel.onSelectAddress(it[i])})
             }
         })
@@ -79,13 +80,15 @@ class  ReportSalesFragment : Fragment() {
     }
 
     private fun showDialog() {
+        val size = viewModel.filteredSales.value?.size
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.dialog_print_sales_title)
             .setMessage(R.string.dialog_print_sales_text)
-            .setPositiveButton(R.string.dialog_print_sales_visualize_button)
+            .setPositiveButton(String.format(resources.getString(R.string.dialog_print_sales_visualize_button), size.toString() ))
             { _, _ ->
                 this.findNavController()
-                    .navigate(ReportSalesFragmentDirections.actionReportSalesFragmentToFilteredSalesFragment())
+                    .navigate(ReportSalesFragmentDirections
+                        .actionReportSalesFragmentToFilteredSalesFragment())
 
                 viewModel.doneNavigating()
             }

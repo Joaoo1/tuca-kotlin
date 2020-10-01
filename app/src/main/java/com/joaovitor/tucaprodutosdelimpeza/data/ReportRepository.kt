@@ -7,7 +7,7 @@ import com.joaovitor.tucaprodutosdelimpeza.data.util.DateRange
 class ReportRepository {
     suspend fun generateProductsSoldReport(dateRange: DateRange): Result<List<ProductSold>> {
         try{
-            val sales = SaleRepository().getFilteredSales(dateRange, null)
+            val sales = SaleRepository().getFilteredSales(dateRange)
             val products = ProductRepository().getProducts()
             val productsSold = products.map {
                 var quantitySold = 0
