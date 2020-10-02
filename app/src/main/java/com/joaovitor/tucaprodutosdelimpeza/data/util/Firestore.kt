@@ -1,6 +1,7 @@
 package com.joaovitor.tucaprodutosdelimpeza.data.util
 
 object Firestore {
+    const val USER_NAME = "name"
     const val COL_SALES_ID = "id_vendas"
     const val COL_SALES = "vendas"
     const val SALE_ID = "idVenda"

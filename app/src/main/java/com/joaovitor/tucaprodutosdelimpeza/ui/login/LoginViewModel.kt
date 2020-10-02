@@ -1,41 +1,53 @@
 package com.joaovitor.tucaprodutosdelimpeza.ui.login
 
-import androidx.lifecycle.LiveData
+import android.app.Application
+import android.content.Context
+import android.text.BoringLayout
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.util.Patterns
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import com.joaovitor.tucaprodutosdelimpeza.data.LoginRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.Result
+import com.joaovitor.tucaprodutosdelimpeza.data.model.User
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-import com.joaovitor.tucaprodutosdelimpeza.R
+class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
-class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
+    var email = MutableLiveData("")
+    var password = MutableLiveData("")
 
-    private val _loginForm = MutableLiveData<LoginFormState>()
-    val loginFormState: LiveData<LoginFormState> = _loginForm
+    private val _error = MutableLiveData<Boolean>(false)
+    val error: LiveData<Boolean>
+        get() = _error
 
-    private val _loginResult = MutableLiveData<LoginResult>()
-    val loginResult: LiveData<LoginResult> = _loginResult
+    private val _navigateToMain = MutableLiveData<Boolean>(false)
+    val navigateToMain: LiveData<Boolean>
+        get() = _navigateToMain
 
-    fun login(username: String, password: String) {
-        // can be launched in a separate asynchronous job
-        val result = loginRepository.login(username, password)
-
-        if (result is Result.Success) {
-            _loginResult.value =
-                LoginResult(success = result.data?.displayName?.let { LoggedInUserView(displayName = it) })
-        } else {
-            _loginResult.value = LoginResult(error = R.string.login_error_login_failed)
-        }
+    fun onClickLoginButton() {
+        login()
     }
 
-    fun loginDataChanged(username: String, password: String) {
-        if (!isUserNameValid(username)) {
-            _loginForm.value = LoginFormState(usernameError = R.string.login_error_invalid_username)
-        } else if (!isPasswordValid(password)) {
-            _loginForm.value = LoginFormState(passwordError = R.string.login_error_invalid_password)
+    fun login() {
+        if (!isUserNameValid(email.value!!)) {
+            //TODO: Show error: email invalid
+            return
+        } else if (!isPasswordValid(password.value!!)) {
+            //TODO: Show error: email invalid
+            return
         } else {
-            _loginForm.value = LoginFormState(isDataValid = true)
+            GlobalScope.launch {
+                val result = LoginRepository(getApplication()).login(email = email.value!!, password = password.value!!)
+
+                if(result is Result.Success) {
+                    _navigateToMain.postValue(true)
+                } else {
+                    _error.postValue(true)
+                }
+            }
         }
     }
 
@@ -50,6 +62,10 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
 
     // A placeholder password validation check
     private fun isPasswordValid(password: String): Boolean {
-        return password.length > 5
+        return password.length > 6
+    }
+
+    fun doneNavigating() {
+        _navigateToMain.value = false
     }
 }

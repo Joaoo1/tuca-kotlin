@@ -1,8 +1,12 @@
 package com.joaovitor.tucaprodutosdelimpeza.data
 
+import android.content.Context
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.joaovitor.tucaprodutosdelimpeza.data.model.LoggedInUser
+import com.joaovitor.tucaprodutosdelimpeza.data.model.User
+import com.joaovitor.tucaprodutosdelimpeza.data.util.Firestore
 import kotlinx.coroutines.tasks.await
 
 /**
@@ -10,42 +14,38 @@ import kotlinx.coroutines.tasks.await
  * maintains an in-memory cache of login status and user credentials information.
  */
 
-class LoginRepository {
+class LoginRepository(private val context: Context) {
 
-    // in-memory cache of the loggedInUser object
-    private var user: LoggedInUser? = null
-
-    val isLoggedIn: Boolean
-        get() = user != null
-
-    init {
-        // If user credentials will be cached in local storage, it is recommended it be encrypted
-        // @see https://developer.android.com/training/articles/keystore
-        user = null
-    }
-
+    private val auth = FirebaseAuth.getInstance()
     fun logout() {
-        user = null
+        auth.signOut()
     }
 
-    suspend fun login(email: String, password: String): Result<LoggedInUser> {
+    suspend fun login(email: String, password: String): Result<User> {
         return try {
             // handle login
-            val firebaseUser = FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password).await().user
-            val user = LoggedInUser(firebaseUser?.uid, firebaseUser?.email!!)
+            val firebaseUser = auth.signInWithEmailAndPassword(email, password).await().user
+            val user = User(uid = firebaseUser?.uid, email = firebaseUser?.email!!)
+            user.displayName = getDisplayName(user.uid!!)
 
             setLoggedInUser(user)
 
             Result.Success(user)
-        } catch (e: FirebaseFirestoreException) {
+        } catch (e: Exception) {
             Result.Error(e)
         }
 
     }
 
-    private fun setLoggedInUser(loggedInUser: LoggedInUser) {
-        this.user = loggedInUser
-        // If user credentials will be cached in local storage, it is recommended it be encrypted
-        // @see https://developer.android.com/training/articles/keystore
+    private fun setLoggedInUser(user: User) {
+        val sharedPreference = context.getSharedPreferences("login", Context.MODE_PRIVATE)
+        sharedPreference.edit().putString("user_email", user.email).apply()
+        sharedPreference.edit().putString("user_name", user.displayName).apply()
+        sharedPreference.edit().putBoolean("is_logged_in", true).apply()
+    }
+
+    private suspend fun getDisplayName(userUid: String): String? {
+        return FirebaseFirestore.getInstance().collection("users").document(userUid)
+            .get().await().getString(Firestore.USER_NAME)
     }
 }

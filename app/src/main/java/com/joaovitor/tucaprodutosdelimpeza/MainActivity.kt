@@ -1,10 +1,10 @@
 package com.joaovitor.tucaprodutosdelimpeza
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.view.Gravity
 import android.view.MenuItem
-import android.widget.ImageView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageButton
@@ -16,14 +16,16 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.textview.MaterialTextView
+import com.joaovitor.tucaprodutosdelimpeza.data.LoginRepository
 import com.joaovitor.tucaprodutosdelimpeza.ui.login.LoginActivity
-
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navHostFragment: NavHostFragment
     private lateinit var drawerLayout: DrawerLayout
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,11 +71,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val headerView = navigationView.getHeaderView(0)
         val buttonLogout: AppCompatImageButton = headerView.findViewById(R.id.logout)
+        val email: MaterialTextView = headerView.findViewById(R.id.email)
+        val name: MaterialTextView = headerView.findViewById(R.id.name)
+
+        sharedPreferences = getSharedPreferences("login", Context.MODE_PRIVATE)
+        email.text = sharedPreferences.getString("user_email", "")
+        name.text = sharedPreferences.getString("user_name", "")
 
         buttonLogout.setOnClickListener {
+            LoginRepository(this).logout()
             startActivity(Intent(this, LoginActivity::class.java))
+            getSharedPreferences("login", Context.MODE_PRIVATE).edit().clear().apply()
+            finish()
         }
-
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
