@@ -15,8 +15,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.navigation.NavigationView
+import com.joaovitor.tucaprodutosdelimpeza.MainActivity
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentProductListBinding
+import com.joaovitor.tucaprodutosdelimpeza.util.toast
+import com.joaovitor.tucaprodutosdelimpeza.util.toastLong
 
 class ProductListFragment : Fragment() {
 
@@ -43,32 +46,54 @@ class ProductListFragment : Fragment() {
             viewModel.onProductClicked(product)
         })
         binding.productsList.adapter = listAdapter
-        viewModel.products.observe(viewLifecycleOwner, Observer {
+        viewModel.products.observe(viewLifecycleOwner) {
             it?.let {
                 listAdapter.productsList = it
             }
-        })
-
-        //Floating button click
-        binding.fab.setOnClickListener { viewModel.onClickFab() }
+        }
 
         //Navigate to Add Fragment listener
-        viewModel.navigateToAdd.observe(viewLifecycleOwner, Observer { navigate ->
+        viewModel.navigateToAdd.observe(viewLifecycleOwner) { navigate ->
             if(navigate) {
                 this.findNavController()
                     .navigate(ProductListFragmentDirections.actionProductListFragmentToProductAddFragment())
                 viewModel.doneNavigating()
             }
-        })
+        }
 
         //Navigate to Edit Fragment listener
-        viewModel.navigateToEdit.observe(viewLifecycleOwner, Observer { product ->
+        viewModel.navigateToEdit.observe(viewLifecycleOwner) { product ->
             product?.let {
                 this.findNavController()
                     .navigate(ProductListFragmentDirections.actionProductListFragmentToProductEditFragment(it))
                 viewModel.doneNavigating()
             }
-        })
+        }
+
+        //Floating button click
+        binding.fab.setOnClickListener { viewModel.onClickFab() }
+
+        viewModel.error.observe(viewLifecycleOwner) {
+            it?.let {
+                context?.toastLong(it)
+                viewModel.doneShowError()
+            }
+        }
+
+        viewModel.info.observe(viewLifecycleOwner) {
+            it?.let {
+                context?.toast(it)
+                viewModel.doneShowInfo()
+            }
+        }
+
+        viewModel.showProgressBar.observe(viewLifecycleOwner) {
+            if(it) {
+                (activity as MainActivity).showProgressBar()
+            } else {
+                (activity as MainActivity).hideProgressBar()
+            }
+        }
 
         return binding.root
     }

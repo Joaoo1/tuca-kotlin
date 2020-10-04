@@ -1,18 +1,26 @@
 package com.joaovitor.tucaprodutosdelimpeza.data
 
-import com.google.firebase.firestore.FirebaseFirestoreException
 import com.joaovitor.tucaprodutosdelimpeza.data.model.ProductSold
 import com.joaovitor.tucaprodutosdelimpeza.data.util.DateRange
 
 class ReportRepository {
     suspend fun generateProductsSoldReport(dateRange: DateRange): Result<List<ProductSold>> {
-        try{
-            val sales = SaleRepository().getFilteredSales(dateRange)
-            val products = ProductRepository().getProducts()
-            val productsSold = products.map {
+        return try{
+            val resultSales = SaleRepository().getFilteredSales(dateRange)
+            val resultProducts = ProductRepository().getProducts()
+
+            if (resultProducts is Result.Error) {
+                return resultProducts
+            }
+
+            if (resultSales is Result.Error) {
+                return resultSales
+            }
+
+            val productsSold = (resultProducts as Result.Success).data!!.map {
                 var quantitySold = 0
 
-                sales.forEach { sale ->
+                (resultSales as Result.Success).data?.forEach { sale ->
                     for (productSale in sale.products) {
                         if(productSale.parentId == it.id) quantitySold += productSale.quantity
                     }
@@ -21,9 +29,9 @@ class ReportRepository {
                 ProductSold(it.name, quantitySold)
             }
 
-            return Result.Success(productsSold)
-        }catch (e: FirebaseFirestoreException) {
-            return Result.Error(e)
+            Result.Success(productsSold)
+        }catch (e: Exception) {
+            Result.Error(e)
         }
     }
 }

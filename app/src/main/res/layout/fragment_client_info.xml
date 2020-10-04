@@ -3,6 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="com.joaovitor.tucaprodutosdelimpeza.ui.client.info.ClientInfoViewModel" />
@@ -73,7 +75,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins"
-                    android:text="Telefone"
+                    android:text="@string/client_info_label_phone"
                     android:textColor="#FFFFFF"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -83,7 +85,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Rua"
+                    android:text="@string/client_info_label_street"
                     android:textColor="#FFFFFF"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/phone" />
@@ -93,7 +95,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Complemento"
+                    android:text="@string/client_info_label_complement"
                     android:textColor="#FFFFFF"
                     app:layout_constraintEnd_toStartOf="@+id/complement"
                     app:layout_constraintHorizontal_chainStyle="spread_inside"
@@ -105,7 +107,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Bairro"
+                    android:text="@string/client_info_label_neighborhood"
                     android:textColor="#FFFFFF"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/complement" />
@@ -115,7 +117,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Cidade"
+                    android:text="@string/client_info_label_city"
                     android:textColor="#FFFFFF"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/neighborhood" />
@@ -191,7 +193,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:paddingVertical="4dp"
-                android:text="Compras feitas pelo cliente"
+                android:text="@string/client_info_headline_sales"
                 android:textSize="18sp"
                 android:textAlignment="center"
                 app:layout_constraintTop_toBottomOf="@+id/divider"
@@ -220,6 +222,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/divider2"
                 tools:listitem="@layout/list_item_client_sale"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/client_info_not_found_sales"
+                android:visibility="@{viewModel.notFoundSales ? View.VISIBLE : View.GONE}"
+                android:layout_marginTop="32dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider2"
+                style="@style/TextAppearance.AppCompat.Title" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </layout>

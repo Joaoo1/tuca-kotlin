@@ -5,6 +5,8 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
+import android.widget.ProgressBar
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageButton
@@ -20,7 +22,15 @@ import com.google.android.material.textview.MaterialTextView
 import com.joaovitor.tucaprodutosdelimpeza.data.LoginRepository
 import com.joaovitor.tucaprodutosdelimpeza.ui.login.LoginActivity
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+interface ProgressBarOwner {
+    val progressBar: ProgressBar
+
+    fun showProgressBar()
+    fun hideProgressBar()
+}
+
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
+    ProgressBarOwner {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navHostFragment: NavHostFragment
@@ -75,8 +85,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val name: MaterialTextView = headerView.findViewById(R.id.name)
 
         sharedPreferences = getSharedPreferences("login", Context.MODE_PRIVATE)
-        email.text = sharedPreferences.getString("user_email", "")
-        name.text = sharedPreferences.getString("user_name", "")
+        email.text = sharedPreferences.getString("userEmail", "")
+        name.text = sharedPreferences.getString("userName", "")
 
         buttonLogout.setOnClickListener {
             LoginRepository(this).logout()
@@ -91,5 +101,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         return item.onNavDestinationSelected(navHostFragment.navController)
                 || super.onOptionsItemSelected(item)
+    }
+
+    override val progressBar: ProgressBar
+        get() = findViewById(R.id.progress_bar)
+
+    override fun showProgressBar() {
+        progressBar.visibility = View.VISIBLE
+    }
+
+    override fun hideProgressBar() {
+        progressBar.visibility = View.INVISIBLE
     }
 }

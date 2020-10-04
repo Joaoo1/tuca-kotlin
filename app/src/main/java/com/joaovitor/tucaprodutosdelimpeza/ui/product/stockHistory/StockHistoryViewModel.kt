@@ -9,16 +9,14 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 
-class StockHistoryViewModel(productId: String) : ViewModel() {
+class StockHistoryViewModel : ViewModel() {
 
     private var emptyList: List<StockHistory> = emptyList()
     var stockHistories = MutableLiveData(emptyList)
 
-    private val productRepository: ProductRepository = ProductRepository()
-
     init {
         GlobalScope.launch {
-            stockHistories.postValue(productRepository.getStockHistories(productId))
+            // stockHistories.postValue(productRepository.getStockHistories(productId))
         }
     }
 }

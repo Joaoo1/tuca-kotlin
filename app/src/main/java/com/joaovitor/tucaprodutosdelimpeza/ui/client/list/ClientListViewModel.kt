@@ -4,14 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.joaovitor.tucaprodutosdelimpeza.data.ClientRepository
+import com.joaovitor.tucaprodutosdelimpeza.data.Result
+import com.joaovitor.tucaprodutosdelimpeza.data.SaleRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Client
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
+import com.joaovitor.tucaprodutosdelimpeza.ui.BaseViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 
-class ClientListViewModel : ViewModel() {
+class ClientListViewModel : BaseViewModel() {
 
     var clients = MutableLiveData<List<Client>>(emptyList())
 
@@ -29,7 +32,15 @@ class ClientListViewModel : ViewModel() {
 
     private fun fetchClients() {
         GlobalScope.launch {
-            clients.postValue(ClientRepository().getClients())
+            _showProgressBar.postValue(true)
+            val resultClient = ClientRepository().getClients()
+            if (resultClient is Result.Success) {
+                clients.postValue(resultClient.data)
+            } else {
+                super._error.postValue("Erro ao carregar clientes")
+            }
+
+            _showProgressBar.postValue(false)
         }
     }
 
@@ -49,4 +60,5 @@ class ClientListViewModel : ViewModel() {
         _navigateToAdd.value = false
         _navigateToInfo.value = null
     }
+
 }

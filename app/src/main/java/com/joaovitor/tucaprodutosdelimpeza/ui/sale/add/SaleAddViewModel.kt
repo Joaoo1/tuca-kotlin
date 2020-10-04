@@ -1,25 +1,38 @@
 package com.joaovitor.tucaprodutosdelimpeza.ui.sale.add
 
+import android.app.Activity
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.joaovitor.tucaprodutosdelimpeza.R
-import com.joaovitor.tucaprodutosdelimpeza.data.ClientRepository
-import com.joaovitor.tucaprodutosdelimpeza.data.ProductRepository
-import com.joaovitor.tucaprodutosdelimpeza.data.SaleRepository
+import com.joaovitor.tucaprodutosdelimpeza.bluetooth.PrinterFunctions
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Client
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
 import com.joaovitor.tucaprodutosdelimpeza.data.model.ProductSale
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
+import com.joaovitor.tucaprodutosdelimpeza.data.ProductRepository
+import com.joaovitor.tucaprodutosdelimpeza.data.ClientRepository
+import com.joaovitor.tucaprodutosdelimpeza.data.SaleRepository
+import com.joaovitor.tucaprodutosdelimpeza.data.LoginRepository
+import com.joaovitor.tucaprodutosdelimpeza.data.Result
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.util.Date
 
-class SaleAddViewModel : ViewModel() {
+class SaleAddViewModel(application: Application) : AndroidViewModel(application) {
 
     private val saleRepository = SaleRepository()
+
+    private var _error = MutableLiveData<String>()
+    val error: LiveData<String>
+        get() = _error
+
+    private var _info = MutableLiveData<String>()
+    val info: LiveData<String>
+        get() = _info
 
     //All options available for AutoCompleteTextView
     private val _allProducts =  MutableLiveData<List<Product>>()
@@ -36,18 +49,20 @@ class SaleAddViewModel : ViewModel() {
     val client: LiveData<Client>
         get() = _client
 
-    private var _saleDate = MutableLiveData<Date>(Date())
+    private var _saleDate = MutableLiveData(Date())
     val saleDate: LiveData<Date>
         get() = _saleDate
 
-    private var _total = MutableLiveData<BigDecimal>(BigDecimal(0))
+    private var _total = MutableLiveData(BigDecimal(0))
     val total: LiveData<BigDecimal>
         get() = _total
+
+    var printReceipt = MutableLiveData(true)
 
     private var _products = MutableLiveData<List<ProductSale>>(emptyList())
     val products = MediatorLiveData<List<ProductSale>>()
 
-    var paymentMethod = MutableLiveData<Int>(R.id.radio_button_unpaid)
+    var paymentMethod = MutableLiveData(R.id.radio_button_unpaid)
 
     val quantity = MutableLiveData(1)
 
@@ -63,13 +78,41 @@ class SaleAddViewModel : ViewModel() {
     val navigateBackToAdd: LiveData<Boolean>
         get() = _navigateBackToAdd
 
+    private var _requestBluetoothOn = MutableLiveData(false)
+    val requestBluetoothOn: LiveData<Boolean>
+        get() = _requestBluetoothOn
+
+    private var _dialogBluetoothOff = MutableLiveData(false)
+    val dialogBluetoothOff: LiveData<Boolean>
+        get() = _dialogBluetoothOff
+
+    private var _showProgressBar = MutableLiveData<Boolean>(false)
+    val showProgressBar: LiveData<Boolean>
+        get() = _showProgressBar
+
+    var sale = Sale()
+
     init {
         GlobalScope.launch {
+            _showProgressBar.postValue(true)
+
             val productRepository = ProductRepository()
-            _allProducts.postValue(productRepository.getProducts())
+            val resultProduct = productRepository.getProducts()
+            if(resultProduct is Result.Success) {
+                _allProducts.postValue(resultProduct.data)
+            } else {
+                _error.postValue("Erro ao carregar produtos!")
+            }
 
             val clientRepository = ClientRepository()
-            _allClients.postValue(clientRepository.getClients())
+            val resultClient = clientRepository.getClients()
+            if(resultClient is Result.Success) {
+                _allClients.postValue(resultClient.data)
+            } else {
+                _error.postValue("Erro ao carregar clientes!")
+            }
+
+            _showProgressBar.postValue(false)
         }
 
         //Update total every time _products is changed
@@ -92,49 +135,64 @@ class SaleAddViewModel : ViewModel() {
 
     private fun addSale() {
         if(validateFields()){
-            val sale = Sale()
-            sale.products = _products.value!!.toMutableList()
-            sale.bindClient(_client.value!!)
-            sale.saleDate = _saleDate.value!!
-            sale.discount = BigDecimal(discount.value?: "0.00").toString()
-            sale.grossValue = calculateTotalFromProductsList(_products.value!!).toString()
-            sale.total = _total.value!!.minus(BigDecimal(discount.value?: "0.00")).toString()
+            _showProgressBar.postValue(true)
+
+            val mSale = Sale()
+            mSale.products = _products.value!!.toMutableList()
+            mSale.bindClient(_client.value!!)
+            mSale.saleDate = _saleDate.value!!
+            mSale.discount = BigDecimal(discount.value?: "0.00").toString()
+            mSale.grossValue = calculateTotalFromProductsList(_products.value!!).toString()
+            mSale.total = _total.value!!.minus(BigDecimal(discount.value?: "0.00")).toString()
 
             when(paymentMethod.value!!) {
                 R.id.radio_button_paid -> {
-                    sale.paid = true
-                    sale.paymentDate = Date()
-                    sale.paidValue = _total.value.toString()
-                    sale.toReceive = "0.00"
+                    mSale.paid = true
+                    mSale.paymentDate = Date()
+                    mSale.paidValue = _total.value.toString()
+                    mSale.toReceive = "0.00"
                 }
 
                 R.id.radio_button_unpaid -> {
-                    sale.paid = false
-                    sale.paymentDate = null
-                    sale.paidValue = "0.00"
-                    sale.toReceive = _total.value?.minus(BigDecimal(discount.value?:"0.00")).toString()
+                    mSale.paid = false
+                    mSale.paymentDate = null
+                    mSale.paidValue = "0.00"
+                    mSale.toReceive = _total.value?.minus(BigDecimal(discount.value?:"0.00")).toString()
                 }
 
                 R.id.radio_button_partially_paid -> {
-                    sale.paid = false
-                    sale.paymentDate = null
-                    sale.paidValue = BigDecimal(paidValue.value!!).toString()
-                    sale.toReceive = _total.value?.
-                        minus(BigDecimal(paidValue.value))?.
-                        minus(BigDecimal(discount.value?: "0.00")).toString()
+                    mSale.paid = false
+                    mSale.paymentDate = null
+                    mSale.paidValue = BigDecimal(paidValue.value!!).toString()
+                    mSale.toReceive = _total.value?.
+                    minus(BigDecimal(paidValue.value))?.
+                    minus(BigDecimal(discount.value?: "0.00")).toString()
                 }
 
-                else -> return //TODO: Show a error: Error unknown on payment situation
+                else -> _error.postValue("Erro desconhecido na situação de pagamento")
             }
 
-            //TODO: Set seller and seller UID on sale
-            sale.seller = "João Vitor"
-            sale.sellerUid = "asd"
+            val loginRepository = LoginRepository(getApplication())
+            mSale.seller = loginRepository.getCachedUserName()
+            mSale.sellerUid = loginRepository.getCachedUserUid()
 
             GlobalScope.launch {
-                saleRepository.addSale(sale) //TODO: Get result and show a respective message
+                val result = saleRepository.addSale(mSale)
 
-                reset()
+                if (result is Result.Success) {
+                    _info.postValue("Venda adicionado com sucesso")
+
+                    // Print the receipt for the sale
+                    sale = mSale
+                    if(printReceipt.value!!) printReceipt()
+
+                    //Clean the form fields
+                    reset()
+                } else {
+                    _error.postValue("Erro ao registrar venda")
+                }
+
+                _showProgressBar.postValue(false)
             }
         }
     }
@@ -148,78 +206,12 @@ class SaleAddViewModel : ViewModel() {
         paymentMethod.postValue(R.id.radio_button_unpaid)
     }
 
-    /** Check the input fields */
-    private fun validateFields(): Boolean {
-        if(_products.value!!.isEmpty()) {
-            //TODO: Show a message error: No products added
-            return false
-        }
-
-        if(_client.value == null) {
-            //TODO: Show a message error: No selected client
-            return false
-        }
-
-        if(paymentMethod.value == R.id.radio_button_partially_paid) {
-            if(paidValue.value == null || paidValue.value!!.isEmpty()) {
-                //TODO: Show a message error: Inform the paid value
-                return false
-            }
-
-            if(paidValue.value!!.last() == '.' ) {
-                //TODO: Show a error message: value invalid
-                return false
-            }
-
-            if(BigDecimal(paidValue.value!!) >= _total.value) {
-                //TODO: Show a message error: Paid value is greater than total
-                return false
-            }
-        }
-
-        if(discount.value != null && discount.value!!.isNotEmpty() && discount.value!!.last() == '.' ) {
-            //TODO: Show a error message: price invalid
-            return false
-        }
-
-        if(discount.value != null && discount.value!!.isEmpty()){
-            discount.value = "0.00"
-        }
-
-        return true
-    }
-
-    fun onSaleDateSelect(millis: Long) {
-        _saleDate.postValue(Date(millis))
-    }
-
-    private fun calculateTotalFromProductsList(products: List<ProductSale>?): BigDecimal {
-        if(products != null && products.isNotEmpty()) {
-            val productsTotal =
-                products.map { BigDecimal(it.price).multiply(BigDecimal(it.quantity)) }
-
-            return productsTotal.reduce { acc, productTotal -> acc.plus(productTotal) }
-        }
-
-        return BigDecimal(0)
-    }
-
-    // Navigation functions
-    fun navigateToSelectClient(){
-        _navigateToSelectClient.value = true
-    }
-
-    fun onClientClicked(client: Client){
-        _navigateBackToAdd.value = true
-        _client.postValue(client)
-    }
-
-    fun doneNavigating(){
-        _navigateToSelectClient.value = false
-        _navigateBackToAdd.value = false
-    }
-
     fun addProduct(text: String?) {
+        if(text == null || text.isEmpty()) {
+            _error.value = "Digite o nome do produto"
+            return
+        }
+
         val productsName = allProducts.value?.map{ it.name }
         val productIndex = productsName?.indexOf(text)
         if(productIndex != null && productIndex >= 0) {
@@ -244,8 +236,7 @@ class SaleAddViewModel : ViewModel() {
 
             _products.value = _products.value?.plus(productSale)
         } else {
-            //TODO: Show a error
-            return
+            _error.postValue("Produto não encontrado")
         }
     }
 
@@ -253,7 +244,117 @@ class SaleAddViewModel : ViewModel() {
         return ProductSale(product.name, product.price, quantity, Date(), product.id)
     }
 
+    /** Check the input fields */
+    private fun validateFields(): Boolean {
+        if(_products.value!!.isEmpty()) {
+            _error.postValue("Não há produtos adicionados")
+            return false
+        }
+
+        if(_client.value == null) {
+            _error.postValue("Selecione um cliente")
+            return false
+        }
+
+        if(paymentMethod.value == R.id.radio_button_partially_paid) {
+            if(paidValue.value == null || paidValue.value!!.isEmpty()) {
+                _error.postValue("Informe o valor pago")
+                return false
+            }
+
+            if(paidValue.value!!.last() == '.' ) {
+                _error.postValue("O valor pago informado é inválido")
+                return false
+            }
+
+            if(BigDecimal(paidValue.value!!) >= _total.value) {
+                _error.postValue("Valor pago é maior que o total da venda")
+                return false
+            }
+        }
+
+        if(discount.value != null && discount.value!!.isNotEmpty() && discount.value!!.last() == '.' ) {
+            _error.postValue("O valor de desconto informado é inválido")
+            return false
+        }
+
+        if(discount.value != null && discount.value!!.isEmpty()){
+            discount.value = "0.00"
+        }
+
+        return true
+    }
+
+    private fun calculateTotalFromProductsList(products: List<ProductSale>?): BigDecimal {
+        if(products != null && products.isNotEmpty()) {
+            val productsTotal =
+                products.map { BigDecimal(it.price).multiply(BigDecimal(it.quantity)) }
+
+            return productsTotal.reduce { acc, productTotal -> acc.plus(productTotal) }
+        }
+
+        return BigDecimal(0)
+    }
+
+    /* User actions */
     fun onClickAddSale() {
         addSale()
+    }
+
+    fun onSaleDateSelect(millis: Long) {
+        _saleDate.postValue(Date(millis))
+    }
+
+    fun navigateToSelectClient(){
+        _navigateToSelectClient.value = true
+    }
+
+    fun onClientClicked(client: Client){
+        _navigateBackToAdd.value = true
+        _client.postValue(client)
+    }
+
+    fun doneNavigating(){
+        _navigateToSelectClient.value = false
+        _navigateBackToAdd.value = false
+        _dialogBluetoothOff.value = false
+        _requestBluetoothOn.value = false
+    }
+
+    fun doneShowError() {
+        _error.value = null
+    }
+
+    fun doneShowInfo() {
+        _info.value = null
+    }
+
+    /* Printer */
+    private fun printReceipt() {
+        val printerFunctions = PrinterFunctions(getApplication())
+
+        if (printerFunctions.btAdapter?.isEnabled!!) {
+            printerFunctions.printReceipt(sale, sale.products)
+        } else {
+            _dialogBluetoothOff.value = true
+        }
+    }
+
+    fun onBluetoothResult(resultCode: Int) {
+        if(resultCode == Activity.RESULT_OK) {
+            printReceipt()
+        }else if (resultCode == Activity.RESULT_CANCELED) {
+            _error.value = "Ocorreu um erro ao ativar bluetooth!"
+        }
+    }
+
+    fun onClickBluetoothDialogPositive() {
+        _requestBluetoothOn.value = true
+    }
+
+    fun onClickDeleteProduct(position: Int) {
+        val list = products.value!!.toMutableList()
+        list.removeAt(position - 1)
+        _products.value = list
     }
 }

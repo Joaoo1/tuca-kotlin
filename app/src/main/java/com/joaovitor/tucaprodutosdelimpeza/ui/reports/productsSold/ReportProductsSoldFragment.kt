@@ -10,9 +10,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener
+import com.joaovitor.tucaprodutosdelimpeza.MainActivity
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentReportProductsSoldBinding
 import com.joaovitor.tucaprodutosdelimpeza.util.DatePickerBuilder
+import com.joaovitor.tucaprodutosdelimpeza.util.toast
+import com.joaovitor.tucaprodutosdelimpeza.util.toastLong
 
 class ReportProductsSoldFragment : Fragment() {
 
@@ -32,32 +35,50 @@ class ReportProductsSoldFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        viewModel.openStartDatePicker.observe(viewLifecycleOwner, Observer {
+        viewModel.openStartDatePicker.observe(viewLifecycleOwner) {
             if(it) {
-                DatePickerBuilder.buildDatePicker(
-                    MaterialPickerOnPositiveButtonClickListener { millis ->
-                        viewModel.onSelectStartDate(millis)
-                }).show(parentFragmentManager, parentFragment.toString())
+                DatePickerBuilder.buildDatePicker({ millis -> viewModel.onSelectStartDate(millis) })
+                    .show(parentFragmentManager, parentFragment.toString())
             }
-        })
+        }
 
-        viewModel.openEndDatePicker.observe(viewLifecycleOwner, Observer {
+        viewModel.openEndDatePicker.observe(viewLifecycleOwner) {
             if(it){
-                DatePickerBuilder.buildDatePicker(
-                    MaterialPickerOnPositiveButtonClickListener { millis ->
-                        viewModel.onSelectEndDate(millis)
-                }).show(parentFragmentManager, parentFragment.toString())
+                DatePickerBuilder.buildDatePicker({ millis -> viewModel.onSelectEndDate(millis) })
+                    .show(parentFragmentManager, parentFragment.toString())
             }
-        })
+        }
 
-        viewModel.navigateToProductsSoldList.observe(viewLifecycleOwner, Observer {
+        viewModel.navigateToProductsSoldList.observe(viewLifecycleOwner) {
             if(it) {
                 findNavController()
                     .navigate(ReportProductsSoldFragmentDirections
                         .actionReportProductsSoldFragmentToProductsSoldListFragment())
                 viewModel.doneNavigating()
             }
-        })
+        }
+
+        viewModel.error.observe(viewLifecycleOwner) {
+            it?.let {
+                context?.toastLong(it)
+                viewModel.doneShowError()
+            }
+        }
+
+        viewModel.info.observe(viewLifecycleOwner) {
+            it?.let {
+                context?.toast(it)
+                viewModel.doneShowInfo()
+            }
+        }
+
+        viewModel.showProgressBar.observe(viewLifecycleOwner) {
+            if(it) {
+                (activity as MainActivity).showProgressBar()
+            } else {
+                (activity as MainActivity).hideProgressBar()
+            }
+        }
 
         return binding.root
     }

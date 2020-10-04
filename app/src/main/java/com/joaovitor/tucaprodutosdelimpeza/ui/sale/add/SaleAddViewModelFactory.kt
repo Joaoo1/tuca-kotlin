@@ -1,13 +1,14 @@
 package com.joaovitor.tucaprodutosdelimpeza.ui.sale.add
 
+import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-class SaleAddViewModelFactory() : ViewModelProvider.Factory {
+class SaleAddViewModelFactory(private val application: Application) : ViewModelProvider.Factory {
     @Suppress("unchecked_cast")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(SaleAddViewModel::class.java)) {
-            return SaleAddViewModel() as T
+            return SaleAddViewModel(application) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

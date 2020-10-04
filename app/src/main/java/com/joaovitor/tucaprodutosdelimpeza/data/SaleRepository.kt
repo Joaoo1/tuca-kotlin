@@ -11,6 +11,7 @@ import com.joaovitor.tucaprodutosdelimpeza.data.util.DateRange
 import com.joaovitor.tucaprodutosdelimpeza.data.util.Firestore
 import com.joaovitor.tucaprodutosdelimpeza.util.FormatDate
 import kotlinx.coroutines.tasks.await
+import java.lang.Exception
 
 class SaleRepository {
 
@@ -19,75 +20,101 @@ class SaleRepository {
 
     private var saleIdRepository = SaleIdRepository()
 
-    suspend fun getSales(limit: Long? = 50): List<Sale> {
-        val querySnapshot = colRef
-            .orderBy(Firestore.SALE_DATE, Query.Direction.DESCENDING)
-            .limit(limit!!)
-            .get()
-            .await()
+    suspend fun getSales(limit: Long? = 50): Result<List<Sale>> {
+        return try {
+            val querySnapshot = colRef
+                .orderBy(Firestore.SALE_DATE, Query.Direction.DESCENDING)
+                .limit(limit!!)
+                .get()
+                .await()
 
-        return querySnapshot.map {
-            val sale = it.toObject(Sale::class.java)
-            sale.id = it.id
-            sale
+            val sales = querySnapshot.map {
+                val sale = it.toObject(Sale::class.java)
+                sale.id = it.id
+                sale
+            }
+
+            Result.Success(sales)
+        } catch (e: Exception) {
+            Result.Error(e)
         }
     }
 
-    suspend fun getFilteredSales(dateRange: DateRange?, paid: Boolean? = null, address: Address? = null): List<Sale> {
-        var querySnapshot = colRef
-            .orderBy(Firestore.SALE_DATE, Query.Direction.DESCENDING)
+    suspend fun getFilteredSales(
+        dateRange: DateRange?,
+        paid: Boolean? = null,
+        address: Address? = null
+    ): Result<List<Sale>> {
+        return try {
+            var querySnapshot = colRef
+                .orderBy(Firestore.SALE_DATE, Query.Direction.DESCENDING)
 
-        dateRange?.let {
-            querySnapshot = querySnapshot
-                .whereGreaterThanOrEqualTo(Firestore.SALE_DATE, dateRange.startDate)
+            dateRange?.let {
+                querySnapshot = querySnapshot
+                    .whereGreaterThanOrEqualTo(Firestore.SALE_DATE, dateRange.startDate)
 
-            querySnapshot = querySnapshot
-                .whereLessThan(Firestore.SALE_DATE, FormatDate.addOneDay(dateRange.endDate))
-        }
+                querySnapshot = querySnapshot
+                    .whereLessThan(Firestore.SALE_DATE, FormatDate.addOneDay(dateRange.endDate))
+            }
 
-        paid?.let {
-             querySnapshot = querySnapshot
-                 .whereEqualTo(Firestore.SALE_PAID, paid)
-        }
+            paid?.let {
+                querySnapshot = querySnapshot
+                    .whereEqualTo(Firestore.SALE_PAID, paid)
+            }
 
-        when(address?.type) {
-            AddressType.STREET -> querySnapshot = querySnapshot
-                .whereEqualTo(Firestore.SALE_CLIENT_STREET, address.name)
+            when(address?.type) {
+                AddressType.STREET -> querySnapshot = querySnapshot
+                    .whereEqualTo(Firestore.SALE_CLIENT_STREET, address.name)
 
-            AddressType.NEIGHBORHOOD -> querySnapshot = querySnapshot
-                .whereEqualTo(Firestore.SALE_CLIENT_NEIGHBORHOOD, address.name)
+                AddressType.NEIGHBORHOOD -> querySnapshot = querySnapshot
+                    .whereEqualTo(Firestore.SALE_CLIENT_NEIGHBORHOOD, address.name)
 
-            AddressType.CITY -> querySnapshot = querySnapshot
-                .whereEqualTo(Firestore.SALE_CLIENT_CITY, address.name)
-        }
+                AddressType.CITY -> querySnapshot = querySnapshot
+                    .whereEqualTo(Firestore.SALE_CLIENT_CITY, address.name)
+            }
 
-        val result = querySnapshot.get().await()
+            val result = querySnapshot.get().await()
 
-        return result.map {
-            val sale = it.toObject(Sale::class.java)
-            sale.id = it.id
-            sale
+            val sales =  result.map {
+                val sale = it.toObject(Sale::class.java)
+                sale.id = it.id
+                sale
+            }
+
+            Result.Success(sales)
+        } catch (e: Exception) {
+            Result.Error(e)
         }
     }
 
-    suspend fun getSalesByClient(clientId: String): List<Sale> {
-        val querySnapshot = colRef
-            .whereEqualTo(Firestore.SALE_CLIENT_ID, clientId)
-            .orderBy(Firestore.SALE_DATE, Query.Direction.DESCENDING)
-            .get()
-            .await()
+    suspend fun getSalesByClient(clientId: String): Result<List<Sale>> {
+        return try {
+            val querySnapshot = colRef
+                .whereEqualTo(Firestore.SALE_CLIENT_ID, clientId)
+                .orderBy(Firestore.SALE_DATE, Query.Direction.DESCENDING)
+                .get()
+                .await()
 
-        return querySnapshot.map {
-            val sale = it.toObject(Sale::class.java)
-            sale.id = it.id
-            sale
+            val clientSales =  querySnapshot.map {
+                val sale = it.toObject(Sale::class.java)
+                sale.id = it.id
+                sale
+            }
+
+            Result.Success(clientSales)
+        } catch (e: Exception) {
+            Result.Error(e)
         }
     }
 
     suspend fun addSale(sale: Sale): Result<Void> {
         return try {
             // Getting a unused id for sale
-            sale.saleId = saleIdRepository.generateSaleId()
+            val resultAvailableId = saleIdRepository.generateSaleId()
+            if(resultAvailableId is Result.Error) {
+                return resultAvailableId
+            }
+            sale.saleId = (resultAvailableId as Result.Success).data!!
 
             colRef.add(sale).await()
 

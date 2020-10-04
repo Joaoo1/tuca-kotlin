@@ -2,17 +2,11 @@ package com.joaovitor.tucaprodutosdelimpeza.ui.reports.productsSold
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Filter
-import android.widget.Filterable
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
 import com.joaovitor.tucaprodutosdelimpeza.data.model.ProductSold
-import com.joaovitor.tucaprodutosdelimpeza.databinding.ListItemProductBinding
 import com.joaovitor.tucaprodutosdelimpeza.databinding.ListItemProductSoldBinding
-import java.util.Locale
-import kotlin.collections.ArrayList
 
 class ProductsSoldListAdapter :
     ListAdapter<ProductSold, ProductsSoldListAdapter.ViewHolder>(ProductSoldDiffCallback()){

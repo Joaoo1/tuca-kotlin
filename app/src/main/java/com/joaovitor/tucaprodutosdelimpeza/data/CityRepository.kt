@@ -1,14 +1,10 @@
 package com.joaovitor.tucaprodutosdelimpeza.data
 
-import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreException
 import com.joaovitor.tucaprodutosdelimpeza.data.model.City
-import com.joaovitor.tucaprodutosdelimpeza.data.model.Street
 import com.joaovitor.tucaprodutosdelimpeza.data.util.Firestore
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import java.lang.Exception
 
 class CityRepository {
 
@@ -16,26 +12,32 @@ class CityRepository {
 
     private var colSalesRef = FirebaseFirestore.getInstance().collection(Firestore.COL_SALES)
 
-    suspend fun getCities(): List<City> {
-        val querySnapshot = colRef.orderBy(Firestore.CITY_NAME).get().await()
+    suspend fun getCities(): Result<List<City>> {
+        return try {
+            val querySnapshot = colRef.orderBy(Firestore.CITY_NAME).get().await()
 
-        val cities: MutableList<City> = mutableListOf()
+            val cities: MutableList<City> = mutableListOf()
 
-        for (doc in querySnapshot){
-            val city = doc.toObject(City::class.java)
-            city.id = doc.id
-            cities.add(city)
+            for (doc in querySnapshot) {
+                val city = doc.toObject(City::class.java)
+                city.id = doc.id
+                cities.add(city)
+            }
+
+            //Cities list get with success
+            Result.Success(cities)
+        } catch (e: Exception) {
+            Result.Error(e)
         }
-        return cities
     }
 
-    suspend fun addCity(city: City): Result<Any> {
+    suspend fun addCity(city: City): Result<City> {
         return try {
             colRef.add(city).await()
 
             //city successful added
             Result.Success(null)
-        }catch (e: FirebaseFirestoreException) {
+        }catch (e: Exception) {
             Result.Error(e)
         }
     }
@@ -44,10 +46,18 @@ class CityRepository {
         return try {
             colRef.document(city.id).update(Firestore.CITY_NAME, newName).await()
 
-            //city successful edited
-            updateSaleCities(city.name, newName)
-            Result.Success(null)
-        }catch (e: FirebaseFirestoreException) {
+            /**
+             * City successful edited
+             * Now update the city field on sales
+             */
+            val resultUpdate = updateSaleCities(city.name, newName)
+
+            if (resultUpdate is Result.Success) {
+                Result.Success(null)
+            } else {
+                resultUpdate as Result.Error
+            }
+        }catch (e: Exception) {
             Result.Error(e)
         }
     }
@@ -58,16 +68,28 @@ class CityRepository {
 
             //street successful deleted
             Result.Success(null)
-        }catch (e: FirebaseFirestoreException) {
+        }catch (e: Exception) {
             Result.Error(e)
         }
     }
 
-    private fun updateSaleCities(cityName: String, newName: String) {
-        GlobalScope.launch {
-            val clients = ClientRepository().updateClientsByCity(cityName, newName)
+    //FIXME: Implement crashlytics
+    private suspend fun updateSaleCities(cityName: String, newName: String): Result<Any> {
+        return try {
+            /**
+             * Update all Clients records that are registered in the updated city
+             */
+            val resultUpdate = ClientRepository().updateClientsByCity(cityName, newName)
 
-            for (client in clients) {
+            //Check if clients update was successfully
+            if(resultUpdate is Result.Error) {
+                return resultUpdate
+            }
+
+            /**
+             * Update city field for all clients sales records
+             */
+            for (client in (resultUpdate as Result.Success).data!!) {
                 val querySnapshotSales = colSalesRef
                     .whereEqualTo(Firestore.SALE_CLIENT_ID, client.id).get().await()
 
@@ -75,6 +97,10 @@ class CityRepository {
                     doc.reference.update(Firestore.SALE_CLIENT_CITY, newName)
                 }
             }
+
+            Result.Success(null)
+        } catch (e: Exception) {
+            Result.Error(e)
         }
     }
 

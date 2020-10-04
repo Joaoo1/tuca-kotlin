@@ -3,23 +3,24 @@ package com.joaovitor.tucaprodutosdelimpeza.ui.sale.editProducts
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.joaovitor.tucaprodutosdelimpeza.data.ProductRepository
+import com.joaovitor.tucaprodutosdelimpeza.data.Result
 import com.joaovitor.tucaprodutosdelimpeza.data.SaleRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
 import com.joaovitor.tucaprodutosdelimpeza.data.model.ProductSale
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
+import com.joaovitor.tucaprodutosdelimpeza.ui.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 
-class SaleEditProductsViewModel(var mSale: Sale) : ViewModel() {
+class SaleEditProductsViewModel(var mSale: Sale) : BaseViewModel() {
 
     private var _products = MutableLiveData<MutableList<ProductSale>>()
     val products = MediatorLiveData<MutableList<ProductSale>>()
 
-    private var _total = MutableLiveData<BigDecimal>(BigDecimal(mSale.grossValue))
+    private var _total = MutableLiveData(BigDecimal(mSale.grossValue))
     val total: LiveData<BigDecimal>
         get() = _total
 
@@ -55,7 +56,12 @@ class SaleEditProductsViewModel(var mSale: Sale) : ViewModel() {
         }
 
         GlobalScope.launch {
-            _allProducts.postValue(ProductRepository().getProducts())
+            val resultProducts = ProductRepository().getProducts()
+            if(resultProducts is Result.Success) {
+                _allProducts.postValue(resultProducts.data)
+            } else {
+                super._error.postValue("Erro ao carregar produtos!")
+            }
         }
     }
 
@@ -81,7 +87,7 @@ class SaleEditProductsViewModel(var mSale: Sale) : ViewModel() {
 
         /** Check if [productName] correspond to a product on products list */
         if (productIndex == null || productIndex == -1) {
-            //TODO: Show a error: product not found
+            super._error.postValue("Produto não encontrado!")
             return
         }
 
@@ -116,7 +122,7 @@ class SaleEditProductsViewModel(var mSale: Sale) : ViewModel() {
     fun onClickSave() {
         /** Check if there is added products */
         if(_products.value!!.isEmpty()) {
-            //TODO: Show a error: No products added
+            super._error.postValue("Não há produtos adicionados!")
             return
         }
 
@@ -127,9 +133,17 @@ class SaleEditProductsViewModel(var mSale: Sale) : ViewModel() {
         mSale.toReceive = _total.value?.minus(BigDecimal(mSale.paidValue)).toString()
 
         GlobalScope.launch(Dispatchers.Default) {
-            SaleRepository().editSale(mSale)
-            _navigateBack.postValue(true)
-            //TODO: Show a success message: Products added successfully
+            _showProgressBar.postValue(true)
+
+            val result = SaleRepository().editSale(mSale)
+            if(result is Result.Success) {
+                _info.postValue("Venda editada com sucesso")
+                _navigateBack.postValue(true)
+            } else {
+                _error.postValue("Ocorreu um erro ao editar produtos!")
+            }
+
+            _showProgressBar.postValue(false)
         }
     }
 
@@ -140,5 +154,11 @@ class SaleEditProductsViewModel(var mSale: Sale) : ViewModel() {
     fun doneNavigating(){
         _openAddProductDialog.value = false
         _navigateBack.value = false
+    }
+
+    fun removeProductAt(adapterPosition: Int) {
+        val list = _products.value!!.toMutableList()
+        list.removeAt(adapterPosition)
+        _products.value = list
     }
 }

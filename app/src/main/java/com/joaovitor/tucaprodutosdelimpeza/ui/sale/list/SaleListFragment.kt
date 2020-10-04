@@ -1,18 +1,24 @@
 package com.joaovitor.tucaprodutosdelimpeza.ui.sale.list
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.navigation.NavigationView
+import com.joaovitor.tucaprodutosdelimpeza.MainActivity
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentSaleListBinding
-
+import com.joaovitor.tucaprodutosdelimpeza.util.toast
+import com.joaovitor.tucaprodutosdelimpeza.util.toastLong
 
 class SaleListFragment : Fragment() {
 
@@ -40,23 +46,23 @@ class SaleListFragment : Fragment() {
             viewModel.onSaleClicked(sale)
         })
         binding.salesList.adapter = listAdapter
-        viewModel.sales.observe(viewLifecycleOwner, Observer {
+        viewModel.sales.observe(viewLifecycleOwner) {
             it?.let {
                 listAdapter.saleList = it
             }
-        })
+        }
 
         //Navigate to Add Fragment listener
-        viewModel.navigateToAdd.observe(viewLifecycleOwner, Observer { navigate ->
+        viewModel.navigateToAdd.observe(viewLifecycleOwner) { navigate ->
             if (navigate) {
                 findNavController()
                     .navigate(SaleListFragmentDirections.actionSaleListFragmentToSalesAddFragment())
                 viewModel.doneNavigating()
             }
-        })
+        }
 
         //Navigate to Edit Fragment listener
-        viewModel.navigateToInfo.observe(viewLifecycleOwner, Observer { sale ->
+        viewModel.navigateToInfo.observe(viewLifecycleOwner) { sale ->
             sale?.let {
                 findNavController()
                     .navigate(
@@ -64,7 +70,29 @@ class SaleListFragment : Fragment() {
                     )
                 viewModel.doneNavigating()
             }
-        })
+        }
+
+        viewModel.error.observe(viewLifecycleOwner) {
+            it?.let {
+                context?.toastLong(it)
+                viewModel.doneShowError()
+            }
+        }
+
+        viewModel.info.observe(viewLifecycleOwner) {
+            it?.let {
+                context?.toast(it)
+                viewModel.doneShowInfo()
+            }
+        }
+
+        viewModel.showProgressBar.observe(viewLifecycleOwner) {
+            if(it) {
+                (activity as MainActivity).showProgressBar()
+            } else {
+                (activity as MainActivity).hideProgressBar()
+            }
+        }
 
         binding.viewModel = viewModel
 

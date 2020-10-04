@@ -1,24 +1,27 @@
 package com.joaovitor.tucaprodutosdelimpeza.ui.reports.sales
 
+import android.app.Activity
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.joaovitor.tucaprodutosdelimpeza.R
+import com.joaovitor.tucaprodutosdelimpeza.bluetooth.PrinterFunctions
 import com.joaovitor.tucaprodutosdelimpeza.data.CityRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.NeighborhoodRepository
+import com.joaovitor.tucaprodutosdelimpeza.data.Result
 import com.joaovitor.tucaprodutosdelimpeza.data.SaleRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.StreetRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Address
-import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
 import com.joaovitor.tucaprodutosdelimpeza.data.util.DateRange
+import com.joaovitor.tucaprodutosdelimpeza.ui.BaseViewModel
 import com.joaovitor.tucaprodutosdelimpeza.util.FormatDate
-import kotlinx.android.synthetic.main.fragment_report_sales.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.util.*
+import java.lang.Exception
+import java.util.Date
 
-class ReportSalesViewModel : ViewModel() {
+class ReportSalesViewModel : BaseViewModel() {
 
     val filteredSales = MutableLiveData<List<Sale>>(listOf())
 
@@ -26,8 +29,8 @@ class ReportSalesViewModel : ViewModel() {
     var startDate = MutableLiveData<Date>()
     var endDate = MutableLiveData<Date>()
 
-    var addressRadioChecked = MutableLiveData<Int>(R.id.radio_button_no_filter)
-    var paymentRadioChecked = MutableLiveData<Int>(R.id.radio_button_all)
+    var addressRadioChecked = MutableLiveData(R.id.radio_button_no_filter)
+    var paymentRadioChecked = MutableLiveData(R.id.radio_button_all)
 
     private var _openDialog = MutableLiveData<Boolean>()
     val openDialog: LiveData<Boolean>
@@ -48,6 +51,10 @@ class ReportSalesViewModel : ViewModel() {
     private var _navigateToInfoSale = MutableLiveData<Sale?>()
     val navigateToInfoSale: LiveData<Sale?>
         get() = _navigateToInfoSale
+
+    private var _requestBluetoothOn = MutableLiveData(false)
+    val requestBluetoothOn: LiveData<Boolean>
+        get() = _requestBluetoothOn
 
     fun openStartDatePicker(){
         _openStartDatePicker.value = true
@@ -94,28 +101,35 @@ class ReportSalesViewModel : ViewModel() {
 
     private fun openSelectAddressDialog() {
         GlobalScope.launch {
-            val address: List<Address> = when(addressRadioChecked.value){
+            _showProgressBar.postValue(true)
+            @Suppress("ThrowableNotThrown")
+            val result: Result<List<Address>> = when(addressRadioChecked.value){
                 R.id.radio_button_street -> StreetRepository().getStreets()
                 R.id.radio_button_neighborhood -> NeighborhoodRepository().getNeighborhoods()
                 R.id.radio_button_city -> CityRepository().getCities()
-                else -> listOf()
+                else -> Result.Error(Exception())
             }
 
-            _openSelectAddressDialog.postValue(address)
+            if(result is Result.Success) {
+                _openSelectAddressDialog.postValue(result.data)
+            } else {
+                _error.postValue("Ocorreu um erro ao carregar endereços")
+            }
+
+            _showProgressBar.postValue(false)
         }
     }
 
     private fun filterSales() {
-
         /** Check if one of the two dates was not informed */
         if(startDate.value == null || endDate.value == null) {
-            //TODO: Show message error: Select start and end date
+            _error.postValue("Selecione o período de tempo")
             return
         }
 
         /** The given start date can't be greater than the end date */
         if(startDate.value!!.compareTo(endDate.value!!) == 1) {
-            //TODO: Show message error: Start date is greater than end date
+            _error.postValue("Data inicial não pode ser maior que data final")
             return
         }
 
@@ -127,11 +141,42 @@ class ReportSalesViewModel : ViewModel() {
         }
 
         GlobalScope.launch {
-            val sales = SaleRepository()
+            _showProgressBar.postValue(true)
+            val resultSales = SaleRepository()
                 .getFilteredSales(DateRange(startDate.value!!, endDate.value!!), paid, address.value)
 
-            filteredSales.postValue(sales)
-            _openDialog.postValue(true)
+            if(resultSales is Result.Success) {
+                filteredSales.postValue(resultSales.data)
+                _openDialog.postValue(true)
+            } else {
+                _error.postValue("Ocorreu um erro ao carregar vendas")
+            }
+
+            _showProgressBar.postValue(false)
         }
     }
+
+    fun onClickPrintReport(context: Context) {
+        printReport(context)
+    }
+
+    /* Printer */
+    private fun printReport(context: Context) {
+        val printerFunctions = PrinterFunctions(context)
+
+        if (printerFunctions.btAdapter.isEnabled) {
+            printerFunctions.printSalesList(filteredSales.value!!)
+        } else {
+            _requestBluetoothOn.value = true
+        }
+    }
+
+    fun onBluetoothResult(resultCode: Int, context: Context) {
+        if(resultCode == Activity.RESULT_OK) {
+            printReport(context)
+        }else if (resultCode == Activity.RESULT_CANCELED) {
+            _error.value = "Ocorreu um erro ao ativar bluetooth!"
+        }
+    }
+
 }

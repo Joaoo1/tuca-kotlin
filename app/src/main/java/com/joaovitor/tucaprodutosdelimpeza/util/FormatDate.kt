@@ -9,8 +9,8 @@ object FormatDate {
 
     private val mLocale: Locale = Locale("pt", "BR")
 
-    fun formatDateToString(date: Date, locale: Locale? = mLocale): String {
-        val f = SimpleDateFormat("dd/MM/yyyy HH:mm", locale)
+    fun formatDateToString(date: Date): String {
+        val f = SimpleDateFormat("dd/MM/yyyy HH:mm", mLocale)
         return f.format(date)
         }
 

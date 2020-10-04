@@ -10,15 +10,20 @@ import android.view.MenuItem
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
+import com.joaovitor.tucaprodutosdelimpeza.MainActivity
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
 import com.joaovitor.tucaprodutosdelimpeza.databinding.DialogAddProductBinding
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentSaleEditProductsBinding
+import com.joaovitor.tucaprodutosdelimpeza.util.SwipeToDeleteCallback
+import com.joaovitor.tucaprodutosdelimpeza.util.toast
+import com.joaovitor.tucaprodutosdelimpeza.util.toastLong
 
 class SaleEditProductsFragment : Fragment() {
 
@@ -41,26 +46,56 @@ class SaleEditProductsFragment : Fragment() {
         val binding: FragmentSaleEditProductsBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_sale_edit_products, container, false)
 
-        binding.lifecycleOwner = viewLifecycleOwner
-
         /* Setting up the recycler view */
         val adapter = SaleEditProductsListAdapter()
         binding.productsList.adapter = adapter
-        viewModel.products.observe(viewLifecycleOwner, Observer {
+        viewModel.products.observe(viewLifecycleOwner) {
             it?.let { adapter.listData = it }
-        })
+        }
+        //Swipe to delete
+        val swipeHandler = object : SwipeToDeleteCallback(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                viewModel.removeProductAt(viewHolder.adapterPosition)
+                adapter.notifyItemRemoved(viewHolder.adapterPosition)
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(binding.productsList)
 
-        viewModel.openAddProductDialog.observe(viewLifecycleOwner, Observer {
+        viewModel.openAddProductDialog.observe(viewLifecycleOwner) {
             if(it) {
                 createAddProductDialog()
                 viewModel.doneNavigating()
             }
-        })
+        }
 
-        viewModel.navigateBack.observe(viewLifecycleOwner, Observer {
+        viewModel.navigateBack.observe(viewLifecycleOwner) {
             if(it) this.findNavController().popBackStack()
-        })
+        }
 
+        viewModel.error.observe(viewLifecycleOwner) {
+            it?.let {
+                context?.toastLong(it)
+                viewModel.doneShowError()
+            }
+        }
+
+        viewModel.info.observe(viewLifecycleOwner) {
+            it?.let {
+                context?.toast(it)
+                viewModel.doneShowInfo()
+            }
+        }
+
+        viewModel.showProgressBar.observe(viewLifecycleOwner) {
+            if(it) {
+                (activity as MainActivity).showProgressBar()
+            } else {
+                (activity as MainActivity).hideProgressBar()
+            }
+        }
+
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
         return binding.root
@@ -90,7 +125,7 @@ class SaleEditProductsFragment : Fragment() {
             binding.viewModel = viewModel
 
             /* Setting up products AutoCompleteTextView */
-            viewModel.allProducts.observe(viewLifecycleOwner, Observer {
+            viewModel.allProducts.observe(viewLifecycleOwner) {
                 it?.let {
                     /**
                      * Set a list with only the products name
@@ -105,7 +140,7 @@ class SaleEditProductsFragment : Fragment() {
                     (binding.product.editText as MaterialAutoCompleteTextView)
                         .setAdapter(autoCompleteAdapter)
                 }
-            })
+            }
 
             binding.addProduct.setOnClickListener {
                 viewModel.addProduct(binding.product.editText!!.text.toString())

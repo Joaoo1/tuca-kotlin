@@ -1,13 +1,10 @@
 package com.joaovitor.tucaprodutosdelimpeza.data
 
-import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreException
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Neighborhood
 import com.joaovitor.tucaprodutosdelimpeza.data.util.Firestore
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import java.lang.Exception
 
 class NeighborhoodRepository {
 
@@ -15,26 +12,31 @@ class NeighborhoodRepository {
 
     private var colSalesRef = FirebaseFirestore.getInstance().collection(Firestore.COL_SALES)
 
-    suspend fun getNeighborhoods(): List<Neighborhood> {
-        val querySnapshot = colRef.orderBy(Firestore.NEIGHBORHOOD_NAME).get().await()
+    suspend fun getNeighborhoods(): Result<List<Neighborhood>> {
+        return try {
+            val querySnapshot = colRef.orderBy(Firestore.NEIGHBORHOOD_NAME).get().await()
 
-        val neighborhoods: MutableList<Neighborhood> = mutableListOf()
+            val neighborhoods: MutableList<Neighborhood> = mutableListOf()
 
-        for (doc in querySnapshot){
-            val neighborhood = doc.toObject(Neighborhood::class.java)
-            neighborhood.id = doc.id
-            neighborhoods.add(neighborhood)
+            for (doc in querySnapshot){
+                val neighborhood = doc.toObject(Neighborhood::class.java)
+                neighborhood.id = doc.id
+                neighborhoods.add(neighborhood)
+            }
+
+            Result.Success(neighborhoods)
+        } catch (e: Exception) {
+            Result.Error(e)
         }
-        return neighborhoods
     }
 
-    suspend fun addNeighborhood(neighborhood: Neighborhood): Result<Any> {
+    suspend fun addNeighborhood(neighborhood: Neighborhood): Result<Neighborhood> {
         return try {
             colRef.add(neighborhood).await()
 
             //neighborhood successful added
             Result.Success(null)
-        }catch (e: FirebaseFirestoreException) {
+        }catch (e: Exception) {
             Result.Error(e)
         }
     }
@@ -45,9 +47,8 @@ class NeighborhoodRepository {
             colRef.document(neighborhood.id).update(Firestore.NEIGHBORHOOD_NAME, newName).await()
 
             //neighborhood successful edited
-            updateSaleNeighborhoods(neighborhood.name, newName)
-            Result.Success(null)
-        }catch (e: FirebaseFirestoreException) {
+            return updateSaleNeighborhoods(neighborhood.name, newName)
+        }catch (e: Exception) {
             Result.Error(e)
         }
     }
@@ -56,19 +57,22 @@ class NeighborhoodRepository {
         return try {
             colRef.document(neighborhoodId).delete().await()
 
-            //street successful deleted
+            //neighborhood successful deleted
             Result.Success(null)
-        }catch (e: FirebaseFirestoreException) {
+        }catch (e: Exception) {
             Result.Error(e)
         }
     }
 
+    private suspend fun updateSaleNeighborhoods(neighborhoodName: String, newName: String): Result<Any> {
+        return try {
+            val resultUpdate = ClientRepository().updateClientsByNeighborhood(neighborhoodName, newName)
 
-    private fun updateSaleNeighborhoods(neighborhoodName: String, newName: String) {
-        GlobalScope.launch {
-            val clients = ClientRepository().updateClientsByNeighborhood(neighborhoodName, newName)
+            if(resultUpdate is Result.Error) {
+                return resultUpdate
+            }
 
-            for (client in clients) {
+            for (client in (resultUpdate as Result.Success).data!!) {
                 val querySnapshotSales = colSalesRef
                     .whereEqualTo(Firestore.SALE_CLIENT_ID, client.id).get().await()
 
@@ -76,6 +80,11 @@ class NeighborhoodRepository {
                     doc.reference.update(Firestore.SALE_CLIENT_NEIGHBORHOOD, newName)
                 }
             }
+
+            Result.Success(null)
+        } catch (e: Exception) {
+            Result.Error(e)
         }
     }
+
 }

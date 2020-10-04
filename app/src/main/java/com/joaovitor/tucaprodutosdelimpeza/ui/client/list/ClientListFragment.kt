@@ -8,15 +8,18 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ProgressBar
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.navigation.NavigationView
+import com.joaovitor.tucaprodutosdelimpeza.MainActivity
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentClientListBinding
+import com.joaovitor.tucaprodutosdelimpeza.util.toast
+import com.joaovitor.tucaprodutosdelimpeza.util.toastLong
 
 class ClientListFragment : Fragment() {
 
@@ -34,6 +37,8 @@ class ClientListFragment : Fragment() {
             inflater, R.layout.fragment_client_list, container, false
         )
 
+        activity?.findViewById<ProgressBar>(R.id.progress_bar)!!.visibility = View.VISIBLE
+
         //Create the View Model
         val viewModelFactory = ClientListViewModelFactory()
         viewModel = ViewModelProvider(this, viewModelFactory)
@@ -43,27 +48,49 @@ class ClientListFragment : Fragment() {
         listAdapter = ClientListAdapter(ClientListAdapter.ClientListener { client ->
             viewModel.onClientClicked(client) })
         binding.clientsList.adapter = listAdapter
-        viewModel.clients.observe(viewLifecycleOwner, Observer {
+        viewModel.clients.observe(viewLifecycleOwner) {
             it?.let {
                 listAdapter.submitClientList(it)
             }
-        })
+        }
 
-        viewModel.navigateToAdd.observe(viewLifecycleOwner, Observer {
+        viewModel.navigateToAdd.observe(viewLifecycleOwner) {
             if (it) {
                 findNavController()
                     .navigate(ClientListFragmentDirections.actionClientListFragmentToClientAddFragment())
                 viewModel.doneNavigating()
             }
-        })
+        }
 
-        viewModel.navigateToInfo.observe(viewLifecycleOwner, Observer { client ->
+        viewModel.navigateToInfo.observe(viewLifecycleOwner) { client ->
             client?.let {
                 findNavController()
                 .navigate(ClientListFragmentDirections.actionClientListFragmentToClientInfoFragment(it))
                 viewModel.doneNavigating()
             }
-        })
+        }
+
+        viewModel.error.observe(viewLifecycleOwner) {
+            it?.let {
+                context?.toastLong(it)
+                viewModel.doneShowError()
+            }
+        }
+
+        viewModel.info.observe(viewLifecycleOwner) {
+            it?.let {
+                context?.toast(it)
+                viewModel.doneShowInfo()
+            }
+        }
+
+        viewModel.showProgressBar.observe(viewLifecycleOwner) {
+            if(it) {
+                (activity as MainActivity).showProgressBar()
+            } else {
+                (activity as MainActivity).hideProgressBar()
+            }
+        }
 
         binding.viewModel = viewModel
 

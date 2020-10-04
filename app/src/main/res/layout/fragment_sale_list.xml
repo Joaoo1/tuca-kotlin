@@ -18,6 +18,8 @@
             android:id="@+id/sales_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingBottom="@dimen/recycler_padding_bottom"
+            android:clipToPadding="false"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:context=".ui.sale.list.SaleListFragment"
             tools:listitem="@layout/list_item_sale" />

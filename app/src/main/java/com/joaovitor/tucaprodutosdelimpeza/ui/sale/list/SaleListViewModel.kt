@@ -2,16 +2,17 @@ package com.joaovitor.tucaprodutosdelimpeza.ui.sale.list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.joaovitor.tucaprodutosdelimpeza.data.Result
 import com.joaovitor.tucaprodutosdelimpeza.data.SaleRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
 import com.joaovitor.tucaprodutosdelimpeza.data.util.DateRange
+import com.joaovitor.tucaprodutosdelimpeza.ui.BaseViewModel
 import com.joaovitor.tucaprodutosdelimpeza.util.FormatDate
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 
-class SaleListViewModel : ViewModel() {
+class SaleListViewModel : BaseViewModel() {
 
     private var saleRepository: SaleRepository = SaleRepository()
 
@@ -28,7 +29,7 @@ class SaleListViewModel : ViewModel() {
     //Filters
     private var isFiltered = false
 
-    private var _closeFiltersDialog = MutableLiveData<Boolean>(false)
+    private var _closeFiltersDialog = MutableLiveData(false)
     val closeFiltersDialog: LiveData<Boolean>
         get() = _closeFiltersDialog
 
@@ -40,8 +41,8 @@ class SaleListViewModel : ViewModel() {
     val endDate: LiveData<Date?>
         get() = _endDate
 
-    val paid = MutableLiveData<Boolean>(false)
-    val unpaid = MutableLiveData<Boolean>(false)
+    val paid = MutableLiveData(false)
+    val unpaid = MutableLiveData(false)
 
     init { fetchSales() }
 
@@ -61,8 +62,19 @@ class SaleListViewModel : ViewModel() {
         val paidFilter: Boolean? = getPaidFilter()
 
         GlobalScope.launch {
-            sales.postValue(saleRepository.getFilteredSales(dateRange, paidFilter))
+            _showProgressBar.postValue(true)
+
+            val resultSales = saleRepository.getFilteredSales(dateRange, paidFilter)
+            if (resultSales is Result.Success) {
+                sales.postValue(resultSales.data)
+            } else {
+                super._error.postValue("Erro ao carregar vendas filtradas!")
+            }
+
             _closeFiltersDialog.postValue( true)
+
+            _showProgressBar.postValue(false)
+
         }
         doneDialogClosing()
         return
@@ -89,13 +101,13 @@ class SaleListViewModel : ViewModel() {
 
         /** Check if one of the two dates was not informed */
         if(_startDate.value == null || _endDate.value == null) {
-            //TODO: Show message error: Select start and end date
+            super._error.postValue("Selecione o período de tempo")
             return null
         }
 
         /** The given start date can't be greater than the end date */
         if(_startDate.value!!.compareTo(_endDate.value!!) == 1) {
-            //TODO: Show message error: Start date is greater than end date
+            super._error.postValue("Data inicial não pode ser maior que data final")
             return null
         }
 
@@ -113,7 +125,16 @@ class SaleListViewModel : ViewModel() {
 
     private fun fetchSales(){
         GlobalScope.launch {
-            sales.postValue(saleRepository.getSales())
+            _showProgressBar.postValue(true)
+
+            val resultSales = saleRepository.getSales()
+            if (resultSales is Result.Success) {
+               sales.postValue(resultSales.data)
+            } else {
+                super._error.postValue("Erro ao carregar vendas!")
+            }
+
+            _showProgressBar.postValue(false)
         }
     }
 

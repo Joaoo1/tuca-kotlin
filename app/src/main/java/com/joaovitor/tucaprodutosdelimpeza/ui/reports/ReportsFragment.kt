@@ -10,6 +10,8 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.navigation.NavigationView
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentReportsBinding
+import com.joaovitor.tucaprodutosdelimpeza.util.toast
+import com.joaovitor.tucaprodutosdelimpeza.util.toastLong
 
 class ReportsFragment: Fragment() {
 

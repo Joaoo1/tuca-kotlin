@@ -2,7 +2,6 @@ package com.joaovitor.tucaprodutosdelimpeza.data
 
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreException
 import com.joaovitor.tucaprodutosdelimpeza.data.model.GeneralInfo
 import com.joaovitor.tucaprodutosdelimpeza.data.util.Firestore
 import kotlinx.coroutines.tasks.await
@@ -20,9 +19,9 @@ class DashboardRepository {
                 .get()
                 .await()
             val info = querySnapshot.toObject(GeneralInfo::class.java)
-            Result.Success(info)
 
-        }catch (e: FirebaseFirestoreException) {
+            Result.Success(info)
+        }catch (e: Exception) {
             Result.Error(e)
         }
     }
@@ -47,7 +46,7 @@ class DashboardRepository {
             colRef.document("generalInfo").set(generalInfo)
 
             Result.Success(generalInfo)
-        }catch (e: FirebaseFirestoreException) {
+        }catch (e: Exception) {
             Result.Error(e)
         }
     }

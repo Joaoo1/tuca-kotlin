@@ -1,16 +1,19 @@
 package com.joaovitor.tucaprodutosdelimpeza.ui.sale.info
 
+import android.app.Activity
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.joaovitor.tucaprodutosdelimpeza.bluetooth.PrinterFunctions
 import com.joaovitor.tucaprodutosdelimpeza.data.Result
 import com.joaovitor.tucaprodutosdelimpeza.data.SaleRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
+import com.joaovitor.tucaprodutosdelimpeza.ui.BaseViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 
-class SaleInfoViewModel : ViewModel() {
+class SaleInfoViewModel : BaseViewModel() {
 
     private val saleRepository = SaleRepository()
 
@@ -34,19 +37,26 @@ class SaleInfoViewModel : ViewModel() {
     val navigateBack: LiveData<Boolean>
         get() = _navigateBack
 
+    private var _requestBluetoothOn = MutableLiveData<Boolean>()
+    val requestBluetoothOn: LiveData<Boolean>
+        get() = _requestBluetoothOn
+
     /* Database functions */
     fun deleteSale() {
         GlobalScope.launch {
+            _showProgressBar.postValue(true)
+
             sale.value?.id?.let {
                 val result = saleRepository.deleteSale(it)
                 if (result is Result.Success) {
-                    //TODO: Show a success message
+                    super._info.postValue("Venda excluída com sucesso")
                     _navigateBack.postValue(true)
                 } else {
-                    //TODO: Show a error message
-                    return@launch
+                    super._error.postValue("Erro ao excluir venda!")
                 }
             }
+
+            _showProgressBar.postValue(false)
         }
     }
 
@@ -60,48 +70,56 @@ class SaleInfoViewModel : ViewModel() {
          */
         if(value.isEmpty()) {
             mSale.finishSale()
-            return
-        }
-        /**
-         * Check if the informed value last letter is not a dot
-         * A value with dot, crash the app when try to convert it to BigDecimal
-         */
-        if(value.last() == '.') {
-            //TODO: Show a message error: Invalid value
-            return
-        }
-
-        when(BigDecimal(value).compareTo(BigDecimal(mSale.toReceive))){
+        } else {
             /**
-             *  Value informed by user is less than value to receive
-             *  So just register a payment on sale
+             * Check if the informed value last letter is not a dot
+             * A value with dot, crash the app when try to convert it to BigDecimal
              */
-            -1 -> mSale.registerPayment(value)
-
-            /**
-             *  Value informed by user is equals to value to receive
-             *  So finish sale and set it as paid
-             */
-            0 -> mSale.finishSale()
-
-            /**
-             * Value informed is greater than value to receive
-             * Show a error message to user
-             */
-            1 -> {
-                /*TODO: Show a error: Informed value is greater than value to receive*/
+            if(value.last() == '.') {
+                super._error.postValue("O valor informado é inválido")
                 return
+            }
+
+            when(BigDecimal(value).compareTo(BigDecimal(mSale.toReceive))){
+                /**
+                 *  Value informed by user is less than value to receive
+                 *  So just register a payment on sale
+                 */
+                -1 -> mSale.registerPayment(value)
+
+                /**
+                 *  Value informed by user is equals to value to receive
+                 *  So finish sale and set it as paid
+                 */
+                0 -> mSale.finishSale()
+
+                /**
+                 * Value informed is greater than value to receive
+                 * Show a error message to user
+                 */
+                1 -> {
+                    super._error.postValue("Valor pago é maior que o total da venda")
+                    return
+                }
             }
         }
 
-
         // Sale properly set, so save it into firestore
         GlobalScope.launch {
-            saleRepository.editSale(mSale)
-            //TODO: show a message to user based on Result of editSale()
+            _showProgressBar.postValue(true)
+
+            val result = saleRepository.editSale(mSale)
+
+            if (result is Result.Success) {
+                super._info.postValue("Venda editado com sucesso")
+            } else {
+                super._error.postValue("Erro ao editar venda")
+            }
 
             _sale.postValue(mSale)
             _openPaymentDialog.postValue(false)
+
+            _showProgressBar.postValue(false)
         }
     }
 
@@ -109,7 +127,7 @@ class SaleInfoViewModel : ViewModel() {
     fun onClickEditProducts() {
         /** Can't edit the products of a sale that is paid */
         if(_sale.value?.paid!!){
-            //TODO: Show a error: Can't edit the products of a sale that is paid
+            super._error.postValue("Não é possível alterar produtos de uma venda paga!")
             return
         }
 
@@ -124,14 +142,38 @@ class SaleInfoViewModel : ViewModel() {
         if(!sale.value?.paid!!) _openPaymentDialog.value = true
     }
 
+    fun onClickPrintReceipt(context: Context) {
+        printReceipt(context)
+    }
+
     fun doneNavigating(){
         _navigateToEditProducts.value = false
         _navigateBack.value = false
         _openDeleteDialog.value = false
         _openPaymentDialog.value = false
+        _requestBluetoothOn.value = false
     }
 
     fun setSale(sale: Sale) {
         _sale.value = sale
+    }
+
+    /* Printer */
+    private fun printReceipt(context: Context) {
+        val printerFunctions = PrinterFunctions(context)
+
+        if (printerFunctions.btAdapter.isEnabled) {
+            printerFunctions.printReceipt(_sale.value!!, _sale.value!!.products)
+        } else {
+            _requestBluetoothOn.value = true
+        }
+    }
+
+    fun onBluetoothResult(resultCode: Int, context: Context) {
+        if(resultCode == Activity.RESULT_OK) {
+            printReceipt(context)
+        }else if (resultCode == Activity.RESULT_CANCELED) {
+            _error.value = "Ocorreu um erro ao ativar bluetooth!"
+        }
     }
 }

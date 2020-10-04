@@ -17,6 +17,7 @@ import kotlinx.coroutines.tasks.await
 class LoginRepository(private val context: Context) {
 
     private val auth = FirebaseAuth.getInstance()
+
     fun logout() {
         auth.signOut()
     }
@@ -39,13 +40,24 @@ class LoginRepository(private val context: Context) {
 
     private fun setLoggedInUser(user: User) {
         val sharedPreference = context.getSharedPreferences("login", Context.MODE_PRIVATE)
-        sharedPreference.edit().putString("user_email", user.email).apply()
-        sharedPreference.edit().putString("user_name", user.displayName).apply()
-        sharedPreference.edit().putBoolean("is_logged_in", true).apply()
+        sharedPreference.edit().putString("userEmail", user.email).apply()
+        sharedPreference.edit().putString("userName", user.displayName).apply()
+        sharedPreference.edit().putString("userUid", user.uid).apply()
+        sharedPreference.edit().putBoolean("isLoggedIn", true).apply()
     }
 
     private suspend fun getDisplayName(userUid: String): String? {
         return FirebaseFirestore.getInstance().collection("users").document(userUid)
             .get().await().getString(Firestore.USER_NAME)
+    }
+
+    fun getCachedUserName(): String {
+        return context.getSharedPreferences("login", Context.MODE_PRIVATE).getString("userName", "")!!
+
+    }
+
+    fun getCachedUserUid(): String {
+        return context.getSharedPreferences("login", Context.MODE_PRIVATE).getString("userUid", "")!!
+
     }
 }

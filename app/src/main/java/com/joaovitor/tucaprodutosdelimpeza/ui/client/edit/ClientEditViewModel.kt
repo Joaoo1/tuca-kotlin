@@ -1,26 +1,22 @@
 package com.joaovitor.tucaprodutosdelimpeza.ui.client.edit
 
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.joaovitor.tucaprodutosdelimpeza.data.CityRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.ClientRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.NeighborhoodRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.Result
 import com.joaovitor.tucaprodutosdelimpeza.data.StreetRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Client
-import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
-import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
+import com.joaovitor.tucaprodutosdelimpeza.ui.BaseViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.util.*
 
-class ClientEditViewModel(var mClient: Client) : ViewModel() {
+class ClientEditViewModel(private var mClient: Client) : BaseViewModel() {
 
     private val clientRepository = ClientRepository()
 
-    var client = MutableLiveData<Client>(mClient.copy())
+    var client = MutableLiveData(mClient.copy())
 
     private var _streets = MutableLiveData<List<String>>()
     val streets: LiveData<List<String>>
@@ -52,22 +48,42 @@ class ClientEditViewModel(var mClient: Client) : ViewModel() {
 
     init {
         GlobalScope.launch {
-            _streets.postValue(StreetRepository().getStreets().map { it.name })
-            _neighborhoods.addAll(NeighborhoodRepository().getNeighborhoods().map { it.name })
-            _cities.addAll(CityRepository().getCities().map { it.name })
+            val resultStreets = StreetRepository().getStreets()
+            if(resultStreets is Result.Success) {
+                _streets.postValue(resultStreets.data?.map { it.name })
+            } else {
+                _error.postValue("Erro ao buscar ruas")
+            }
+
+            val resultNeighborhood = NeighborhoodRepository().getNeighborhoods()
+            if(resultNeighborhood is Result.Success) {
+                _neighborhoods.addAll(resultNeighborhood.data!!.map { it.name })
+            } else {
+                _error.postValue("Erro ao buscar bairros")
+            }
+
+            val resultCities = CityRepository().getCities()
+            if(resultCities is Result.Success) {
+                _cities.addAll(resultCities.data!!.map { it.name })
+            } else {
+                _error.postValue("Erro ao buscar cidades")
+            }
         }
     }
 
     private fun deleteClient(){
         GlobalScope.launch {
+            _showProgressBar.postValue(true)
+
             val result = clientRepository.deleteClient(client.value!!.id)
             if (result is Result.Success) {
-                //TODO: Show a success message
+                _info.postValue("Cliente excluído com sucesso")
                 _navigateBack.postValue(true)
             }else {
-                //TODO: Show a error message
-                return@launch
+                _error.postValue("Erro ao excluir cliente")
             }
+
+            _showProgressBar.postValue(false)
         }
     }
 
@@ -76,7 +92,7 @@ class ClientEditViewModel(var mClient: Client) : ViewModel() {
          * Client must at least have a name
          */
         if(client.value!!.name.isEmpty()){
-            //TODO: Show a error: Need to inform a name
+            _error.postValue("Informe um nome para o cliente")
             return
         }
 
@@ -86,20 +102,23 @@ class ClientEditViewModel(var mClient: Client) : ViewModel() {
          */
         if(client.value!!.street.isNotEmpty() &&
             streets.value!!.toTypedArray().indexOf(client.value!!.street) == -1){
-            //TODO: Show a error: street not found
+            _error.postValue("Rua não encontrada")
             return
         }
 
         GlobalScope.launch {
+            _showProgressBar.postValue(true)
+
             val result = clientRepository.editClient(client.value!!)
             if (result is Result.Success) {
+                _info.postValue("Cliente editado com sucesso")
                 mClient.bind(client.value!!)
                 _navigateBack.postValue(true)
-                //TODO: Show a success message
             }else {
-                //TODO: Show a error message
-                return@launch
+                _error.postValue("Erro ao editar cliente! Contate o desenvolvedor!")
             }
+
+            _showProgressBar.postValue(false)
         }
     }
 

@@ -2,18 +2,17 @@ package com.joaovitor.tucaprodutosdelimpeza.ui.client.add
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.joaovitor.tucaprodutosdelimpeza.data.CityRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.ClientRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.NeighborhoodRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.Result
 import com.joaovitor.tucaprodutosdelimpeza.data.StreetRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.model.*
+import com.joaovitor.tucaprodutosdelimpeza.ui.BaseViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.util.*
 
-class ClientAddViewModel : ViewModel() {
+class ClientAddViewModel : BaseViewModel() {
 
     private val clientRepository = ClientRepository()
 
@@ -43,11 +42,29 @@ class ClientAddViewModel : ViewModel() {
     val openSelectCity: LiveData<Boolean>
         get() = _openSelectCity
 
+    /** Fill in the address fields */
     fun fetchAddress() {
         GlobalScope.launch {
-            _streets.postValue(StreetRepository().getStreets().map { it.name })
-            _neighborhoods.addAll(NeighborhoodRepository().getNeighborhoods().map { it.name })
-            _cities.addAll(CityRepository().getCities().map { it.name })
+            val resultStreets = StreetRepository().getStreets()
+            if(resultStreets is Result.Success) {
+                _streets.postValue(resultStreets.data?.map { it.name })
+            } else {
+                _error.postValue("Um erro ocorreu ao buscar ruas")
+            }
+
+            val resultNeighborhood = NeighborhoodRepository().getNeighborhoods()
+            if(resultNeighborhood is Result.Success) {
+                _neighborhoods.addAll(resultNeighborhood.data!!.map { it.name })
+            } else {
+                _error.postValue("Um erro ocorreu ao buscar bairros")
+                }
+
+            val resultCities = CityRepository().getCities()
+            if(resultCities is Result.Success) {
+                _cities.addAll(resultCities.data!!.map { it.name })
+            } else {
+                _error.postValue("Um erro ocorreu ao buscar cidades")
+                }
         }
     }
 
@@ -57,7 +74,7 @@ class ClientAddViewModel : ViewModel() {
          * Client must at least have a name
          */
         if(client.value!!.name.isEmpty()){
-            //TODO: Show a error: Need to inform a name
+            _error.postValue("Informe um nome para o cliente")
             return
         }
 
@@ -67,20 +84,25 @@ class ClientAddViewModel : ViewModel() {
          */
         if(client.value!!.street.isNotEmpty() &&
             streets.value!!.toTypedArray().indexOf(client.value!!.street) == -1){
-            //TODO: Show a error: street not found
+            _error.postValue("Rua não encontrada")
             return
         }
 
         GlobalScope.launch {
+            _showProgressBar.postValue(true)
+
             val result = clientRepository.addClient(client.value!!)
 
             if(result is Result.Success) {
-                //TODO: Show success message
+                _info.postValue("Cliente adicionado com sucesso")
+
+                //Reset client
                 client.postValue(Client())
             } else {
-                //TODO: Show error message
-                return@launch
+                _error.postValue("Ocorreu um erro ao adicionar cliente")
             }
+
+            _showProgressBar.postValue(false)
         }
     }
 
@@ -107,7 +129,6 @@ class ClientAddViewModel : ViewModel() {
     }
 
     fun onClickSave(){
-        //TODO: Show a progress bar
         addClient()
     }
 

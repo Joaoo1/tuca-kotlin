@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.data.model.ProductSale
+import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
 import com.joaovitor.tucaprodutosdelimpeza.databinding.ListItemSaleProductBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -17,7 +18,7 @@ import kotlinx.coroutines.withContext
 private const val ITEM_VIEW_TYPE_HEADER = 0
 private const val ITEM_VIEW_TYPE_ITEM = 1
 
-class SaleProductsAdapter : ListAdapter<SaleProductsAdapter.DataItem,
+class SaleProductsAdapter(val clickListener: DeleteProductSaleListener) : ListAdapter<SaleProductsAdapter.DataItem,
         RecyclerView.ViewHolder>(ProductDiffCallback()) {
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
@@ -47,7 +48,7 @@ class SaleProductsAdapter : ListAdapter<SaleProductsAdapter.DataItem,
         when (holder) {
             is ViewHolder -> {
                 val product = getItem(position) as DataItem.ProductItem
-                holder.bind(product)
+                holder.bind(product, clickListener)
             }
         }
     }
@@ -55,10 +56,10 @@ class SaleProductsAdapter : ListAdapter<SaleProductsAdapter.DataItem,
     class ViewHolder private constructor(private val binding: ListItemSaleProductBinding)
         : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(productItem: DataItem.ProductItem) {
+        fun bind(productItem: DataItem.ProductItem, clickListener: DeleteProductSaleListener) {
             binding.product = productItem.product
             binding.deleteItem.setOnClickListener{
-                
+                clickListener.onClick(adapterPosition)
             }
         }
 
@@ -111,5 +112,7 @@ class SaleProductsAdapter : ListAdapter<SaleProductsAdapter.DataItem,
         abstract val id: String
     }
 
-    interface deleteSaleClickListener
+    class DeleteProductSaleListener(val clickListener: (position: Int) -> Unit) {
+        fun onClick(position: Int) = clickListener(position)
+    }
 }

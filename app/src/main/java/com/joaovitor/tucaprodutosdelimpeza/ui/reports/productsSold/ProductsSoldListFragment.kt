@@ -11,6 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentProductsSoldListBinding
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentReportProductsSoldBinding
+import com.joaovitor.tucaprodutosdelimpeza.util.toast
+import com.joaovitor.tucaprodutosdelimpeza.util.toastLong
 
 class ProductsSoldListFragment : Fragment() {
 
@@ -30,11 +32,25 @@ class ProductsSoldListFragment : Fragment() {
         //Setting up RecyclerView
         val listAdapter = ProductsSoldListAdapter()
         binding.productsSoldList.adapter = listAdapter
-        viewModel.productsSoldList.observe(viewLifecycleOwner, Observer {
+        viewModel.productsSoldList.observe(viewLifecycleOwner) {
             it?.let {
                 listAdapter.submitList(it)
             }
-        })
+        }
+
+        viewModel.error.observe(viewLifecycleOwner) {
+            it?.let {
+                context?.toastLong(it)
+                viewModel.doneShowError()
+            }
+        }
+
+        viewModel.info.observe(viewLifecycleOwner) {
+            it?.let {
+                context?.toast(it)
+                viewModel.doneShowInfo()
+            }
+        }
 
         return binding.root
     }

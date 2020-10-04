@@ -13,6 +13,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentClientAddBinding
+import com.joaovitor.tucaprodutosdelimpeza.util.toast
+import com.joaovitor.tucaprodutosdelimpeza.util.toastLong
 
 class ClientAddFragment : Fragment() {
 
@@ -34,44 +36,54 @@ class ClientAddFragment : Fragment() {
         viewModel = ViewModelProvider(requireActivity(), viewModelFactory)
             .get(ClientAddViewModel::class.java)
 
-        viewModel.streets.observe(viewLifecycleOwner, Observer {
+        viewModel.streets.observe(viewLifecycleOwner) {
             it?.let {
                 val autoCompleteAdapter = ArrayAdapter(requireContext(),
                     android.R.layout.simple_list_item_1, it.toTypedArray())
 
                 (binding.street.editText as MaterialAutoCompleteTextView).setAdapter(autoCompleteAdapter)
             }
-        })
+        }
 
-        viewModel.navigateToManageAddress.observe(viewLifecycleOwner, Observer {
+        viewModel.navigateToManageAddress.observe(viewLifecycleOwner) {
             if(it){
                 findNavController().navigate(
                     ClientAddFragmentDirections.actionClientAddFragmentToManageAddressFragment())
                 viewModel.doneNavigating()
             }
-        })
+        }
 
-       viewModel.openSelectNeighborhood.observe(viewLifecycleOwner, Observer {
+       viewModel.openSelectNeighborhood.observe(viewLifecycleOwner) {
            if (it) {
-            createDialogSelectAddress(
-                viewModel.neighborhoods,
-                DialogInterface.OnClickListener {
-                        _, index ->
-                    viewModel.onNeighborhoodSelected(viewModel.neighborhoods[index]) })
-            viewModel.doneNavigating()
+            createDialogSelectAddress(viewModel.neighborhoods) { _, index ->
+                viewModel.onNeighborhoodSelected(viewModel.neighborhoods[index])
+            }
+               viewModel.doneNavigating()
            }
-       })
+       }
 
-        viewModel.openSelectCity.observe(viewLifecycleOwner, Observer {
+        viewModel.openSelectCity.observe(viewLifecycleOwner) {
            if (it) {
-            createDialogSelectAddress(
-                viewModel.cities,
-                DialogInterface.OnClickListener {
-                        _, index ->
-                    viewModel.onCitySelected(viewModel.cities[index]) })
-            viewModel.doneNavigating()
+            createDialogSelectAddress(viewModel.cities)
+            { _, index -> viewModel.onCitySelected(viewModel.cities[index]) }
+
+               viewModel.doneNavigating()
            }
-       })
+       }
+
+        viewModel.error.observe(viewLifecycleOwner) {
+            it?.let {
+                context?.toastLong(it)
+                viewModel.doneShowError()
+            }
+        }
+
+        viewModel.info.observe(viewLifecycleOwner) {
+            it?.let {
+                context?.toast(it)
+                viewModel.doneShowInfo()
+            }
+        }
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel

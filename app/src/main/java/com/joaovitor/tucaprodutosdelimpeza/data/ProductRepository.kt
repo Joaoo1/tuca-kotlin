@@ -5,33 +5,30 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
-import com.joaovitor.tucaprodutosdelimpeza.data.model.StockHistory
 import kotlinx.coroutines.tasks.await
+import java.lang.Exception
 
 class ProductRepository {
 
     private var colRef: CollectionReference =
         FirebaseFirestore.getInstance().collection("produtos")
 
-    suspend fun getProducts(): List<Product> {
-        val querySnapshot = colRef.orderBy("nome", Query.Direction.ASCENDING).get().await()
+    suspend fun getProducts(): Result<List<Product>> {
+        return try {
+            val querySnapshot = colRef.orderBy("nome", Query.Direction.ASCENDING).get().await()
 
-        return querySnapshot.map {
-            val product = it.toObject(Product::class.java)
-            product.id = it.id
-            product
+            val products = querySnapshot.map {
+                val product = it.toObject(Product::class.java)
+                product.id = it.id
+                product
+            }
+
+            Result.Success(products)
+        } catch (e: Exception) {
+            Result.Error(e)
         }
     }
 
-    suspend fun getStockHistories(productId: String): List<StockHistory> {
-        return colRef
-            .document(productId)
-            .collection("stockHistory")
-            .orderBy("date", Query.Direction.DESCENDING)
-            .get()
-            .await()
-            .toObjects(StockHistory::class.java)
-    }
 
     suspend fun addProduct(product: Product): Result<Any> {
         return try {
@@ -54,4 +51,5 @@ class ProductRepository {
             Result.Error(e)
         }
     }
+
 }

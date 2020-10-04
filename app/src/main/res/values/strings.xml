@@ -156,7 +156,7 @@
     <string name="menu_item_print_report_title">Imprimir relatório</string>
     <string name="menu_item_add_address_title">Adicionar endereço</string>
 
-    <string name="dialog_print_sales_text">Foram encontradas %1$n vendas com os filtros selecionados</string>
+    <string name="dialog_print_sales_text">Foram encontradas %1$s vendas com os filtros selecionados</string>
     <string name="dialog_print_sales_title">Imprimir relatório?</string>
     <string name="dialog_print_sales_print_button">Imprimir</string>
     <string name="dialog_print_sales_visualize_button">Visualizar</string>
@@ -227,4 +227,11 @@
     <string name="menu_item_call_client_title">Ligar para o cliente</string>
     <string name="sale_info_label_payment_day">Data do pagamento</string>
     <string name="list_item_product_sold_label_quantity">Qtd vendida:</string>
+    <string name="client_info_not_found_sales">Não há compras feitas</string>
+    <string name="client_info_headline_sales">Compras feitas pelo cliente</string>
+    <string name="client_info_label_city">Cidade</string>
+    <string name="client_info_label_neighborhood">Bairro</string>
+    <string name="client_info_label_complement">Complemento</string>
+    <string name="client_info_label_street">Rua</string>
+    <string name="client_info_label_phone">Telefone</string>
 </resources>

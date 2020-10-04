@@ -2,19 +2,21 @@ package com.joaovitor.tucaprodutosdelimpeza.ui.reports.productsSold
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.joaovitor.tucaprodutosdelimpeza.data.ReportRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.Result
 import com.joaovitor.tucaprodutosdelimpeza.data.model.ProductSold
 import com.joaovitor.tucaprodutosdelimpeza.data.util.DateRange
+import com.joaovitor.tucaprodutosdelimpeza.ui.BaseViewModel
 import com.joaovitor.tucaprodutosdelimpeza.util.FormatDate
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.Date
 
-class ReportProductsSoldViewModel : ViewModel() {
+class ReportProductsSoldViewModel : BaseViewModel() {
 
-    var productsSoldList = MutableLiveData<List<ProductSold>>()
+    private var _productsSoldList = MutableLiveData<List<ProductSold>>()
+    val productsSoldList: LiveData<List<ProductSold>>
+        get() = _productsSoldList
 
     private var _navigateToProductsSoldList = MutableLiveData<Boolean>()
     val navigateToProductsSoldList: LiveData<Boolean>
@@ -33,30 +35,32 @@ class ReportProductsSoldViewModel : ViewModel() {
 
     private fun generateReport() {
         if(validateFields()) {
-            //TODO: Progress bar
             GlobalScope.launch {
+                _showProgressBar.postValue(true)
+
                 val result = ReportRepository().generateProductsSoldReport(
                     DateRange(startDate.value!!, endDate.value!!))
 
                 if (result is Result.Success) {
                     _navigateToProductsSoldList.postValue(true)
-                    productsSoldList.postValue(result.data)
+                    _productsSoldList.postValue(result.data)
                 } else {
-                    //TODO: Show error message
-                    return@launch
+                    _error.postValue("Ocorreu um erro ao gerar relatório!")
                 }
+
+                _showProgressBar.postValue(false)
             }
         }
     }
 
     private fun validateFields() : Boolean {
         if(startDate.value == null || endDate.value == null) {
-            //TODO: Show error message: select the date range
+            _error.postValue("Selecione o período de tempo")
             return false
         }
         if(startDate.value!! != endDate.value!!
             && startDate.value!!.compareTo(endDate.value!!) == 1) {
-            //TODO: Show error message: start date is greater than end date
+            _error.postValue("Data inicial não pode ser maior que data final")
             return false
         }
 

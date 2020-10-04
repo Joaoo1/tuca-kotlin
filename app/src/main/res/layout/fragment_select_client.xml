@@ -8,7 +8,7 @@
         android:id="@+id/clients_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="24dp"
+        android:paddingBottom="@dimen/recycler_padding_bottom"
         android:clipToPadding="false"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:context=".ui.sale.selectClient.SelectClientFragment"

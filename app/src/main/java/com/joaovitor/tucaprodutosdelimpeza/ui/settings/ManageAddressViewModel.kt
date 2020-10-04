@@ -2,7 +2,6 @@ package com.joaovitor.tucaprodutosdelimpeza.ui.settings
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.joaovitor.tucaprodutosdelimpeza.data.CityRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.NeighborhoodRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.Result
@@ -12,10 +11,11 @@ import com.joaovitor.tucaprodutosdelimpeza.data.model.AddressType
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Street
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Neighborhood
 import com.joaovitor.tucaprodutosdelimpeza.data.model.City
+import com.joaovitor.tucaprodutosdelimpeza.ui.BaseViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class ManageAddressViewModel : ViewModel() {
+class ManageAddressViewModel : BaseViewModel() {
 
     data class AddressObject(var addressType: AddressType, var addressList: List<Address>)
 
@@ -51,43 +51,97 @@ class ManageAddressViewModel : ViewModel() {
 
     fun onClickEditStreet(){
         GlobalScope.launch {
-            streets = StreetRepository().getStreets().toMutableList()
-            _openDialogEditAddress.postValue(AddressObject(AddressType.STREET, streets.map{it.copy()}))
+            _showProgressBar.postValue(true)
+
+            val resultStreet = StreetRepository().getStreets()
+            if(resultStreet is Result.Success) {
+                streets = resultStreet.data?.toMutableList()!!
+                _openDialogEditAddress.postValue(AddressObject(AddressType.STREET, streets.map{it.copy()}))
+            } else {
+                _error.postValue("Erro ao carregar ruas!")
+            }
+
+            _showProgressBar.postValue(false)
         }
     }
 
-    fun onClickEditNeighborhood(){
+    fun onClickEditNeighborhood() {
         GlobalScope.launch {
-            neighborhoods = NeighborhoodRepository().getNeighborhoods().toMutableList()
-            _openDialogEditAddress.postValue(AddressObject(AddressType.NEIGHBORHOOD, neighborhoods.map{it.copy()}))
+            _showProgressBar.postValue(true)
+
+            val resultNeighborhood = NeighborhoodRepository().getNeighborhoods()
+            if(resultNeighborhood is Result.Success) {
+                neighborhoods = resultNeighborhood.data?.toMutableList()!!
+                _openDialogEditAddress.postValue(AddressObject(AddressType.NEIGHBORHOOD, neighborhoods.map{it.copy()}))
+            } else {
+                _error.postValue("Erro ao carregar bairrps!")
+            }
+
+            _showProgressBar.postValue(false)
         }
     }
 
     fun onClickEditCity(){
         GlobalScope.launch {
-            cities = CityRepository().getCities().toMutableList()
-            _openDialogEditAddress.postValue(AddressObject(AddressType.CITY, cities.map{it.copy()}))
+            _showProgressBar.postValue(true)
+
+            val resultCities = CityRepository().getCities()
+            if(resultCities is Result.Success) {
+                cities = resultCities.data?.toMutableList()!!
+                _openDialogEditAddress.postValue(AddressObject(AddressType.CITY, cities.map{it.copy()}))
+            } else {
+                _error.postValue("Erro ao carregar cidades!")
+            }
+
+            _showProgressBar.postValue(false)
         }
     }
 
     fun onClickDeleteStreet(){
         GlobalScope.launch {
-            streets = StreetRepository().getStreets().toMutableList()
-            _openDialogDeleteAddress.postValue(AddressObject(AddressType.STREET, streets.map{it.copy()}))
+            _showProgressBar.postValue(true)
+
+            val resultStreet = StreetRepository().getStreets()
+            if(resultStreet is Result.Success) {
+                streets = resultStreet.data?.toMutableList()!!
+                _openDialogDeleteAddress.postValue(AddressObject(AddressType.STREET, streets.map{it.copy()}))
+            } else {
+                _error.postValue("Erro ao carregar ruas!")
+            }
+
+            _showProgressBar.postValue(false)
         }
     }
 
     fun onClickDeleteNeighborhood(){
         GlobalScope.launch {
-            neighborhoods = NeighborhoodRepository().getNeighborhoods().toMutableList()
-            _openDialogDeleteAddress.postValue(AddressObject(AddressType.NEIGHBORHOOD, neighborhoods.map{it.copy()}))
+            _showProgressBar.postValue(true)
+
+            val resultNeighborhood = NeighborhoodRepository().getNeighborhoods()
+            if(resultNeighborhood is Result.Success) {
+                neighborhoods = resultNeighborhood.data?.toMutableList()!!
+                _openDialogDeleteAddress.postValue(AddressObject(AddressType.NEIGHBORHOOD, neighborhoods.map{it.copy()}))
+            } else {
+                _error.postValue("Erro ao carregar bairros!")
+            }
+
+            _showProgressBar.postValue(false)
         }
     }
 
     fun onClickDeleteCity(){
         GlobalScope.launch {
-            cities = CityRepository().getCities().toMutableList()
-            _openDialogDeleteAddress.postValue(AddressObject(AddressType.CITY, cities.map{it.copy()}))
+            _showProgressBar.postValue(true)
+
+            val resultCities = CityRepository().getCities()
+            if(resultCities is Result.Success) {
+                cities = resultCities.data?.toMutableList()!!
+                _openDialogDeleteAddress.postValue(AddressObject(AddressType.CITY, cities.map{it.copy()}))
+            } else {
+                _error.postValue("Erro ao carregar cidades!")
+            }
+
+            _showProgressBar.postValue(false)
         }
     }
 
@@ -99,11 +153,13 @@ class ManageAddressViewModel : ViewModel() {
 
     fun onClickAddAddressPositiveButton(addressName: String, type: AddressType) {
         if(addressName.isEmpty()) {
-            //TODO: Show error message: field name can't be empty
+            _error.postValue("Informe o nome do endereço!")
             return
         }
 
         GlobalScope.launch {
+            _showProgressBar.postValue(true)
+
             val result = when(type){
                 AddressType.STREET -> StreetRepository().addStreet(Street("", addressName))
                 AddressType.NEIGHBORHOOD -> NeighborhoodRepository().addNeighborhood(Neighborhood("", addressName))
@@ -111,17 +167,18 @@ class ManageAddressViewModel : ViewModel() {
             }
 
             if(result is Result.Success) {
-                //TODO: Show success message
+                _info.postValue("Endereço adicionado com sucesso")
             } else {
-                //TODO: Show error message
-                return@launch
+                _error.postValue("Erro ao adicionar endereço!")
             }
+
+            _showProgressBar.postValue(false)
         }
     }
 
     fun onClickEditAddressPositiveButton(address: Address, newName:String) {
         if(newName.isEmpty()) {
-            //TODO: Show error message: field name can't be empty
+            _error.postValue("Informe o nome do endereço!")
             return
         }
 
@@ -132,11 +189,13 @@ class ManageAddressViewModel : ViewModel() {
         }
 
         if(addressAlreadyExists != -1) {
-            //TODO: Show error message: address already exists
+            _error.postValue("Este endereço já está cadastrado")
             return
         }
 
         GlobalScope.launch {
+            _showProgressBar.postValue(true)
+
             val result = when(address.type!!){
                 AddressType.STREET -> StreetRepository().editStreet(address as Street, newName)
                 AddressType.NEIGHBORHOOD -> NeighborhoodRepository().editNeighborhood(address as Neighborhood, newName)
@@ -144,16 +203,19 @@ class ManageAddressViewModel : ViewModel() {
             }
 
             if(result is Result.Success) {
-                //TODO: Show success message
+                _info.postValue("Endereço editado com sucesso")
             } else {
-                //TODO: Show error message
-                return@launch
+                _error.postValue("Erro ao editar endereço!")
             }
+
+            _showProgressBar.postValue(false)
         }
     }
 
     fun onClickDeleteAddressPositiveButton(address: Address) {
         GlobalScope.launch {
+            _showProgressBar.postValue(true)
+
             val result = when(address.type!!){
                 AddressType.STREET -> StreetRepository().deleteStreet(address.id)
                 AddressType.NEIGHBORHOOD -> NeighborhoodRepository().deleteNeighborhood(address.id)
@@ -161,11 +223,12 @@ class ManageAddressViewModel : ViewModel() {
             }
 
             if(result is Result.Success) {
-                //TODO: Show success message
+                _info.postValue("Endereço excluído com sucesso!")
             } else {
-                //TODO: Show error message
-                return@launch
+                _error.postValue("Erro ao excluir endereço!")
             }
+
+            _showProgressBar.postValue(false)
         }
     }
 }

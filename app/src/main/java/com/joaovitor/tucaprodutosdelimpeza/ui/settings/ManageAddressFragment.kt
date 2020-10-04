@@ -15,6 +15,8 @@ import com.joaovitor.tucaprodutosdelimpeza.data.model.Address
 import com.joaovitor.tucaprodutosdelimpeza.data.model.AddressType
 import com.joaovitor.tucaprodutosdelimpeza.databinding.DialogManageAddressBinding
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentManageAddressBinding
+import com.joaovitor.tucaprodutosdelimpeza.util.toast
+import com.joaovitor.tucaprodutosdelimpeza.util.toastLong
 
 class ManageAddressFragment : Fragment() {
 
@@ -33,46 +35,55 @@ class ManageAddressFragment : Fragment() {
         viewModel = ViewModelProvider(requireActivity(), viewModelFactory)
             .get(ManageAddressViewModel::class.java)
 
-
-        binding.lifecycleOwner = viewLifecycleOwner
-        binding.viewModel = viewModel
-
-        viewModel.openDialogAddAddress.observe(viewLifecycleOwner, Observer {
+        viewModel.openDialogAddAddress.observe(viewLifecycleOwner) {
             it?.let{
                 createDialogAddAddress(it)
                 viewModel.dialogDoneOpening()
             }
-        })
+        }
 
-        viewModel.openDialogEditAddress.observe(viewLifecycleOwner, Observer {
+        viewModel.openDialogEditAddress.observe(viewLifecycleOwner) {
             it?.let{
                 createDialogSelectAddress(
-                    it.addressList.map { address -> address.name }.toTypedArray(),
-                    DialogInterface.OnClickListener {
-                        _, i ->
-                        val selectedAddress = it.addressList[i]
-                        selectedAddress.type = it.addressType
-                        createDialogEditAddress(selectedAddress)
-                    }
-                )
+                    it.addressList.map { address -> address.name }.toTypedArray()
+                ) { _, i ->
+                    val selectedAddress = it.addressList[i]
+                    selectedAddress.type = it.addressType
+                    createDialogEditAddress(selectedAddress)
+                }
                 viewModel.dialogDoneOpening()
             }
-        })
+        }
 
-        viewModel.openDialogDeleteAddress.observe(viewLifecycleOwner, Observer {
+        viewModel.openDialogDeleteAddress.observe(viewLifecycleOwner) {
             it?.let{
                 createDialogSelectAddress(
-                    it.addressList.map { address -> address.name }.toTypedArray(),
-                    DialogInterface.OnClickListener {
-                        _, i ->
-                        val selectedAddress = it.addressList[i]
-                        selectedAddress.type = it.addressType
-                        createDialogDeleteAddress(selectedAddress)
-                    }
-                )
+                    it.addressList.map { address -> address.name }.toTypedArray()
+                ) { _, i ->
+                    val selectedAddress = it.addressList[i]
+                    selectedAddress.type = it.addressType
+                    createDialogDeleteAddress(selectedAddress)
+                }
                 viewModel.dialogDoneOpening()
             }
-        })
+        }
+
+        viewModel.error.observe(viewLifecycleOwner) {
+            it?.let {
+                context?.toastLong(it)
+                viewModel.doneShowError()
+            }
+        }
+
+        viewModel.info.observe(viewLifecycleOwner) {
+            it?.let {
+                context?.toast(it)
+                viewModel.doneShowInfo()
+            }
+        }
+
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
 
         return binding.root
     }

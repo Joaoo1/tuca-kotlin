@@ -13,6 +13,8 @@
                     android:name="com.joaovitor.tucaprodutosdelimpeza.ProductFragment"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:paddingBottom="@dimen/recycler_padding_bottom"
+                    android:clipToPadding="false"
                     tools:context=".ui.product.list.ProductListFragment"
                     tools:listitem="@layout/list_item_product"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>

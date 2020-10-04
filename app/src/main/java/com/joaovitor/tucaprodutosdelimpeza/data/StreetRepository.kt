@@ -4,10 +4,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Street
 import com.joaovitor.tucaprodutosdelimpeza.data.util.Firestore
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-
+import java.lang.Exception
 
 class StreetRepository {
 
@@ -15,17 +13,22 @@ class StreetRepository {
 
     private var colSalesRef = FirebaseFirestore.getInstance().collection(Firestore.COL_SALES)
 
-    suspend fun getStreets(): List<Street> {
-        val querySnapshot = colRef.orderBy(Firestore.STREET_NAME).get().await()
+    suspend fun getStreets(): Result<List<Street>> {
+        return try {
+            val querySnapshot = colRef.orderBy(Firestore.STREET_NAME).get().await()
 
-        val streets: MutableList<Street> = mutableListOf()
+            val streets: MutableList<Street> = mutableListOf()
 
-        for (doc in querySnapshot){
-            val street = doc.toObject(Street::class.java)
-            street.id = doc.id
-            streets.add(street)
+            for (doc in querySnapshot){
+                val street = doc.toObject(Street::class.java)
+                street.id = doc.id
+                streets.add(street)
+            }
+
+            Result.Success(streets)
+        } catch(e: Exception){
+            Result.Error(e)
         }
-        return streets
     }
 
     suspend fun addStreet(street: Street): Result<Any> {
@@ -44,8 +47,7 @@ class StreetRepository {
             colRef.document(street.id).update(Firestore.STREET_NAME, newName).await()
 
             //street successful edited
-            updateSaleStreets(street.name,newName)
-            Result.Success(null)
+            return updateSaleStreets(street.name,newName)
         }catch (e: FirebaseFirestoreException) {
             Result.Error(e)
         }
@@ -62,19 +64,27 @@ class StreetRepository {
         }
     }
 
+    private suspend fun updateSaleStreets(streetName: String, newName: String): Result<Any> {
+        return try {
+            val resultUpdate = ClientRepository().updateClientsByStreet(streetName, newName)
 
-    private fun updateSaleStreets(streetName: String, newName: String) {
-        GlobalScope.launch {
-            val clients = ClientRepository().updateClientsByStreet(streetName, newName)
+            if(resultUpdate is Result.Success) {
+                for (client in resultUpdate.data!!) {
+                    val querySnapshotSales = colSalesRef
+                        .whereEqualTo(Firestore.SALE_CLIENT_ID, client.id).get().await()
 
-            for (client in clients) {
-                val querySnapshotSales = colSalesRef
-                    .whereEqualTo(Firestore.SALE_CLIENT_ID, client.id).get().await()
-
-                for (doc in querySnapshotSales) {
-                    doc.reference.update(Firestore.SALE_CLIENT_STREET, newName)
+                    for (doc in querySnapshotSales) {
+                        doc.reference.update(Firestore.SALE_CLIENT_STREET, newName)
+                    }
                 }
+
+                Result.Success(null)
+            } else {
+                resultUpdate as Result.Error
             }
+        } catch (e: Exception) {
+            Result.Error(e)
         }
     }
+
 }

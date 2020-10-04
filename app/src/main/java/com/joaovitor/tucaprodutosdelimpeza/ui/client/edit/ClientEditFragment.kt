@@ -6,19 +6,14 @@ import android.view.*
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.navigateUp
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.joaovitor.tucaprodutosdelimpeza.R
-import com.joaovitor.tucaprodutosdelimpeza.data.model.Client
-import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentClientAddBinding
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentClientEditBinding
-import com.joaovitor.tucaprodutosdelimpeza.ui.product.edit.ProductEditFragmentArgs
-import com.joaovitor.tucaprodutosdelimpeza.ui.sale.add.SaleAddViewModel
-import com.joaovitor.tucaprodutosdelimpeza.ui.sale.add.SaleAddViewModelFactory
+import com.joaovitor.tucaprodutosdelimpeza.util.toast
+import com.joaovitor.tucaprodutosdelimpeza.util.toastLong
 
 class ClientEditFragment : Fragment() {
 
@@ -39,7 +34,7 @@ class ClientEditFragment : Fragment() {
         val binding: FragmentClientEditBinding = DataBindingUtil.inflate(
             inflater,R.layout.fragment_client_edit, container, false)
 
-        viewModel.streets.observe(viewLifecycleOwner, Observer {
+        viewModel.streets.observe(viewLifecycleOwner) {
             it?.let {
                 val arrayProductsName = it.toTypedArray()
                 val autoCompleteAdapter = ArrayAdapter(requireContext(),
@@ -47,43 +42,52 @@ class ClientEditFragment : Fragment() {
 
                 (binding.street.editText as MaterialAutoCompleteTextView).setAdapter(autoCompleteAdapter)
             }
-        })
+        }
 
-        viewModel.openSelectNeighborhood.observe(viewLifecycleOwner, Observer {
+        viewModel.openSelectNeighborhood.observe(viewLifecycleOwner) {
             if(it) {
                 createDialogSelectAddress(
-                    viewModel.neighborhoods,
-                    DialogInterface.OnClickListener {
-                            _, index ->
-                        viewModel.onNeighborhoodSelected(viewModel.neighborhoods[index])
-                    })
+                    viewModel.neighborhoods) { _, index ->
+                    viewModel.onNeighborhoodSelected(viewModel.neighborhoods[index])
+                }
             }
-        })
+        }
 
-        viewModel.openSelectCity.observe(viewLifecycleOwner, Observer {
+        viewModel.openSelectCity.observe(viewLifecycleOwner) {
             if(it) {
                 createDialogSelectAddress(
-                    viewModel.cities,
-                    DialogInterface.OnClickListener {
-                            _, index ->
-                        viewModel.onCitySelected(viewModel.cities[index])
-                    })
+                    viewModel.cities) { _, index -> viewModel.onCitySelected(viewModel.cities[index])
+                }
             }
-        })
+        }
 
-        viewModel.navigateToManageAddress.observe(viewLifecycleOwner, Observer {
+        viewModel.navigateToManageAddress.observe(viewLifecycleOwner) {
             if(it){
                 findNavController().navigate(
                     ClientEditFragmentDirections.actionClientEditFragmentToManageAddressFragment())
                 viewModel.doneNavigating()
             }
-        })
-        viewModel.navigateBack.observe(viewLifecycleOwner, Observer {
+        }
+        viewModel.navigateBack.observe(viewLifecycleOwner) {
             if(it){
                 findNavController().navigateUp()
                 viewModel.doneNavigating()
             }
-        })
+        }
+
+        viewModel.error.observe(viewLifecycleOwner) {
+            it?.let {
+                context?.toastLong(it)
+                viewModel.doneShowError()
+            }
+        }
+
+        viewModel.info.observe(viewLifecycleOwner) {
+            it?.let {
+                context?.toast(it)
+                viewModel.doneShowInfo()
+            }
+        }
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel

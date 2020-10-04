@@ -14,4 +14,5 @@
     <dimen name="nav_header_vertical_spacing">8dp</dimen>
     <dimen name="nav_header_height">200dp</dimen>
     <dimen name="dialog_client_border_radius">7dp</dimen>
+    <dimen name="recycler_padding_bottom">64dp</dimen>
 </resources>

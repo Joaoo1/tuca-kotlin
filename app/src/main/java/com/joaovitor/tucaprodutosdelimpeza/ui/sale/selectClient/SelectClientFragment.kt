@@ -1,7 +1,13 @@
 package com.joaovitor.tucaprodutosdelimpeza.ui.sale.selectClient
 
+import android.app.Application
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
@@ -13,6 +19,8 @@ import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentSelectClientBinding
 import com.joaovitor.tucaprodutosdelimpeza.ui.sale.add.SaleAddViewModel
 import com.joaovitor.tucaprodutosdelimpeza.ui.sale.add.SaleAddViewModelFactory
+import com.joaovitor.tucaprodutosdelimpeza.util.toast
+import com.joaovitor.tucaprodutosdelimpeza.util.toastLong
 
 class SelectClientFragment : Fragment() {
 
@@ -29,7 +37,7 @@ class SelectClientFragment : Fragment() {
             .inflate(inflater,R.layout.fragment_select_client, container, false)
 
         //Create the Add viewModel
-        val viewModelFactory = SaleAddViewModelFactory()
+        val viewModelFactory = SaleAddViewModelFactory(requireActivity().application)
         val viewModel = ViewModelProvider(requireActivity(), viewModelFactory)
             .get(SaleAddViewModel::class.java)
 
@@ -38,17 +46,31 @@ class SelectClientFragment : Fragment() {
             viewModel.onClientClicked(client)
         })
         binding.clientsList.adapter = listAdapter
-        viewModel.allClients.observe(viewLifecycleOwner, Observer {
+        viewModel.allClients.observe(viewLifecycleOwner) {
             it?.let { listAdapter.allClients = it }
-        })
+        }
 
-        viewModel.navigateBackToAdd.observe(viewLifecycleOwner, Observer {
+        viewModel.navigateBackToAdd.observe(viewLifecycleOwner) {
             if(it) {
                 this.findNavController()
                     .popBackStack()
                 viewModel.doneNavigating()
             }
-        })
+        }
+
+        viewModel.error.observe(viewLifecycleOwner) {
+            it?.let {
+                context?.toastLong(it)
+                viewModel.doneShowError()
+            }
+        }
+
+        viewModel.info.observe(viewLifecycleOwner) {
+            it?.let {
+                context?.toast(it)
+                viewModel.doneShowInfo()
+            }
+        }
 
         return binding.root
     }

@@ -4,18 +4,14 @@ import android.os.Bundle
 import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentClientInfoBinding
-import com.joaovitor.tucaprodutosdelimpeza.ui.client.add.ClientAddFragmentDirections
-import com.joaovitor.tucaprodutosdelimpeza.ui.client.add.ClientAddViewModel
-import com.joaovitor.tucaprodutosdelimpeza.ui.client.add.ClientAddViewModelFactory
-import com.joaovitor.tucaprodutosdelimpeza.ui.client.list.ClientListAdapter
+import com.joaovitor.tucaprodutosdelimpeza.util.toast
+import com.joaovitor.tucaprodutosdelimpeza.util.toastLong
 
 class ClientInfoFragment : Fragment() {
 
@@ -30,30 +26,30 @@ class ClientInfoFragment : Fragment() {
         setHasOptionsMenu(true)
         val client = ClientInfoFragmentArgs.fromBundle(requireArguments()).client
 
+        //Inflate the layout for this fragment
+        val binding: FragmentClientInfoBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_client_info, container, false)
+
         //Create the viewModel
         val viewModelFactory = ClientInfoViewModelFactory(client)
         viewModel = ViewModelProvider(this, viewModelFactory)
             .get(ClientInfoViewModel::class.java)
 
-        viewModel.navigateToEditClient.observe(viewLifecycleOwner, Observer {
+        viewModel.navigateToEditClient.observe(viewLifecycleOwner) {
             it?.let {
                 findNavController().navigate(
                     ClientInfoFragmentDirections.actionClientInfoFragmentToClientEditFragment(it))
                 viewModel.doneNavigating()
             }
-        })
+        }
 
-        viewModel.navigateToInfoSale.observe(viewLifecycleOwner, Observer {
+        viewModel.navigateToInfoSale.observe(viewLifecycleOwner) {
             it?.let {
                 findNavController().navigate(
                     ClientInfoFragmentDirections.actionClientInfoFragmentToSalesInfoFragment(it))
                 viewModel.doneNavigating()
             }
-        })
-
-        //Inflate the layout for this fragment
-        val binding: FragmentClientInfoBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_client_info, container, false)
+        }
 
         //Setting up the recycler view
         listAdapter = ClientSalesAdapter(viewModel)
@@ -64,11 +60,25 @@ class ClientInfoFragment : Fragment() {
             )
         )
         binding.clientSales.adapter = listAdapter
-        viewModel.clientSales.observe(viewLifecycleOwner, Observer {
+        viewModel.clientSales.observe(viewLifecycleOwner) {
             it?.let {
                 listAdapter.listData = it
             }
-        })
+        }
+
+        viewModel.error.observe(viewLifecycleOwner) {
+            it?.let {
+                context?.toastLong(it)
+                viewModel.doneShowError()
+            }
+        }
+
+        viewModel.info.observe(viewLifecycleOwner) {
+            it?.let {
+                context?.toast(it)
+                viewModel.doneShowInfo()
+            }
+        }
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
@@ -84,7 +94,7 @@ class ClientInfoFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             R.id.action_edit -> viewModel.onClickEditClient()
-            //R.id.action_call -> viewModel.onClickCallClient() TODO: Implement call phone
+            R.id.action_call -> viewModel.onClickCallClient()
         }
         return super.onOptionsItemSelected(item)
     }

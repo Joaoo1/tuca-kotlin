@@ -12,6 +12,8 @@ import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentProductAddBinding
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentProductEditStockBinding
 import com.joaovitor.tucaprodutosdelimpeza.ui.client.add.ClientAddViewModel
 import com.joaovitor.tucaprodutosdelimpeza.ui.client.add.ClientAddViewModelFactory
+import com.joaovitor.tucaprodutosdelimpeza.util.toast
+import com.joaovitor.tucaprodutosdelimpeza.util.toastLong
 
 class ProductAddFragment : Fragment() {
 
@@ -28,15 +30,30 @@ class ProductAddFragment : Fragment() {
         viewModel = ViewModelProvider(this, viewModelFactory)
             .get(ProductAddViewModel::class.java)
 
-        viewModel.navigateBack.observe(viewLifecycleOwner, Observer {
+        // Inflate the layout for this fragment
+        val binding: FragmentProductAddBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_product_add, container, false)
+
+        viewModel.navigateBack.observe(viewLifecycleOwner) {
             if(it) {
                 findNavController().popBackStack()
                 viewModel.doneNavigating()
             }
-        })
-        // Inflate the layout for this fragment
-        val binding: FragmentProductAddBinding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_product_add, container, false)
+        }
+
+        viewModel.error.observe(viewLifecycleOwner) {
+            it?.let {
+                context?.toastLong(it)
+                viewModel.doneShowError()
+            }
+        }
+
+        viewModel.info.observe(viewLifecycleOwner) {
+            it?.let {
+                context?.toast(it)
+                viewModel.doneShowInfo()
+            }
+        }
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
