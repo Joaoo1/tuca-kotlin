@@ -1,5 +1,6 @@
 package com.joaovitor.tucaprodutosdelimpeza.ui.product.edit
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.joaovitor.tucaprodutosdelimpeza.data.ProductRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.Result
@@ -13,6 +14,14 @@ import java.math.RoundingMode
 class ProductEditViewModel(private var mProduct: Product) : BaseViewModel() {
 
     var product = MutableLiveData(mProduct.copy())
+
+    private var _navigateBack = MutableLiveData(false)
+    val navigateBack: LiveData<Boolean>
+        get() = _navigateBack
+
+    private var _openDialogDelete = MutableLiveData(false)
+    val openDialogDelete: LiveData<Boolean>
+        get() = _openDialogDelete
 
     fun onClickSaveEditCadaster() {
         if(product.value!!.name.isEmpty() || product.value!!.price.isEmpty()) {
@@ -66,8 +75,37 @@ class ProductEditViewModel(private var mProduct: Product) : BaseViewModel() {
         }
     }
 
+    fun onClickDeleteProduct() {
+        _openDialogDelete.value = true
+    }
+
+    fun onClickDeleteProductPositive() {
+        deleteProduct()
+    }
+
+    private fun deleteProduct() {
+        GlobalScope.launch {
+            _showProgressBar.postValue(true)
+
+            val result = ProductRepository().deleteProduct(productId = product.value!!.id)
+            if(result is Result.Success) {
+                _info.postValue("Produto excluído com sucesso")
+                _navigateBack.postValue(true)
+            }else {
+                _info.postValue("Erro ao excluir produto")
+            }
+
+            _showProgressBar.postValue(false)
+        }
+    }
+
     fun setManageStock(checked: Boolean) {
         product.value?.manageStock = checked
+    }
+
+    fun doneNavigating() {
+        _navigateBack.value = false
+        _openDialogDelete.value = false
     }
 
 }

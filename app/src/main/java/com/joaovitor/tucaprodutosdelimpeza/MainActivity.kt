@@ -21,6 +21,8 @@ import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textview.MaterialTextView
 import com.joaovitor.tucaprodutosdelimpeza.data.LoginRepository
 import com.joaovitor.tucaprodutosdelimpeza.ui.login.LoginActivity
+import com.joaovitor.tucaprodutosdelimpeza.util.toastLong
+
 
 interface ProgressBarOwner {
     val progressBar: ProgressBar
@@ -36,6 +38,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var navHostFragment: NavHostFragment
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var sharedPreferences: SharedPreferences
+    private var lastBackPress: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -101,6 +104,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         return item.onNavDestinationSelected(navHostFragment.navController)
                 || super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        val currentTime = System.currentTimeMillis()
+        if (currentTime - lastBackPress > 4000) {
+            toastLong(resources.getString(R.string.press_back_to_exit))
+            lastBackPress = currentTime
+        } else {
+            finishAffinity()
+        }
     }
 
     override val progressBar: ProgressBar

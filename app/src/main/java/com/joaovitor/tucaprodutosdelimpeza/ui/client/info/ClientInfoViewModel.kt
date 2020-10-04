@@ -40,7 +40,7 @@ class ClientInfoViewModel(mClient: Client) : BaseViewModel() {
                 clientSales.postValue(data)
                 if(data.isEmpty()) notFoundSales.postValue(true)
             } else {
-                super._error.postValue("Erro ao buscar vendas do cliente")
+                _error.postValue("Erro ao buscar vendas do cliente")
             }
 
             _showProgressBar.postValue(false)
@@ -53,7 +53,7 @@ class ClientInfoViewModel(mClient: Client) : BaseViewModel() {
 
     fun onClickFinishSale(sale: Sale) {
         if(sale.paid){
-            super._info.postValue("Está venda já está paga")
+            _info.postValue("Está venda já está paga")
             return
         }
 
@@ -63,10 +63,10 @@ class ClientInfoViewModel(mClient: Client) : BaseViewModel() {
             sale.finishSale()
             val result = SaleRepository().editSale(sale)
             if (result is Result.Success){
-                super._info.postValue("Venda finalizada com sucesso")
+                _info.postValue("Venda finalizada com sucesso")
                 fetchClientSales()
             }else {
-                super._error.postValue("Erro ao buscar vendas do cliente")
+                _error.postValue("Erro ao buscar vendas do cliente")
             }
 
             _showProgressBar.postValue(false)

@@ -68,7 +68,7 @@ class SaleListViewModel : BaseViewModel() {
             if (resultSales is Result.Success) {
                 sales.postValue(resultSales.data)
             } else {
-                super._error.postValue("Erro ao carregar vendas filtradas!")
+                _error.postValue("Erro ao carregar vendas filtradas!")
             }
 
             _closeFiltersDialog.postValue( true)
@@ -101,13 +101,13 @@ class SaleListViewModel : BaseViewModel() {
 
         /** Check if one of the two dates was not informed */
         if(_startDate.value == null || _endDate.value == null) {
-            super._error.postValue("Selecione o período de tempo")
+            _error.postValue("Selecione o período de tempo")
             return null
         }
 
         /** The given start date can't be greater than the end date */
         if(_startDate.value!!.compareTo(_endDate.value!!) == 1) {
-            super._error.postValue("Data inicial não pode ser maior que data final")
+            _error.postValue("Data inicial não pode ser maior que data final")
             return null
         }
 
@@ -131,7 +131,7 @@ class SaleListViewModel : BaseViewModel() {
             if (resultSales is Result.Success) {
                sales.postValue(resultSales.data)
             } else {
-                super._error.postValue("Erro ao carregar vendas!")
+                _error.postValue("Erro ao carregar vendas!")
             }
 
             _showProgressBar.postValue(false)

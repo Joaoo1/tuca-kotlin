@@ -60,7 +60,7 @@ class SaleEditProductsViewModel(var mSale: Sale) : BaseViewModel() {
             if(resultProducts is Result.Success) {
                 _allProducts.postValue(resultProducts.data)
             } else {
-                super._error.postValue("Erro ao carregar produtos!")
+                _error.postValue("Erro ao carregar produtos!")
             }
         }
     }
@@ -87,7 +87,7 @@ class SaleEditProductsViewModel(var mSale: Sale) : BaseViewModel() {
 
         /** Check if [productName] correspond to a product on products list */
         if (productIndex == null || productIndex == -1) {
-            super._error.postValue("Produto não encontrado!")
+            _error.postValue("Produto não encontrado!")
             return
         }
 
@@ -122,7 +122,7 @@ class SaleEditProductsViewModel(var mSale: Sale) : BaseViewModel() {
     fun onClickSave() {
         /** Check if there is added products */
         if(_products.value!!.isEmpty()) {
-            super._error.postValue("Não há produtos adicionados!")
+            _error.postValue("Não há produtos adicionados!")
             return
         }
 

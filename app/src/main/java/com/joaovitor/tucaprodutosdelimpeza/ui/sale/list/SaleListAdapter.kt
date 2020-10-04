@@ -4,38 +4,33 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
 import com.joaovitor.tucaprodutosdelimpeza.databinding.ListItemSaleBinding
+import com.joaovitor.tucaprodutosdelimpeza.ui.client.list.ClientListAdapter
 import java.util.*
 import kotlin.collections.ArrayList
 
 
 class SaleListAdapter(val clickListener: SaleListener) :
-    RecyclerView.Adapter<SaleListAdapter.ViewHolder>(), Filterable{
+    ListAdapter<Sale, RecyclerView.ViewHolder>(SaleDiffCallback()), Filterable {
+
      var saleList = listOf<Sale>()
         set(value) {
             field = value
-            saleFilterList = value
+            submitList(value)
             notifyDataSetChanged()
         }
-
-    var saleFilterList = listOf<Sale>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
     }
 
-    override fun getItemCount() = saleFilterList.size
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = saleFilterList[position]
-        holder.bind(clickListener, item)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val item = getItem(position)
+        (holder as ViewHolder).bind(clickListener, item)
     }
 
     class ViewHolder private constructor(private val binding: ListItemSaleBinding)
@@ -64,11 +59,12 @@ class SaleListAdapter(val clickListener: SaleListener) :
     override fun getFilter(): Filter {
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
+                val resultList: MutableList<Sale> = ArrayList()
+
                 val charSearch = constraint.toString()
                 if (charSearch.isEmpty()) {
-                    saleFilterList = saleList
+                    resultList.addAll(saleList)
                 } else {
-                    val resultList: MutableList<Sale> = ArrayList()
                     for (sale in saleList) {
                         if (sale.saleId
                                 .toString()
@@ -77,19 +73,35 @@ class SaleListAdapter(val clickListener: SaleListener) :
                             resultList.add(sale)
                         }
                     }
-                    saleFilterList = resultList
                 }
+
                 val filterResults = FilterResults()
-                filterResults.values = saleFilterList
+                filterResults.values = resultList
                 return filterResults
             }
 
             @Suppress("UNCHECKED_CAST")
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
                 if(results?.values != null) {
-                    saleFilterList = results.values as List<Sale>
+                    submitList(results.values as List<Sale>)
                 }
             }
+        }
+    }
+
+    /**
+     * Callback for calculating the diff between two non-null items in a list.
+     *
+     * Used by ListAdapter to calculate the minimum number of changes between and old list and a new
+     * list that's been passed to `submitList`.
+     */
+    class SaleDiffCallback : DiffUtil.ItemCallback<Sale>() {
+        override fun areItemsTheSame(oldItem: Sale, newItem: Sale): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: Sale, newItem: Sale): Boolean {
+            return oldItem == newItem
         }
     }
 }

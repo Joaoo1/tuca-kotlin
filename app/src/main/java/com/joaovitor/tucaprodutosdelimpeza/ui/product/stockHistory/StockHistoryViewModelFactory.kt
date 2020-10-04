@@ -7,7 +7,7 @@ class StockHistoryViewModelFactory(private val productId: String) : ViewModelPro
     @Suppress("unchecked_cast")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(StockHistoryViewModel::class.java)) {
-            return StockHistoryViewModel(productId) as T
+            return StockHistoryViewModel() as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

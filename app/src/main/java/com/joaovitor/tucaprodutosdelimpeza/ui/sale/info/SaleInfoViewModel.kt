@@ -49,10 +49,10 @@ class SaleInfoViewModel : BaseViewModel() {
             sale.value?.id?.let {
                 val result = saleRepository.deleteSale(it)
                 if (result is Result.Success) {
-                    super._info.postValue("Venda excluída com sucesso")
+                    _info.postValue("Venda excluída com sucesso")
                     _navigateBack.postValue(true)
                 } else {
-                    super._error.postValue("Erro ao excluir venda!")
+                    _error.postValue("Erro ao excluir venda!")
                 }
             }
 
@@ -76,7 +76,7 @@ class SaleInfoViewModel : BaseViewModel() {
              * A value with dot, crash the app when try to convert it to BigDecimal
              */
             if(value.last() == '.') {
-                super._error.postValue("O valor informado é inválido")
+                _error.postValue("O valor informado é inválido")
                 return
             }
 
@@ -98,7 +98,7 @@ class SaleInfoViewModel : BaseViewModel() {
                  * Show a error message to user
                  */
                 1 -> {
-                    super._error.postValue("Valor pago é maior que o total da venda")
+                    _error.postValue("Valor pago é maior que o total da venda")
                     return
                 }
             }
@@ -111,9 +111,9 @@ class SaleInfoViewModel : BaseViewModel() {
             val result = saleRepository.editSale(mSale)
 
             if (result is Result.Success) {
-                super._info.postValue("Venda editado com sucesso")
+                _info.postValue("Venda editado com sucesso")
             } else {
-                super._error.postValue("Erro ao editar venda")
+                _error.postValue("Erro ao editar venda")
             }
 
             _sale.postValue(mSale)
@@ -127,7 +127,7 @@ class SaleInfoViewModel : BaseViewModel() {
     fun onClickEditProducts() {
         /** Can't edit the products of a sale that is paid */
         if(_sale.value?.paid!!){
-            super._error.postValue("Não é possível alterar produtos de uma venda paga!")
+            _error.postValue("Não é possível alterar produtos de uma venda paga!")
             return
         }
 

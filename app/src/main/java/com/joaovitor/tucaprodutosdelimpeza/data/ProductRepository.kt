@@ -52,4 +52,15 @@ class ProductRepository {
         }
     }
 
+    suspend fun deleteProduct(productId: String): Result<Any> {
+        return try {
+            colRef.document(productId).delete().await()
+
+            //product successful added
+            Result.Success(null)
+        }catch (e: FirebaseFirestoreException) {
+            Result.Error(e)
+        }
+    }
+
 }

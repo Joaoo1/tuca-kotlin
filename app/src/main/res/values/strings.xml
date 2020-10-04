@@ -6,6 +6,7 @@
     <string name="quantity">%1$sx</string>
     <string name="sale_id">Venda %1$s</string>
     <string name="client_neighborhood">Bairro %1$s</string>
+    <string name="press_back_to_exit">Pressione voltar novamente para sair</string>
 
     <!-- Fragments titles -->
     <string name="title_fragment_home">Página inicial</string>

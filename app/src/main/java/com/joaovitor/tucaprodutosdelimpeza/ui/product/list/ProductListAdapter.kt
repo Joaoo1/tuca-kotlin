@@ -19,6 +19,7 @@ class ProductListAdapter(val clickListener: ProductListener) :
         set(value) {
             submitList(value)
             field = value
+            notifyDataSetChanged()
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

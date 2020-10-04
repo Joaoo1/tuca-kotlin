@@ -37,7 +37,7 @@ class ClientListViewModel : BaseViewModel() {
             if (resultClient is Result.Success) {
                 clients.postValue(resultClient.data)
             } else {
-                super._error.postValue("Erro ao carregar clientes")
+                _error.postValue("Erro ao carregar clientes")
             }
 
             _showProgressBar.postValue(false)

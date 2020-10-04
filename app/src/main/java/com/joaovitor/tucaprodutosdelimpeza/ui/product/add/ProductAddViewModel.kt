@@ -30,12 +30,12 @@ class ProductAddViewModel: BaseViewModel() {
     }
     private fun addProduct() {
         if(product.value!!.name.isEmpty() || product.value!!.price.isEmpty()) {
-            super._error.postValue("Os campos não podem ficar em branco")
+            _error.postValue("Os campos não podem ficar em branco")
             return
         }
 
         if(product.value!!.price.last() == '.') {
-            super._error.postValue("O preço informado é inválido")
+            _error.postValue("O preço informado é inválido")
             return
         }
 
@@ -45,10 +45,10 @@ class ProductAddViewModel: BaseViewModel() {
             product.value!!.price = BigDecimal(product.value!!.price).setScale(2, RoundingMode.FLOOR).toString()
             val result = ProductRepository().addProduct(product.value!!)
             if(result is Result.Success) {
-                super._info.postValue("Produto adicionado com sucesso")
+                _info.postValue("Produto adicionado com sucesso")
                 _navigateBack.postValue(true)
             }else {
-                super._error.postValue("Erro ao adicionar produto!")
+                _error.postValue("Erro ao adicionar produto!")
             }
 
             _showProgressBar.postValue(false)
