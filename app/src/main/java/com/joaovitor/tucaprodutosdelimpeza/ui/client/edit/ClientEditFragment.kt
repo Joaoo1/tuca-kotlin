@@ -70,10 +70,19 @@ class ClientEditFragment : Fragment() {
         }
         viewModel.navigateBack.observe(viewLifecycleOwner) {
             if(it){
-                findNavController().navigateUp()
+                findNavController().popBackStack()
                 viewModel.doneNavigating()
             }
         }
+
+        viewModel.popUpToClientList.observe(viewLifecycleOwner) {
+            if(it){
+                findNavController().navigate(ClientEditFragmentDirections.actionClientEditFragmentToClientListFragment())
+                viewModel.doneNavigating()
+            }
+        }
+
+
 
         viewModel.error.observe(viewLifecycleOwner) {
             it?.let {

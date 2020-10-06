@@ -64,6 +64,10 @@
         <action
             android:id="@+id/action_client_edit_fragment_to_manage_address_fragment"
             app:destination="@id/manage_address_fragment" />
+        <action
+            android:id="@+id/action_client_edit_fragment_to_client_list_fragment"
+            app:popUpTo="@id/client_list_fragment"
+            />
     </fragment>
 
 

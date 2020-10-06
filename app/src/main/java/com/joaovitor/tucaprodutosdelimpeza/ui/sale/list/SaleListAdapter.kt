@@ -7,15 +7,19 @@ import android.widget.Filterable
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.joaovitor.tucaprodutosdelimpeza.data.Result
+import com.joaovitor.tucaprodutosdelimpeza.data.SaleRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
 import com.joaovitor.tucaprodutosdelimpeza.databinding.ListItemSaleBinding
 import com.joaovitor.tucaprodutosdelimpeza.ui.client.list.ClientListAdapter
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
 
 
 class SaleListAdapter(val clickListener: SaleListener) :
-    ListAdapter<Sale, RecyclerView.ViewHolder>(SaleDiffCallback()), Filterable {
+    ListAdapter<Sale, RecyclerView.ViewHolder>(SaleDiffCallback()) {
 
      var saleList = listOf<Sale>()
         set(value) {
@@ -54,39 +58,6 @@ class SaleListAdapter(val clickListener: SaleListener) :
 
     class SaleListener(val clickListener: (sale: Sale) -> Unit) {
         fun onClick(sale: Sale) = clickListener(sale)
-    }
-
-    override fun getFilter(): Filter {
-        return object : Filter() {
-            override fun performFiltering(constraint: CharSequence?): FilterResults {
-                val resultList: MutableList<Sale> = ArrayList()
-
-                val charSearch = constraint.toString()
-                if (charSearch.isEmpty()) {
-                    resultList.addAll(saleList)
-                } else {
-                    for (sale in saleList) {
-                        if (sale.saleId
-                                .toString()
-                                .toLowerCase(Locale.ROOT)
-                                .contains(charSearch.toLowerCase(Locale.ROOT))) {
-                            resultList.add(sale)
-                        }
-                    }
-                }
-
-                val filterResults = FilterResults()
-                filterResults.values = resultList
-                return filterResults
-            }
-
-            @Suppress("UNCHECKED_CAST")
-            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                if(results?.values != null) {
-                    submitList(results.values as List<Sale>)
-                }
-            }
-        }
     }
 
     /**

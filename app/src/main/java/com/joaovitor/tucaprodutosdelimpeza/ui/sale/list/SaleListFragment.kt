@@ -51,6 +51,11 @@ class SaleListFragment : Fragment() {
                 listAdapter.saleList = it
             }
         }
+        viewModel.filteredSales.observe(viewLifecycleOwner) {
+            it?.let {
+                listAdapter.saleList = it
+            }
+        }
 
         //Navigate to Add Fragment listener
         viewModel.navigateToAdd.observe(viewLifecycleOwner) { navigate ->
@@ -118,15 +123,19 @@ class SaleListFragment : Fragment() {
         searchView.imeOptions = EditorInfo.IME_ACTION_DONE
         searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
+                viewModel.filterSales(query)
                 return false
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                listAdapter.filter.filter(newText)
-                listAdapter.notifyDataSetChanged()
+                if(newText.isEmpty()) {
+                    viewModel.filterSales(newText)
+                }
                 return false
             }
+
         })
+
     }
 
     override fun onResume() {

@@ -13,6 +13,7 @@ import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.onNavDestinationSelected
@@ -20,6 +21,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textview.MaterialTextView
 import com.joaovitor.tucaprodutosdelimpeza.data.LoginRepository
+import com.joaovitor.tucaprodutosdelimpeza.ui.home.HomeFragment
 import com.joaovitor.tucaprodutosdelimpeza.ui.login.LoginActivity
 import com.joaovitor.tucaprodutosdelimpeza.util.toastLong
 
@@ -106,16 +108,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 || super.onOptionsItemSelected(item)
     }
 
-    override fun onBackPressed() {
-        val currentTime = System.currentTimeMillis()
-        if (currentTime - lastBackPress > 4000) {
-            toastLong(resources.getString(R.string.press_back_to_exit))
-            lastBackPress = currentTime
-        } else {
-            finishAffinity()
-        }
-    }
-
     override val progressBar: ProgressBar
         get() = findViewById(R.id.progress_bar)
 
@@ -126,4 +118,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun hideProgressBar() {
         progressBar.visibility = View.INVISIBLE
     }
+
+    override fun onBackPressed() {
+        val currentFragment = navHostFragment.childFragmentManager.fragments[0]
+
+        if(currentFragment is HomeFragment) {
+            val currentTime = System.currentTimeMillis()
+            if (currentTime - lastBackPress > 4000) {
+                toastLong(resources.getString(R.string.press_back_to_exit))
+                lastBackPress = currentTime
+            } else {
+                finishAffinity()
+            }
+        } else {
+            super.onBackPressed()
+        }
+    }
+
 }

@@ -79,7 +79,7 @@ public class PrinterFunctions {
                             mPrinter.setSmallSize();
                             mPrinter.setAlign(BluetoothPrinter.ALIGN_RIGHT);
                             mPrinter.printText(products.get(i).getQuantity() +
-                                "x                     RS" + products.get(i).getPrice());
+                                "x                     RS" + calculateTotalProduct(products.get(i).getPrice(), products.get(i).getQuantity()));
                         }
                         mPrinter.setNormal();
                         mPrinter.printLine();
@@ -114,6 +114,13 @@ public class PrinterFunctions {
             Toast.makeText(mContext, "Erro ao imprimir recibo!", Toast.LENGTH_SHORT).show();
 
         }
+    }
+
+    private String calculateTotalProduct(String productPrice, int quantity) {
+        BigDecimal price = new BigDecimal(productPrice);
+        BigDecimal qtt = new BigDecimal(quantity);
+
+        return price.multiply(qtt).toString();
     }
 
     public void printSalesList(final List<Sale> listSales){

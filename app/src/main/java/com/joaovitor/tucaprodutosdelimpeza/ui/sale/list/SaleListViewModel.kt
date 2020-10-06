@@ -18,6 +18,10 @@ class SaleListViewModel : BaseViewModel() {
 
     var sales:MutableLiveData<List<Sale>> = MutableLiveData(emptyList())
 
+    private var _filteredSales: MutableLiveData<List<Sale>> = MutableLiveData(emptyList())
+    val filteredSales: LiveData<List<Sale>>
+        get() = _filteredSales
+
     private var _navigateToAdd = MutableLiveData<Boolean>()
     val navigateToAdd: LiveData<Boolean>
         get() = _navigateToAdd
@@ -165,5 +169,23 @@ class SaleListViewModel : BaseViewModel() {
         if(!isFiltered) {
             cleanFilters()
         }
+    }
+
+    fun filterSales(query: String) {
+        if(query.isEmpty()) {
+            _filteredSales.postValue(sales.value!!)
+            _showProgressBar.postValue(false)
+        } else {
+            _showProgressBar.postValue(true)
+
+            GlobalScope.launch {
+                val result = SaleRepository().getSalesById(Integer.parseInt(query))
+                if(result is Result.Success) {
+                    _filteredSales.postValue(result.data)
+                }
+                _showProgressBar.postValue(false)
+            }
+        }
+
     }
 }

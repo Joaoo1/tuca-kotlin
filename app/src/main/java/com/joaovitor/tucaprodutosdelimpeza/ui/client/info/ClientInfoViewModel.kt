@@ -1,7 +1,11 @@
 package com.joaovitor.tucaprodutosdelimpeza.ui.client.info
 
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.net.Uri
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.joaovitor.tucaprodutosdelimpeza.data.Result
 import com.joaovitor.tucaprodutosdelimpeza.data.SaleRepository
@@ -25,6 +29,14 @@ class ClientInfoViewModel(mClient: Client) : BaseViewModel() {
     private var _navigateToInfoSale = MutableLiveData<Sale?>()
     val navigateToInfoSale: LiveData<Sale?>
         get() = _navigateToInfoSale
+
+    private var _callClientPhone = MutableLiveData<Intent?>()
+    val callClientPhone: LiveData<Intent?>
+        get() = _callClientPhone
+
+    private var _requestCallPermission = MutableLiveData(false)
+    val requestCallPermission: LiveData<Boolean>
+        get() = _requestCallPermission
 
     init {
         fetchClientSales()
@@ -82,8 +94,41 @@ class ClientInfoViewModel(mClient: Client) : BaseViewModel() {
         _navigateToInfoSale.value = null
     }
 
-    fun onClickCallClient() {
-        _error.value = "Função indisponível"
+    fun doneCalling() {
+        _callClientPhone.value = null
+    }
+
+    fun onClickCallClient(context: Context) {
+        if(isPermissionGrantedForCalls(context)) {
+            callClientPhone()
+        } else {
+            _requestCallPermission.value = true
+        }
+    }
+
+    /* Call phone functions */
+    fun onRequestCallPermissionResult(grantResults: IntArray) {
+        if(grantResults.isNotEmpty() && grantResults[0] == PERMISSION_GRANTED) {
+            callClientPhone()
+        }else {
+            _error.value = "Permissão para realizar ligações foi negada pelo usuário!"
+        }
+    }
+
+    private fun isPermissionGrantedForCalls(context: Context): Boolean {
+        val callPermission = ContextCompat.checkSelfPermission(
+            context,
+            android.Manifest.permission.CALL_PHONE
+        )
+
+        return callPermission == PERMISSION_GRANTED
+    }
+
+    private fun callClientPhone() {
+        val intent = Intent(Intent.ACTION_CALL)
+        val uri: String = client.value!!.phone.replace("-", "")
+        intent.data = Uri.parse("tel:$uri")
+        _callClientPhone.value = intent
     }
 
 }

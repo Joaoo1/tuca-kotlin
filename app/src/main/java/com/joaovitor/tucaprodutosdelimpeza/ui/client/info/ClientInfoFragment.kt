@@ -13,6 +13,8 @@ import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentClientInfoBinding
 import com.joaovitor.tucaprodutosdelimpeza.util.toast
 import com.joaovitor.tucaprodutosdelimpeza.util.toastLong
 
+const val REQUEST_CALL_PERMISSION = 1
+
 class ClientInfoFragment : Fragment() {
 
     private lateinit var viewModel: ClientInfoViewModel
@@ -66,6 +68,19 @@ class ClientInfoFragment : Fragment() {
             }
         }
 
+        viewModel.callClientPhone.observe(viewLifecycleOwner) {
+            it?.let {
+                startActivity(it)
+                viewModel.doneCalling()
+            }
+        }
+
+        viewModel.requestCallPermission.observe(viewLifecycleOwner) {
+            if(it) {
+                requestPermissions(arrayOf(android.Manifest.permission.CALL_PHONE), REQUEST_CALL_PERMISSION)
+            }
+        }
+
         viewModel.error.observe(viewLifecycleOwner) {
             it?.let {
                 context?.toastLong(it)
@@ -92,10 +107,21 @@ class ClientInfoFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        when (item.itemId) {
             R.id.action_edit -> viewModel.onClickEditClient()
-            R.id.action_call -> viewModel.onClickCallClient()
+            R.id.action_call -> viewModel.onClickCallClient(requireContext())
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when(requestCode) {
+            REQUEST_CALL_PERMISSION -> viewModel.onRequestCallPermissionResult(grantResults)
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 }

@@ -46,6 +46,10 @@ class ClientEditViewModel(private var mClient: Client) : BaseViewModel() {
     val navigateToManageAddress: LiveData<Boolean>
         get() = _navigateToManageAddress
 
+    private var _popUpToClientList = MutableLiveData<Boolean>()
+    val popUpToClientList: LiveData<Boolean>
+        get() = _popUpToClientList
+
     init {
         GlobalScope.launch {
             val resultStreets = StreetRepository().getStreets()
@@ -78,7 +82,7 @@ class ClientEditViewModel(private var mClient: Client) : BaseViewModel() {
             val result = clientRepository.deleteClient(client.value!!.id)
             if (result is Result.Success) {
                 _info.postValue("Cliente excluído com sucesso")
-                _navigateBack.postValue(true)
+                _popUpToClientList.postValue(true)
             }else {
                 _error.postValue("Erro ao excluir cliente")
             }
@@ -135,6 +139,7 @@ class ClientEditViewModel(private var mClient: Client) : BaseViewModel() {
     fun doneNavigating() {
         _navigateToManageAddress.value = false
         _navigateBack.value = false
+        _popUpToClientList.value = false
     }
 
     fun onClickMenuItemAddAddress() {

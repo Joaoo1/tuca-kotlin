@@ -107,6 +107,27 @@ class SaleRepository {
         }
     }
 
+    suspend fun getSalesById(id: Int): Result<List<Sale>> {
+        return try {
+            val querySnapshot = colRef
+                .whereGreaterThanOrEqualTo(Firestore.SALE_ID, id)
+                .orderBy(Firestore.SALE_ID, Query.Direction.ASCENDING)
+                .limit(20)
+                .get()
+                .await()
+
+            val sales = querySnapshot.map {
+                val sale = it.toObject(Sale::class.java)
+                sale.id = it.id
+                sale
+            }
+
+            Result.Success(sales)
+        } catch (e: Exception) {
+            Result.Error(e)
+        }
+    }
+
     suspend fun addSale(sale: Sale): Result<Void> {
         return try {
             // Getting a unused id for sale
