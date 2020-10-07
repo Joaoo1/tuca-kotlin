@@ -21,7 +21,7 @@
     <string name="title_fragment_product_list">Produtos</string>
     <string name="title_fragment_product_add">Adicionar produto</string>
     <string name="title_fragment_product_edit">Editar produto</string>
-    <string name="title_fragment_product_stock_history">Histórico de estoque</string>
+    <string name="title_fragment_product_stock_movements">Histórico de estoque</string>
     <string name="title_fragment_reports">Relatórios</string>
     <string name="title_fragment_report_sales">Relatório de vendas</string>
     <string name="title_fragment_report_filtered_sales">Vendas filtradas</string>
@@ -76,7 +76,7 @@
     <string name="product_edit_tab_stock">Estoque</string>
     <string name="product_edit_save_product">Salvar</string>
     <string name="product_edit_label_switch_stock">Gerenciar estoque</string>
-    <string name="product_edit_button_refresh_stock">Atualizar estoque</string>
+    <string name="product_edit_button_recalculate_stock">Recalcular estoque</string>
     <string name="product_edit_button_stock_history">Histórico de movimentações</string>
 
     <!-- StockHistory Fragment -->
