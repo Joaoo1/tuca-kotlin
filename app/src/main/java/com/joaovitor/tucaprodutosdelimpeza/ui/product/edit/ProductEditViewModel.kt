@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.joaovitor.tucaprodutosdelimpeza.data.ProductRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.Result
+import com.joaovitor.tucaprodutosdelimpeza.data.StockRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
 import com.joaovitor.tucaprodutosdelimpeza.ui.BaseViewModel
 import kotlinx.coroutines.GlobalScope
@@ -18,6 +19,10 @@ class ProductEditViewModel(private var mProduct: Product) : BaseViewModel() {
     private var _navigateBack = MutableLiveData(false)
     val navigateBack: LiveData<Boolean>
         get() = _navigateBack
+
+    private var _navigateToStockMovements: MutableLiveData<String?> = MutableLiveData(null)
+    val navigateToStockMovements: LiveData<String?>
+        get() = _navigateToStockMovements
 
     private var _openDialogDelete = MutableLiveData(false)
     val openDialogDelete: LiveData<Boolean>
@@ -83,6 +88,27 @@ class ProductEditViewModel(private var mProduct: Product) : BaseViewModel() {
         deleteProduct()
     }
 
+    fun onClickStockMovements() {
+        _navigateToStockMovements.value = product.value!!.id
+    }
+
+    fun onClickRecalculateStock() {
+        recalculateStock()
+    }
+
+    private fun recalculateStock() {
+        GlobalScope.launch {
+            val result = StockRepository().recalculateStock(product.value!!.id)
+
+            if(result is Result.Success) {
+                product.value!!.stock = result.data!!
+                _info.postValue("Estoque calculado com sucesso")
+            } else {
+                _error.postValue((result as Result.Error).exception.toString())
+            }
+        }
+    }
+
     private fun deleteProduct() {
         GlobalScope.launch {
             _showProgressBar.postValue(true)
@@ -105,6 +131,7 @@ class ProductEditViewModel(private var mProduct: Product) : BaseViewModel() {
 
     fun doneNavigating() {
         _navigateBack.value = false
+        _navigateToStockMovements.value = null
         _openDialogDelete.value = false
     }
 

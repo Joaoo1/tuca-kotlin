@@ -62,7 +62,8 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:paddingVertical="16dp"
-            android:text="@string/product_edit_button_refresh_stock"
+            android:text="@string/product_edit_button_recalculate_stock"
+            android:onClick="@{() -> viewModel.onClickRecalculateStock()}"
             app:layout_constraintBottom_toTopOf="@id/divider2"
             app:drawableEndCompat="@drawable/ic_home_refresh_general_info"
             style="@style/Headline6"/>
@@ -82,6 +83,7 @@
             android:layout_marginHorizontal="16dp"
             android:paddingVertical="16dp"
             android:text="@string/product_edit_button_stock_history"
+            android:onClick="@{() -> viewModel.onClickStockMovements()}"
             app:drawableEndCompat="@drawable/ic_chevron_right"
             app:layout_constraintBottom_toTopOf="@+id/save"
             app:layout_constraintStart_toStartOf="parent"

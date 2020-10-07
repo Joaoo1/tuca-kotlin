@@ -1,0 +1,141 @@
+package com.joaovitor.tucaprodutosdelimpeza.data
+
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.google.firebase.firestore.FirebaseFirestore
+import com.joaovitor.tucaprodutosdelimpeza.data.model.ProductSale
+import com.joaovitor.tucaprodutosdelimpeza.data.model.StockMovement
+import com.joaovitor.tucaprodutosdelimpeza.data.util.Firestore
+import kotlinx.coroutines.tasks.await
+import java.lang.Exception
+
+class StockRepository {
+
+    suspend fun getStockMovements(productId: String): Result<List<StockMovement>> {
+        return try {
+            val stockMovements = FirebaseFirestore
+                .getInstance()
+                .collection(Firestore.COL_PRODUCTS)
+                .document(productId)
+                .collection(Firestore.SUBCOL_STOCK_MOVEMENT).get().await()
+            val list = stockMovements.map { it.toObject(StockMovement::class.java) }
+
+            Result.Success(list)
+        }catch (e: Exception) {
+            Result.Error(e)
+        }
+    }
+
+    suspend fun addStockMovement(products: List<ProductSale>, saleId: Int): Result<Any> {
+          return try {
+              for (product in products) {
+                  val stockMovement = StockMovement(product,saleId,false)
+
+                  /* Register the stock movement */
+                  val productDocRef = FirebaseFirestore
+                      .getInstance()
+                      .collection(Firestore.COL_PRODUCTS)
+                      .document(product.parentId)
+                  productDocRef.collection(Firestore.SUBCOL_STOCK_MOVEMENT).add(stockMovement)
+                      .addOnFailureListener {
+                          FirebaseCrashlytics.getInstance().recordException(it)
+                      }
+
+                  /* Update the current stock */
+                  val currentStock = (productDocRef.get().await().get("currentStock") as Long).toInt()
+                  productDocRef.update(Firestore.PRODUCT_CURRENT_STOCK, currentStock - product.quantity)
+                      .addOnFailureListener {
+                          FirebaseCrashlytics.getInstance().recordException(it)
+                      }
+              }
+
+              Result.Success(null)
+          } catch (e: Exception) {
+              Result.Error(e)
+          }
+    }
+
+    suspend fun addStockChange(productId: String, quantity: Int, user: String): Result<Any> {
+        return try {
+            val stockMovement = StockMovement(
+                isStockChange = true,
+                quantity = quantity,
+                seller = user)
+
+            val productDocRef = FirebaseFirestore
+                .getInstance()
+                .collection(Firestore.COL_PRODUCTS)
+                .document(productId)
+
+            productDocRef.collection(Firestore.SUBCOL_STOCK_MOVEMENT).add(stockMovement)
+
+            val currentStock = (productDocRef.get().await().get("currentStock") as Long).toInt()
+            productDocRef.update(Firestore.PRODUCT_CURRENT_STOCK, currentStock + quantity)
+
+            Result.Success(null)
+        }catch (e: Exception) {
+            Result.Error(e)
+        }
+    }
+
+    suspend fun deleteStockMovement(saleId: Int): Result<Any> {
+        return try {
+            val productsRef = ProductRepository().getProductsRefs()
+
+            if(productsRef is Result.Error) {
+                throw Exception()
+            }
+
+            for (productRef in (productsRef as Result.Success).data!!) {
+                val stockMovements = productRef.reference
+                    .collection(Firestore.SUBCOL_STOCK_MOVEMENT).get().await()
+
+                for (stockMovement in stockMovements) {
+                    val mStockHistory = stockMovement.toObject(StockMovement::class.java)
+                    if(!mStockHistory.isStockChange!!
+                                && mStockHistory.saleId == saleId) {
+                        stockMovement.reference.delete().await()
+                    }
+                }
+
+                recalculateStock(productId = productRef.id)
+            }
+
+            Result.Success(null)
+        } catch (e: Exception) {
+            Result.Error(e)
+        }
+    }
+
+    suspend fun recalculateStock(productId: String): Result<Int> {
+        return try {
+            val productRef = FirebaseFirestore.getInstance()
+                .collection(Firestore.COL_PRODUCTS).document(productId)
+
+            val queryStockMovements = productRef.collection(Firestore.SUBCOL_STOCK_MOVEMENT).get().await()
+
+            val stockMovements = queryStockMovements.documents.map {
+                it.toObject(StockMovement::class.java)}
+
+            val mStockMovements: MutableList<StockMovement> = mutableListOf()
+            var lastStockAdded = 0
+            for(stockMovement in stockMovements) {
+                if(stockMovement?.isStockChange!!){
+                    lastStockAdded = stockMovement.quantity
+                    continue
+                } else {
+                    mStockMovements.add(stockMovement)
+                }
+            }
+
+            val stockQuantityUsed = mStockMovements.map {it.quantity}.reduce {acc, quantity -> acc + quantity}
+            val currentStock =  lastStockAdded - stockQuantityUsed
+
+            productRef.update(Firestore.PRODUCT_CURRENT_STOCK, currentStock).await()
+
+            Result.Success(currentStock)
+        } catch (e: Exception) {
+            Result.Error(e)
+        }
+    }
+
+}

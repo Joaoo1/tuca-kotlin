@@ -4,9 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="android.view.View" />
+
         <variable
-            name="stockHistory"
-            type="com.joaovitor.tucaprodutosdelimpeza.data.model.StockHistory" />
+            name="stockMovement"
+            type="com.joaovitor.tucaprodutosdelimpeza.data.model.StockMovement" />
      </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,9 +33,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginTop="12dp"
-            android:text="@{String.format(@string/stock_history_sale, String.valueOf(stockHistory.saleId))}"
+            android:text="@{String.format(@string/stock_history_sale, String.valueOf(stockMovement.saleId))}"
             android:textColor="@android:color/black"
             android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_date"
             app:layout_constraintStart_toEndOf="@+id/image"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -42,8 +45,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="2dp"
-            android:text="@{stockHistory.date.toString()}"
+            app:formatDateToString="@{stockMovement.date}"
+            app:layout_constraintBottom_toTopOf="@+id/tv_client"
             app:layout_constraintStart_toEndOf="@+id/image"
             app:layout_constraintTop_toBottomOf="@+id/tv_sale" />
 
@@ -52,7 +55,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:text="@{}"
+            android:text=""
+            android:visibility="@{stockMovement.isStockChange() ? View.VISIBLE : View.GONE}"
             app:layout_constraintStart_toEndOf="@+id/image"
             app:layout_constraintTop_toBottomOf="@+id/tv_date" />
 
@@ -61,8 +65,8 @@
             android:layout_height="0.5dp"
             android:layout_marginHorizontal="15dp"
             android:layout_marginTop="8dp"
-            android:src="?android:attr/listDivider"
             android:background="@color/colorDivider"
+            android:src="?android:attr/listDivider"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/image"
@@ -72,7 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:text="@{String.valueOf(stockHistory.quantity)}"
+            android:text="@{String.valueOf(stockMovement.quantity)}"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

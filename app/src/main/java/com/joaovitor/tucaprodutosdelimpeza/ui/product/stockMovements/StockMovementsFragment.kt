@@ -1,4 +1,4 @@
-package com.joaovitor.tucaprodutosdelimpeza.ui.product.edit
+package com.joaovitor.tucaprodutosdelimpeza.ui.product.stockMovements
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,54 +6,39 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import com.joaovitor.tucaprodutosdelimpeza.MainActivity
 import com.joaovitor.tucaprodutosdelimpeza.R
-import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
-import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentProductEditStockBinding
+import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentStockMovementsBinding
 import com.joaovitor.tucaprodutosdelimpeza.util.toast
 import com.joaovitor.tucaprodutosdelimpeza.util.toastLong
-import kotlinx.android.synthetic.main.app_bar_main.view.*
 
-/**
- * FIXME: Two way data binding not working properly in this fragment
- * UI not updating when LiveData changes
- */
-
-class ProductEditStockFragment(val product: Product) : Fragment() {
+class StockMovementsFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val productId = StockMovementsFragmentArgs.fromBundle(requireArguments()).productId
+
         // Inflate the layout for this fragment
-        val binding: FragmentProductEditStockBinding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_product_edit_stock,
-            container,
-            false
-        )
+        val binding: FragmentStockMovementsBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_stock_movements, container, false)
 
         // Create the viewModel
-        val viewModelFactory = ProductEditViewModelFactory(product)
+        val viewModelFactory = StockMovementsViewModelFactory(productId)
         val viewModel = ViewModelProvider(this,viewModelFactory)
-            .get(ProductEditViewModel::class.java)
+            .get(StockMovementsViewModel::class.java)
 
-        binding.viewModel = viewModel
-
-        binding.switchStock.setOnCheckedChangeListener { _, isChecked ->
-            binding.stock.visibility = if(isChecked) View.VISIBLE else View.GONE
-            viewModel.setManageStock(isChecked)
-        }
-
-        viewModel.navigateToStockMovements.observe(viewLifecycleOwner) {
+        //Setting up the recycler view
+        val adapter = StockMovementsListAdapter()
+        binding.stockHistoriesList.adapter = adapter
+        viewModel.stockHistories.observe(viewLifecycleOwner, Observer {
             it?.let {
-                findNavController()
-                    .navigate(ProductEditFragmentDirections.actionProductEditFragmentToStockMovementsFragment(it))
-                viewModel.doneNavigating()
+                adapter.listData = it
             }
-        }
+        })
 
         viewModel.error.observe(viewLifecycleOwner) {
             it?.let {
@@ -79,4 +64,5 @@ class ProductEditStockFragment(val product: Product) : Fragment() {
 
         return binding.root
     }
+
 }

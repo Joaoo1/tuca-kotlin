@@ -25,6 +25,8 @@ object Firestore {
     const val SALE_SELLER_UID = "sellerUid"
 
     const val COL_PRODUCTS = "produtos"
+    const val PRODUCT_CURRENT_STOCK = "currentStock"
+    const val SUBCOL_STOCK_MOVEMENT = "stockMovement"
 
     const val COL_CLIENTS = "clientes"
     const val CLIENT_NAME = "nome"

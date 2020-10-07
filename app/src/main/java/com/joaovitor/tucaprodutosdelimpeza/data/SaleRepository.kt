@@ -7,6 +7,7 @@ import com.google.firebase.firestore.Query
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Address
 import com.joaovitor.tucaprodutosdelimpeza.data.model.AddressType
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
+import com.joaovitor.tucaprodutosdelimpeza.data.model.StockMovement
 import com.joaovitor.tucaprodutosdelimpeza.data.util.DateRange
 import com.joaovitor.tucaprodutosdelimpeza.data.util.Firestore
 import com.joaovitor.tucaprodutosdelimpeza.util.FormatDate
@@ -157,9 +158,11 @@ class SaleRepository {
         }
     }
 
-    suspend fun deleteSale(id: String): Result<Void>{
+    suspend fun deleteSale(sale: Sale): Result<Void>{
         return try {
-            colRef.document(id).delete().await()
+            colRef.document(sale.id).delete().await()
+            //TODO: Test this function
+            StockRepository().deleteStockMovement(sale.saleId)
 
             Result.Success(null)
         }catch (e: FirebaseFirestoreException) {

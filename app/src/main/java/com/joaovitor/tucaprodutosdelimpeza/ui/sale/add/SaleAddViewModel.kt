@@ -8,15 +8,8 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.bluetooth.PrinterFunctions
-import com.joaovitor.tucaprodutosdelimpeza.data.model.Client
-import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
-import com.joaovitor.tucaprodutosdelimpeza.data.model.ProductSale
-import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
-import com.joaovitor.tucaprodutosdelimpeza.data.ProductRepository
-import com.joaovitor.tucaprodutosdelimpeza.data.ClientRepository
-import com.joaovitor.tucaprodutosdelimpeza.data.SaleRepository
-import com.joaovitor.tucaprodutosdelimpeza.data.LoginRepository
-import com.joaovitor.tucaprodutosdelimpeza.data.Result
+import com.joaovitor.tucaprodutosdelimpeza.data.*
+import com.joaovitor.tucaprodutosdelimpeza.data.model.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
@@ -181,6 +174,14 @@ class SaleAddViewModel(application: Application) : AndroidViewModel(application)
 
                 if (result is Result.Success) {
                     _info.postValue("Venda adicionado com sucesso")
+
+                    // Register the stock movement
+                    launch {
+                        val stockResult = StockRepository().addStockMovement(mSale.products, mSale.saleId)
+                        if(stockResult is Result.Error) {
+                            _error.postValue("Erro ao dar baixa no estoque!")
+                        }
+                    }
 
                     // Print the receipt for the sale
                     sale = mSale

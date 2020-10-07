@@ -47,7 +47,7 @@ class SaleInfoViewModel : BaseViewModel() {
             _showProgressBar.postValue(true)
 
             sale.value?.id?.let {
-                val result = saleRepository.deleteSale(it)
+                val result = saleRepository.deleteSale(sale.value!!)
                 if (result is Result.Success) {
                     _info.postValue("Venda excluída com sucesso")
                     _navigateBack.postValue(true)

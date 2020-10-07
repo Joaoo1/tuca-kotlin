@@ -1,13 +1,14 @@
-package com.joaovitor.tucaprodutosdelimpeza.ui.product.stockHistory
+package com.joaovitor.tucaprodutosdelimpeza.ui.product.stockMovements
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.joaovitor.tucaprodutosdelimpeza.data.model.StockHistory
+import com.joaovitor.tucaprodutosdelimpeza.data.model.StockMovement
 import com.joaovitor.tucaprodutosdelimpeza.databinding.ListItemStockHistoryBinding
 
-class StockHistoryListAdapter() : RecyclerView.Adapter<StockHistoryListAdapter.ViewHolder>(){
-     var listData = listOf<StockHistory>()
+//FIXME: Use ListAdapter with DiffCallback
+class StockMovementsListAdapter : RecyclerView.Adapter<StockMovementsListAdapter.ViewHolder>(){
+     var listData = listOf<StockMovement>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -27,8 +28,8 @@ class StockHistoryListAdapter() : RecyclerView.Adapter<StockHistoryListAdapter.V
     class ViewHolder private constructor(private val binding: ListItemStockHistoryBinding)
         : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: StockHistory) {
-            binding.stockHistory = item
+        fun bind(item: StockMovement) {
+            binding.stockMovement = item
             binding.executePendingBindings()
         }
 

@@ -90,8 +90,8 @@
         android:label="@string/title_fragment_product_edit"
         tools:layout="@layout/fragment_product_edit">
         <action
-            android:id="@+id/action_product_edit_fragment_to_stock_history_fragment"
-            app:destination="@id/stock_history_fragment" />
+            android:id="@+id/action_product_edit_fragment_to_stock_movements_fragment"
+            app:destination="@id/stock_movement_fragment" />
         <argument
             android:name="product"
             app:argType="com.joaovitor.tucaprodutosdelimpeza.data.model.Product" />
@@ -104,10 +104,10 @@
         tools:layout="@layout/fragment_product_add"/>
 
     <fragment
-        android:id="@+id/stock_history_fragment"
-        android:name="com.joaovitor.tucaprodutosdelimpeza.ui.product.stockHistory.StockHistoryFragment"
-        android:label="@string/title_fragment_product_stock_history"
-        tools:layout="@layout/fragment_stock_history">
+        android:id="@+id/stock_movement_fragment"
+        android:name="com.joaovitor.tucaprodutosdelimpeza.ui.product.stockMovements.StockMovementsFragment"
+        android:label="@string/title_fragment_product_stock_movements"
+        tools:layout="@layout/fragment_stock_movements">
         <argument
             android:name="productId"
             app:argType="string" />

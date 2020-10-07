@@ -4,6 +4,7 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.QuerySnapshot
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
 import kotlinx.coroutines.tasks.await
 import java.lang.Exception
@@ -24,6 +25,16 @@ class ProductRepository {
             }
 
             Result.Success(products)
+        } catch (e: Exception) {
+            Result.Error(e)
+        }
+    }
+
+    suspend fun getProductsRefs(): Result<QuerySnapshot> {
+        return try {
+            val querySnapshot = colRef.orderBy("nome", Query.Direction.ASCENDING).get().await()
+
+            Result.Success(querySnapshot)
         } catch (e: Exception) {
             Result.Error(e)
         }
