@@ -5,7 +5,6 @@ import androidx.databinding.InverseMethod
 object Converter {
     @InverseMethod("stringToInt")
     @JvmStatic fun intToString(value: Int): String {
-        if(value == 0) return ""
         return value.toString()
     }
 

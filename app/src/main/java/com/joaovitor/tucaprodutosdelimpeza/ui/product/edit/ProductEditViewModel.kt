@@ -58,25 +58,28 @@ class ProductEditViewModel(private var mProduct: Product) : BaseViewModel() {
         }
     }
 
-    fun onClickSaveEditStock() {
-        if(product.value!!.manageStock && product.value!!.stock == 0) {
-            _error.postValue("O estoque inicial não pode ser zero")
-            return
-        }
-
+    fun onClickSaveEditStock(seller: String = "") {
         GlobalScope.launch {
             _showProgressBar.postValue(true)
 
-            val result = ProductRepository().editProduct(product.value!!)
+            val calculateResult = StockRepository().recalculateStock(product.value!!.id)
 
-            if(result is Result.Success) {
-                _info.postValue("Estoque salvo com sucesso")
-                mProduct.bind(product.value!!)
-            }else {
-                _error.postValue("Erro ao salvar estoque!")
+            if (calculateResult is Result.Success) {
+                val result = StockRepository().addStockChange(
+                    product.value!!.id,
+                    product.value!!.stock.minus(calculateResult.data!!),
+                    seller
+                )
+
+                if (result is Result.Success) {
+                    _info.postValue("Estoque salvo com sucesso")
+                    mProduct.bind(product.value!!)
+                } else {
+                    _error.postValue("Erro ao salvar estoque!")
+                }
+
+                _showProgressBar.postValue(false)
             }
-
-            _showProgressBar.postValue(false)
         }
     }
 
@@ -98,14 +101,22 @@ class ProductEditViewModel(private var mProduct: Product) : BaseViewModel() {
 
     private fun recalculateStock() {
         GlobalScope.launch {
+            _showProgressBar.postValue(true)
+
             val result = StockRepository().recalculateStock(product.value!!.id)
 
             if(result is Result.Success) {
-                product.value!!.stock = result.data!!
+                val p = product.value!!
+                p.stock = result.data!!
+                product.postValue(p)
+                mProduct.bind(p)
+
                 _info.postValue("Estoque calculado com sucesso")
             } else {
                 _error.postValue((result as Result.Error).exception.toString())
             }
+
+            _showProgressBar.postValue(false)
         }
     }
 

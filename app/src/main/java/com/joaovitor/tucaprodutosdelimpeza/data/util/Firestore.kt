@@ -27,6 +27,7 @@ object Firestore {
     const val COL_PRODUCTS = "produtos"
     const val PRODUCT_CURRENT_STOCK = "currentStock"
     const val SUBCOL_STOCK_MOVEMENT = "stockMovement"
+    const val STOCK_MOVEMENT_DATE = "date"
 
     const val COL_CLIENTS = "clientes"
     const val CLIENT_NAME = "nome"

@@ -8,6 +8,10 @@
         <variable
             name="viewModel"
             type="com.joaovitor.tucaprodutosdelimpeza.ui.product.edit.ProductEditViewModel" />
+
+        <variable
+            name="seller"
+            type="java.lang.String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -94,7 +98,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:text="@string/product_edit_save_product"
-            android:onClick="@{() -> viewModel.onClickSaveEditStock()}"
+            android:onClick="@{() -> viewModel.onClickSaveEditStock(seller)}"
             android:layout_marginHorizontal="16dp"
             app:layout_constraintBottom_toBottomOf="parent" />
 

@@ -2,6 +2,7 @@ package com.joaovitor.tucaprodutosdelimpeza.data
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.joaovitor.tucaprodutosdelimpeza.data.model.ProductSale
 import com.joaovitor.tucaprodutosdelimpeza.data.model.StockMovement
 import com.joaovitor.tucaprodutosdelimpeza.data.util.Firestore
@@ -16,7 +17,9 @@ class StockRepository {
                 .getInstance()
                 .collection(Firestore.COL_PRODUCTS)
                 .document(productId)
-                .collection(Firestore.SUBCOL_STOCK_MOVEMENT).get().await()
+                .collection(Firestore.SUBCOL_STOCK_MOVEMENT)
+                .orderBy(Firestore.STOCK_MOVEMENT_DATE, Query.Direction.DESCENDING)
+                .get().await()
             val list = stockMovements.map { it.toObject(StockMovement::class.java) }
 
             Result.Success(list)
@@ -108,29 +111,38 @@ class StockRepository {
 
     suspend fun recalculateStock(productId: String): Result<Int> {
         return try {
-            val productRef = FirebaseFirestore.getInstance()
-                .collection(Firestore.COL_PRODUCTS).document(productId)
+            val resultStockMovements = getStockMovements(productId)
 
-            val queryStockMovements = productRef.collection(Firestore.SUBCOL_STOCK_MOVEMENT).get().await()
+            if(resultStockMovements is Result.Error) {
+                throw Exception()
+            }
 
-            val stockMovements = queryStockMovements.documents.map {
-                it.toObject(StockMovement::class.java)}
-
+            val stockMovements = (resultStockMovements as Result.Success).data!!
             val mStockMovements: MutableList<StockMovement> = mutableListOf()
             var lastStockAdded = 0
-            for(stockMovement in stockMovements) {
-                if(stockMovement?.isStockChange!!){
+
+            loop@ for(stockMovement in stockMovements) {
+                if(stockMovement.isStockChange!!){
                     lastStockAdded = stockMovement.quantity
-                    continue
+                    break@loop
                 } else {
                     mStockMovements.add(stockMovement)
                 }
             }
 
-            val stockQuantityUsed = mStockMovements.map {it.quantity}.reduce {acc, quantity -> acc + quantity}
+            var stockQuantityUsed = 0
+
+            if(mStockMovements.size > 0) {
+                stockQuantityUsed = mStockMovements.map {it.quantity}.reduce {acc, quantity -> acc + quantity}
+            }
+
             val currentStock =  lastStockAdded - stockQuantityUsed
 
-            productRef.update(Firestore.PRODUCT_CURRENT_STOCK, currentStock).await()
+            FirebaseFirestore.getInstance()
+                .collection(Firestore.COL_PRODUCTS)
+                .document(productId)
+                .update(Firestore.PRODUCT_CURRENT_STOCK, currentStock)
+                .await()
 
             Result.Success(currentStock)
         } catch (e: Exception) {

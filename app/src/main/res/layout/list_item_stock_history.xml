@@ -21,11 +21,12 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="8dp"
+            android:src="@{stockMovement.isStockChange ? @drawable/ic_arrow_up_green : @drawable/ic_arrow_down_red}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.60"
-            app:srcCompat="@drawable/ic_arrow_down_red" />
+            />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_sale"
@@ -36,8 +37,22 @@
             android:text="@{String.format(@string/stock_history_sale, String.valueOf(stockMovement.saleId))}"
             android:textColor="@android:color/black"
             android:textSize="16sp"
+            android:visibility="@{stockMovement.isStockChange ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toTopOf="@+id/tv_date"
             app:layout_constraintStart_toEndOf="@+id/image"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/materialTextView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:text="Estoque adicionado"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:visibility="@{stockMovement.isStockChange ? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintStart_toEndOf="@+id/tv_sale"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textview.MaterialTextView
@@ -48,14 +63,14 @@
             app:formatDateToString="@{stockMovement.date}"
             app:layout_constraintBottom_toTopOf="@+id/tv_client"
             app:layout_constraintStart_toEndOf="@+id/image"
-            app:layout_constraintTop_toBottomOf="@+id/tv_sale" />
+            app:layout_constraintTop_toBottomOf="@+id/materialTextView3" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_client"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:text=""
+            android:text="@{stockMovement.seller}"
             android:visibility="@{stockMovement.isStockChange() ? View.VISIBLE : View.GONE}"
             app:layout_constraintStart_toEndOf="@+id/image"
             app:layout_constraintTop_toBottomOf="@+id/tv_date" />

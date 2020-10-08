@@ -5,7 +5,6 @@
     <string name="money">R$%1$s</string>
     <string name="quantity">%1$sx</string>
     <string name="sale_id">Venda %1$s</string>
-    <string name="client_neighborhood">Bairro %1$s</string>
     <string name="press_back_to_exit">Pressione voltar novamente para sair</string>
 
     <!-- Fragments titles -->
@@ -47,9 +46,6 @@
     <string name="login_hint_email">Email</string>
     <string name="login_hint_password">Senha</string>
     <string name="login_button_sign_in">Entrar</string>
-    <string name="login_error_invalid_username">Email não é válido</string>
-    <string name="login_error_invalid_password">Senha inválida</string>
-    <string name="login_error_login_failed">"Login falhou"</string>
 
     <!-- Home Fragment -->
     <string name="home_button_clients">Clientes</string>
@@ -174,9 +170,6 @@
     <string name="list_item_product_stock">Estoque disponível: %1$s</string>
     <string name="list_item_client_sale_client">Cliente %1$s</string>
 
-    <string name="dialog_info_client_button_made_buys">Compras feitas</string>
-    <string name="dialog_info_client_button_call">Ligar para o número</string>
-    <string name="dialog_client_sales_title">Compras feitas por %1$s</string>
     <string name="dialog_delete_client_title">Excluir cliente?</string>
     <string name="dialog_delete_client_message">Esta ação irá excluir permanentemente o cliente</string>
     <string name="dialog_delete_client_negative_button">Cancelar</string>
@@ -187,7 +180,6 @@
     <string name="dialog_delete_product_positive_button">Excluir</string>
     <string name="dialog_activate_bluetooth_title">Ativar bluetooth?</string>
     <string name="dialog_activate_bluetooth_message">A opção de imprimir recibo está selecionada mas o bluetooth está desativado</string>
-    <string name="dialog_activate_bluetooth_cancel_button">Cancelar</string>
     <string name="dialog_activate_bluetooth_negative_button">Não</string>
     <string name="dialog_activate_bluetooth_positive_button">Sim</string>
     <string name="dialog_payment_hint_paid_value">Valor pago</string>

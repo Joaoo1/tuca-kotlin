@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.joaovitor.tucaprodutosdelimpeza.MainActivity
 import com.joaovitor.tucaprodutosdelimpeza.R
+import com.joaovitor.tucaprodutosdelimpeza.data.LoginRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentProductEditStockBinding
 import com.joaovitor.tucaprodutosdelimpeza.util.toast
@@ -40,13 +41,6 @@ class ProductEditStockFragment(val product: Product) : Fragment() {
         val viewModel = ViewModelProvider(this,viewModelFactory)
             .get(ProductEditViewModel::class.java)
 
-        binding.viewModel = viewModel
-
-        binding.switchStock.setOnCheckedChangeListener { _, isChecked ->
-            binding.stock.visibility = if(isChecked) View.VISIBLE else View.GONE
-            viewModel.setManageStock(isChecked)
-        }
-
         viewModel.navigateToStockMovements.observe(viewLifecycleOwner) {
             it?.let {
                 findNavController()
@@ -76,6 +70,15 @@ class ProductEditStockFragment(val product: Product) : Fragment() {
                 (activity as MainActivity).hideProgressBar()
             }
         }
+
+        binding.switchStock.setOnCheckedChangeListener { _, isChecked ->
+            binding.stock.visibility = if(isChecked) View.VISIBLE else View.GONE
+            viewModel.setManageStock(isChecked)
+        }
+
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.seller = LoginRepository(requireContext()).getCachedUserName()
 
         return binding.root
     }
