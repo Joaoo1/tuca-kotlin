@@ -28,7 +28,7 @@ class ProductEditViewModel(private var mProduct: Product) : BaseViewModel() {
     val openDialogDelete: LiveData<Boolean>
         get() = _openDialogDelete
 
-    fun onClickSaveEditCadaster() {
+    fun onClickSaveEditRegister() {
         if(product.value!!.name.isEmpty() || product.value!!.price.isEmpty()) {
             _error.postValue("Os campos não podem ficar em branco")
             return
@@ -61,25 +61,20 @@ class ProductEditViewModel(private var mProduct: Product) : BaseViewModel() {
     fun onClickSaveEditStock(seller: String = "") {
         GlobalScope.launch {
             _showProgressBar.postValue(true)
+            val result = StockRepository().addStockChange(
+                product.value!!.id,
+                seller,
+                product.value!!.stock
+            )
 
-            val calculateResult = StockRepository().recalculateStock(product.value!!.id)
-
-            if (calculateResult is Result.Success) {
-                val result = StockRepository().addStockChange(
-                    product.value!!.id,
-                    product.value!!.stock.minus(calculateResult.data!!),
-                    seller
-                )
-
-                if (result is Result.Success) {
-                    _info.postValue("Estoque salvo com sucesso")
-                    mProduct.bind(product.value!!)
-                } else {
-                    _error.postValue("Erro ao salvar estoque!")
-                }
-
-                _showProgressBar.postValue(false)
+            if (result is Result.Success) {
+                _info.postValue("Estoque salvo com sucesso")
+                mProduct.bind(product.value!!)
+            } else {
+                _error.postValue("Erro ao salvar estoque!")
             }
+
+            _showProgressBar.postValue(false)
         }
     }
 
@@ -124,7 +119,7 @@ class ProductEditViewModel(private var mProduct: Product) : BaseViewModel() {
         GlobalScope.launch {
             _showProgressBar.postValue(true)
 
-            val result = ProductRepository().deleteProduct(productId = product.value!!.id)
+            val result = ProductRepository().deleteProduct(product.value!!.id)
             if(result is Result.Success) {
                 _info.postValue("Produto excluído com sucesso")
                 _navigateBack.postValue(true)

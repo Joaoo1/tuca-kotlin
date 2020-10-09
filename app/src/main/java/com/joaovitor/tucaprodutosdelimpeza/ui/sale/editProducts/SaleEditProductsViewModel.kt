@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.joaovitor.tucaprodutosdelimpeza.data.ProductRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.Result
 import com.joaovitor.tucaprodutosdelimpeza.data.SaleRepository
+import com.joaovitor.tucaprodutosdelimpeza.data.StockRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
 import com.joaovitor.tucaprodutosdelimpeza.data.model.ProductSale
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
@@ -39,6 +40,8 @@ class SaleEditProductsViewModel(var mSale: Sale) : BaseViewModel() {
     val navigateBack: LiveData<Boolean>
         get() = _navigateBack
 
+    private var addedProducts: MutableList<Int> = mutableListOf()
+
     init {
         /**
          * Clone product sales with a deep copy,
@@ -46,7 +49,14 @@ class SaleEditProductsViewModel(var mSale: Sale) : BaseViewModel() {
          * and therefore doesn't showing false information if the user navigate back
          * without saving the information
          */
-        _products.value = mSale.products.map {it.copy()}.toMutableList()
+        _products.value = mSale.products
+            .map {it.copy()}
+            .toMutableList()
+            .map {
+                it.isPostAdded = null
+                it
+            }.toMutableList()
+
 
         /** Update @property total every time @property _products is changed */
         products.addSource(_products) {
@@ -77,7 +87,7 @@ class SaleEditProductsViewModel(var mSale: Sale) : BaseViewModel() {
 
     /** Add a new product for sale based on [productName] */
     fun addProduct(productName: String?) {
-        /**
+        /*
          * Convert product list to a string list
          * That way, it is possible to use List.indexOf()
          * to validate the product and find its index
@@ -85,29 +95,20 @@ class SaleEditProductsViewModel(var mSale: Sale) : BaseViewModel() {
         val productsName = allProducts.value?.map{ it.name }
         val productIndex = productsName?.indexOf(productName)
 
-        /** Check if [productName] correspond to a product on products list */
+        /* Check if [productName] correspond to a product on products list */
         if (productIndex == null || productIndex == -1) {
             _error.postValue("Produto não encontrado!")
             return
         }
 
+        val product = _allProducts.value!![productIndex]
         val productSale = _allProducts.value!![productIndex].toProductSale(quantity.value!!)
 
-        /**
-         * Check if the new product is already on list
-         * If so, just increment the quantity of existing product
-         * Otherwise, add the product to list
-         */
-        val mProducts = _products.value!!
-        for(product in mProducts) {
-            if(productSale.parentId == product.parentId){
-                product.quantity += quantity.value!!
-                _products.value = mProducts
-                return
-            }
-        }
+        if(product.manageStock) productSale.isPostAdded = true
 
         _products.value = _products.value?.plus(productSale)?.toMutableList()
+
+        addedProducts.add(_products.value!!.size - 1)
     }
 
     private fun calculateTotalFromProductsList(products: List<ProductSale>?): BigDecimal {
@@ -139,6 +140,15 @@ class SaleEditProductsViewModel(var mSale: Sale) : BaseViewModel() {
             if(result is Result.Success) {
                 _info.postValue("Venda editada com sucesso")
                 _navigateBack.postValue(true)
+
+                // Register stock movements
+                for(product in _products.value!!) {
+                    val addedProducts = mutableListOf<ProductSale>()
+                    if(product.isPostAdded != null && product.isPostAdded!!) {
+                        addedProducts.add(product)
+                    }
+                    StockRepository().addStockMovement(addedProducts, mSale.saleId)
+                }
             } else {
                 _error.postValue("Ocorreu um erro ao editar produtos!")
             }

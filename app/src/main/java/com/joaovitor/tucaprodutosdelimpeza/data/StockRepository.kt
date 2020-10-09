@@ -31,7 +31,8 @@ class StockRepository {
     suspend fun addStockMovement(products: List<ProductSale>, saleId: Int): Result<Any> {
           return try {
               for (product in products) {
-                  val stockMovement = StockMovement(product,saleId,false)
+                  val stockMovement = StockMovement(
+                      quantity = product.quantity,saleId = saleId,isStockChange = false )
 
                   /* Register the stock movement */
                   val productDocRef = FirebaseFirestore
@@ -57,12 +58,19 @@ class StockRepository {
           }
     }
 
-    suspend fun addStockChange(productId: String, quantity: Int, user: String): Result<Any> {
+    suspend fun addStockChange(productId: String, user: String, newStock: Int): Result<Any> {
         return try {
+            val calculateResult = StockRepository().recalculateStock(productId)
+
+            if(calculateResult is Result.Error) {
+                throw Exception("Error on recalculateStock()")
+            }
+
             val stockMovement = StockMovement(
                 isStockChange = true,
-                quantity = quantity,
-                seller = user)
+                quantity = newStock - (calculateResult as Result.Success).data!!,
+                seller = user,
+                newStock = newStock)
 
             val productDocRef = FirebaseFirestore
                 .getInstance()
@@ -71,8 +79,7 @@ class StockRepository {
 
             productDocRef.collection(Firestore.SUBCOL_STOCK_MOVEMENT).add(stockMovement)
 
-            val currentStock = (productDocRef.get().await().get("currentStock") as Long).toInt()
-            productDocRef.update(Firestore.PRODUCT_CURRENT_STOCK, currentStock + quantity)
+            productDocRef.update(Firestore.PRODUCT_CURRENT_STOCK, newStock)
 
             Result.Success(null)
         }catch (e: Exception) {
@@ -85,7 +92,7 @@ class StockRepository {
             val productsRef = ProductRepository().getProductsRefs()
 
             if(productsRef is Result.Error) {
-                throw Exception()
+                throw Exception(productsRef.exception)
             }
 
             for (productRef in (productsRef as Result.Success).data!!) {
@@ -114,7 +121,7 @@ class StockRepository {
             val resultStockMovements = getStockMovements(productId)
 
             if(resultStockMovements is Result.Error) {
-                throw Exception()
+                throw Exception(resultStockMovements.exception)
             }
 
             val stockMovements = (resultStockMovements as Result.Success).data!!
@@ -123,7 +130,8 @@ class StockRepository {
 
             loop@ for(stockMovement in stockMovements) {
                 if(stockMovement.isStockChange!!){
-                    lastStockAdded = stockMovement.quantity
+                    lastStockAdded =  stockMovement.newStock?:
+                            throw Exception("Stock change without property new stock")
                     break@loop
                 } else {
                     mStockMovements.add(stockMovement)

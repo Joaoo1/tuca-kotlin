@@ -7,6 +7,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -31,7 +32,8 @@ class ProductEditFragment : Fragment() {
         product = arguments?.let { ProductEditFragmentArgs.fromBundle(it).product }!!
 
         // Inflate the layout for this fragment
-        val binding = FragmentProductEditBinding.inflate(inflater,container,false)
+        val binding: FragmentProductEditBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_product_edit, container, false)
 
         // Setting up viewPager with tabLayout
         val sectionsPagerAdapter = context?.let {

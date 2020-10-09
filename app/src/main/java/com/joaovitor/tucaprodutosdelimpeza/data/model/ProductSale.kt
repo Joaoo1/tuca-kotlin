@@ -23,7 +23,9 @@ data class ProductSale(
     @get:PropertyName("add_date")
     val addDate: Date? = Date(),
 
-    val parentId: String = ""
+    val parentId: String = "",
+
+    var isPostAdded: Boolean? = null
 ): Serializable {
     val total: String
         get() {

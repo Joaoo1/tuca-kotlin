@@ -52,7 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:text="@string/product_edit_save_product"
-            android:onClick="@{() -> viewModel.onClickSaveEditCadaster()}"
+            android:onClick="@{() -> viewModel.onClickSaveEditRegister()}"
             app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

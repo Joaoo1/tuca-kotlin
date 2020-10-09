@@ -11,4 +11,5 @@ data class StockMovement(
     var isStockChange: Boolean? = null,
     var seller: String = "",
     var quantity: Int = product?.quantity?: 0,
+    var newStock: Int? = 0,
     var date: Date = Date()) : Serializable
