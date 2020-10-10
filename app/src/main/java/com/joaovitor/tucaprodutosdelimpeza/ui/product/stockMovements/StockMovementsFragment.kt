@@ -34,11 +34,11 @@ class StockMovementsFragment : Fragment() {
         //Setting up the recycler view
         val adapter = StockMovementsListAdapter()
         binding.stockHistoriesList.adapter = adapter
-        viewModel.stockHistories.observe(viewLifecycleOwner, Observer {
+        viewModel.stockHistories.observe(viewLifecycleOwner) {
             it?.let {
-                adapter.listData = it
+                adapter.submitStockMovementsList(it)
             }
-        })
+        }
 
         viewModel.error.observe(viewLifecycleOwner) {
             it?.let {

@@ -31,25 +31,31 @@ class StockRepository {
     suspend fun addStockMovement(products: List<ProductSale>, saleId: Int): Result<Any> {
           return try {
               for (product in products) {
-                  val stockMovement = StockMovement(
-                      quantity = product.quantity,saleId = saleId,isStockChange = false )
+                  if(product.manageStock) {
+                      val productDocRef = FirebaseFirestore
+                          .getInstance()
+                          .collection(Firestore.COL_PRODUCTS)
+                          .document(product.parentId)
 
-                  /* Register the stock movement */
-                  val productDocRef = FirebaseFirestore
-                      .getInstance()
-                      .collection(Firestore.COL_PRODUCTS)
-                      .document(product.parentId)
-                  productDocRef.collection(Firestore.SUBCOL_STOCK_MOVEMENT).add(stockMovement)
-                      .addOnFailureListener {
-                          FirebaseCrashlytics.getInstance().recordException(it)
-                      }
+                      /* Update the current stock */
+                      val currentStock = (productDocRef.get().await().get("currentStock") as Long).toInt()
+                      productDocRef.update(Firestore.PRODUCT_CURRENT_STOCK, currentStock - product.quantity)
+                          .addOnFailureListener {
+                              FirebaseCrashlytics.getInstance().recordException(it)
+                          }
 
-                  /* Update the current stock */
-                  val currentStock = (productDocRef.get().await().get("currentStock") as Long).toInt()
-                  productDocRef.update(Firestore.PRODUCT_CURRENT_STOCK, currentStock - product.quantity)
-                      .addOnFailureListener {
-                          FirebaseCrashlytics.getInstance().recordException(it)
-                      }
+                      /* Register the stock movement */
+                      val stockMovement = StockMovement(
+                          quantity = product.quantity,
+                          saleId = saleId,
+                          isStockChange = false,
+                          newStock = currentStock - product.quantity )
+
+                      productDocRef.collection(Firestore.SUBCOL_STOCK_MOVEMENT).add(stockMovement)
+                          .addOnFailureListener {
+                              FirebaseCrashlytics.getInstance().recordException(it)
+                          }
+                  }
               }
 
               Result.Success(null)
@@ -79,7 +85,11 @@ class StockRepository {
 
             productDocRef.collection(Firestore.SUBCOL_STOCK_MOVEMENT).add(stockMovement)
 
-            productDocRef.update(Firestore.PRODUCT_CURRENT_STOCK, newStock)
+            val data: MutableMap<String, Any?> = HashMap()
+            data[Firestore.PRODUCT_CURRENT_STOCK] = newStock
+            data[Firestore.PRODUCT_MANAGE_STOCK] = true
+
+            productDocRef.update(data)
 
             Result.Success(null)
         }catch (e: Exception) {
@@ -153,6 +163,30 @@ class StockRepository {
                 .await()
 
             Result.Success(currentStock)
+        } catch (e: Exception) {
+            Result.Error(e)
+        }
+    }
+
+    suspend fun disableManageStock(productId: String): Result<Any> {
+        return try {
+            val productDocRef = FirebaseFirestore
+                .getInstance()
+                .collection(Firestore.COL_PRODUCTS)
+                .document(productId)
+
+            val data: MutableMap<String, Any?> = HashMap()
+            data[Firestore.PRODUCT_CURRENT_STOCK] = 0
+            data[Firestore.PRODUCT_MANAGE_STOCK] = false
+
+            productDocRef.update(data).await()
+
+            val resultStocks = productDocRef.collection(Firestore.SUBCOL_STOCK_MOVEMENT).get().await()
+            resultStocks.forEach {
+                it.reference.delete()
+            }
+
+            Result.Success(null)
         } catch (e: Exception) {
             Result.Error(e)
         }

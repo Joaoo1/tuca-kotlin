@@ -21,15 +21,14 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="8dp"
-            android:src="@{stockMovement.isStockChange ? @drawable/ic_arrow_up_green : @drawable/ic_arrow_down_red}"
+            android:src="@drawable/ic_arrow_down_red"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.60"
-            />
+            app:layout_constraintVertical_bias="0.60" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_sale"
+            android:id="@+id/sale"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
@@ -37,43 +36,29 @@
             android:text="@{String.format(@string/stock_history_sale, String.valueOf(stockMovement.saleId))}"
             android:textColor="@android:color/black"
             android:textSize="16sp"
-            android:visibility="@{stockMovement.isStockChange ? View.GONE : View.VISIBLE}"
-            app:layout_constraintBottom_toTopOf="@+id/tv_date"
             app:layout_constraintStart_toEndOf="@+id/image"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/materialTextView3"
+            android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:text="Estoque adicionado"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:visibility="@{stockMovement.isStockChange ? View.VISIBLE : View.INVISIBLE}"
-            app:layout_constraintStart_toEndOf="@+id/tv_sale"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
+            android:layout_marginTop="4dp"
             app:formatDateToString="@{stockMovement.date}"
-            app:layout_constraintBottom_toTopOf="@+id/tv_client"
-            app:layout_constraintStart_toEndOf="@+id/image"
-            app:layout_constraintTop_toBottomOf="@+id/materialTextView3" />
+            app:layout_constraintTop_toBottomOf="@+id/sale"
+            app:layout_constraintBottom_toTopOf="@+id/stock"
+            app:layout_constraintStart_toEndOf="@+id/image" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_client"
+            android:id="@+id/stock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:text="@{stockMovement.seller}"
-            android:visibility="@{stockMovement.isStockChange() ? View.VISIBLE : View.GONE}"
+            android:layout_marginTop="4dp"
+            android:text="@{String.format(@string/list_tem_stock_current_stock, stockMovement.newStock)}"
             app:layout_constraintStart_toEndOf="@+id/image"
-            app:layout_constraintTop_toBottomOf="@+id/tv_date" />
+            app:layout_constraintTop_toBottomOf="@+id/date" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="0dp"
@@ -85,7 +70,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/image"
-            app:layout_constraintTop_toBottomOf="@+id/tv_client" />
+            app:layout_constraintTop_toBottomOf="@+id/stock" />
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"

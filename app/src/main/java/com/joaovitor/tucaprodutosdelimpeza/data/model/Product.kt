@@ -28,7 +28,13 @@ data class Product(
 ): Serializable {
 
     fun toProductSale(quantity: Int): ProductSale{
-        return ProductSale(this.name, this.price, quantity, Date(), this.id)
+        return ProductSale(
+            name = this.name,
+            price = this.price,
+            quantity = quantity,
+            addDate = Date(),
+            parentId = this.id,
+            manageStock = this.manageStock)
     }
 
     fun bind(product: Product) {

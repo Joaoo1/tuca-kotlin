@@ -219,7 +219,13 @@
     <string name="menu_item_edit_client_title">Editar cliente</string>
     <string name="menu_item_call_client_title">Ligar para o cliente</string>
     <string name="sale_info_label_payment_day">Data do pagamento</string>
+
     <string name="list_item_product_sold_label_quantity">Qtd vendida:</string>
+    <string name="list_tem_stock_label_stock_added">Estoque adicionado</string>
+    <string name="list_tem_stock_label_stock_removed">Estoque removido:</string>
+    <string name="list_tem_stock_current_stock">Estoque após venda: %1$d</string>
+    <string name="list_tem_stock_change_current_stock">Estoque após alteração: %1$d</string>
+
     <string name="client_info_not_found_sales">Não há compras feitas</string>
     <string name="client_info_headline_sales">Compras feitas pelo cliente</string>
     <string name="client_info_label_city">Cidade</string>

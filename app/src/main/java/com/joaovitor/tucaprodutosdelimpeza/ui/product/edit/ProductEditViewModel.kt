@@ -61,11 +61,16 @@ class ProductEditViewModel(private var mProduct: Product) : BaseViewModel() {
     fun onClickSaveEditStock(seller: String = "") {
         GlobalScope.launch {
             _showProgressBar.postValue(true)
-            val result = StockRepository().addStockChange(
-                product.value!!.id,
-                seller,
-                product.value!!.stock
-            )
+
+            val result = if(!product.value!!.manageStock) {
+                StockRepository().disableManageStock(product.value!!.id)
+            } else {
+                StockRepository().addStockChange(
+                    product.value!!.id,
+                    seller,
+                    product.value!!.stock
+                )
+            }
 
             if (result is Result.Success) {
                 _info.postValue("Estoque salvo com sucesso")

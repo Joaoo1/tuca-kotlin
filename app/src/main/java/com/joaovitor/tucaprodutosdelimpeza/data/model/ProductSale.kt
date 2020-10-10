@@ -25,7 +25,9 @@ data class ProductSale(
 
     val parentId: String = "",
 
-    var isPostAdded: Boolean? = null
+    var isPostAdded: Boolean? = null,
+
+    var manageStock: Boolean = false
 ): Serializable {
     val total: String
         get() {
