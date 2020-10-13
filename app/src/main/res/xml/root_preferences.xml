@@ -17,4 +17,12 @@
 
     </androidx.preference.PreferenceCategory>
 
+    <androidx.preference.PreferenceCategory app:title="@string/settings_help_header">
+
+        <androidx.preference.Preference
+            app:key="about"
+            app:title="@string/settings_about_title" />
+
+    </androidx.preference.PreferenceCategory>
+
 </androidx.preference.PreferenceScreen>

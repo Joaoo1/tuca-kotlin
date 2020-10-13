@@ -53,7 +53,7 @@ data class Sale(
     @PropertyName("valorPago")
     @get:PropertyName("valorPago")
     @set:PropertyName("valorPago")
-    var paidValue: String = "",
+    var paidValue: String = "0.00",
 
     @PropertyName("pago")
     @get:PropertyName("pago")
@@ -73,27 +73,27 @@ data class Sale(
     @PropertyName("enderecoCliente")
     @get:PropertyName("enderecoCliente")
     @set:PropertyName("enderecoCliente")
-    var clientStreet: String = "",
+    var clientStreet: String? = "",
 
     @PropertyName("bairroCliente")
     @get:PropertyName("bairroCliente")
     @set:PropertyName("bairroCliente")
-    var clientNeighborhood: String = "",
+    var clientNeighborhood: String? = "",
 
     @PropertyName("cidadeCliente")
     @get:PropertyName("cidadeCliente")
     @set:PropertyName("cidadeCliente")
-    var clientCity: String = "",
+    var clientCity: String? = "",
 
     @PropertyName("complementoCliente")
     @get:PropertyName("complementoCliente")
     @set:PropertyName("complementoCliente")
-    var clientComplement: String = "",
+    var clientComplement: String? = "",
 
     @PropertyName("telefone")
     @get:PropertyName("telefone")
     @set:PropertyName("telefone")
-    var clientPhone: String = "",
+    var clientPhone: String? = "",
 
     var products: MutableList<ProductSale> = mutableListOf(),
     var seller: String = "",

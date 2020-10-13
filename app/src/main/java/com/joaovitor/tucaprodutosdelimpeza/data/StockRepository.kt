@@ -97,7 +97,7 @@ class StockRepository {
         }
     }
 
-    suspend fun deleteStockMovement(saleId: Int): Result<Any> {
+/*    suspend fun deleteStockMovement(saleId: Int): Result<Any> {
         return try {
             val productsRef = ProductRepository().getProductsRefs()
 
@@ -124,7 +124,7 @@ class StockRepository {
         } catch (e: Exception) {
             Result.Error(e)
         }
-    }
+    }*/
 
     suspend fun recalculateStock(productId: String): Result<Int> {
         return try {

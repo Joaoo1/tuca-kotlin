@@ -13,13 +13,13 @@ import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textview.MaterialTextView
+import com.google.firebase.firestore.FirebaseFirestore
 import com.joaovitor.tucaprodutosdelimpeza.data.LoginRepository
 import com.joaovitor.tucaprodutosdelimpeza.ui.home.HomeFragment
 import com.joaovitor.tucaprodutosdelimpeza.ui.login.LoginActivity
@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onBackPressed() {
-        val currentFragment = navHostFragment.childFragmentManager.fragments[0]
+        /*val currentFragment = navHostFragment.childFragmentManager.fragments[0]
 
         if(currentFragment is HomeFragment) {
             val currentTime = System.currentTimeMillis()
@@ -132,6 +132,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         } else {
             super.onBackPressed()
+        }*/
+        FirebaseFirestore.getInstance().collection("vendas").get().addOnCompleteListener {
+            if(it.isSuccessful) {
+                val result = it.result
+                if (result != null) {
+                    for (doc in result) {
+                        if(doc.get("valorAReceber") == null) doc.reference.update("valorAReceber", "0.00")
+                    }
+                }
+            }
         }
     }
 

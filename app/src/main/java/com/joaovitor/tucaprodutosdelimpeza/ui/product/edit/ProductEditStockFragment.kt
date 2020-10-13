@@ -15,12 +15,6 @@ import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentProductEditStockBinding
 import com.joaovitor.tucaprodutosdelimpeza.util.toast
 import com.joaovitor.tucaprodutosdelimpeza.util.toastLong
-import kotlinx.android.synthetic.main.app_bar_main.view.*
-
-/**
- * FIXME: Two way data binding not working properly in this fragment
- * UI not updating when LiveData changes
- */
 
 class ProductEditStockFragment(val product: Product) : Fragment() {
 

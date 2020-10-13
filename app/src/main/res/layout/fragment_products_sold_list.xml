@@ -7,6 +7,7 @@
         android:id="@+id/products_sold_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:scrollbars="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:context=".ui.reports.productsSold.ProductsSoldListFragment"
         tools:listitem="@layout/list_item_product_sold" />

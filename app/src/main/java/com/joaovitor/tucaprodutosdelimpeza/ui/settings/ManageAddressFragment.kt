@@ -7,9 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.joaovitor.tucaprodutosdelimpeza.MainActivity
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Address
 import com.joaovitor.tucaprodutosdelimpeza.data.model.AddressType
@@ -79,6 +79,14 @@ class ManageAddressFragment : Fragment() {
             it?.let {
                 context?.toast(it)
                 viewModel.doneShowInfo()
+            }
+        }
+
+        viewModel.showProgressBar.observe(viewLifecycleOwner) {
+            if(it) {
+                (activity as MainActivity).showProgressBar()
+            } else {
+                (activity as MainActivity).hideProgressBar()
             }
         }
 

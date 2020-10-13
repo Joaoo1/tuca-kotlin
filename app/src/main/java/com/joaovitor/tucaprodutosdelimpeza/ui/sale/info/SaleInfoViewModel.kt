@@ -162,7 +162,7 @@ class SaleInfoViewModel : BaseViewModel() {
     private fun printReceipt(context: Context) {
         val printerFunctions = PrinterFunctions(context)
 
-        if (printerFunctions.btAdapter.isEnabled) {
+        if (printerFunctions.btAdapter != null && printerFunctions.btAdapter.isEnabled) {
             printerFunctions.printReceipt(_sale.value!!, _sale.value!!.products)
         } else {
             _requestBluetoothOn.value = true

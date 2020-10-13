@@ -17,11 +17,11 @@ import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentSaleInfoBinding
 import com.joaovitor.tucaprodutosdelimpeza.util.toast
 import com.joaovitor.tucaprodutosdelimpeza.util.toastLong
 
-const val REQUEST_ENABLED_BT = 1
-
 class SaleInfoFragment : Fragment() {
 
-
+    companion object {
+        const val REQUEST_ENABLED_BT = 1
+    }
 
     private lateinit var sale: Sale
     private lateinit var viewModel: SaleInfoViewModel

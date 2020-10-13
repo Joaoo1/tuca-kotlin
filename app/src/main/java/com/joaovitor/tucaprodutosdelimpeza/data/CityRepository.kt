@@ -46,7 +46,7 @@ class CityRepository {
         return try {
             colRef.document(city.id).update(Firestore.CITY_NAME, newName).await()
 
-            /**
+            /*
              * City successful edited
              * Now update the city field on sales
              */
@@ -73,12 +73,9 @@ class CityRepository {
         }
     }
 
-    //FIXME: Implement crashlytics
     private suspend fun updateSaleCities(cityName: String, newName: String): Result<Any> {
         return try {
-            /**
-             * Update all Clients records that are registered in the updated city
-             */
+            /* Update all Clients records that are registered in the updated city */
             val resultUpdate = ClientRepository().updateClientsByCity(cityName, newName)
 
             //Check if clients update was successfully
@@ -86,9 +83,7 @@ class CityRepository {
                 return resultUpdate
             }
 
-            /**
-             * Update city field for all clients sales records
-             */
+            /* Update city field for all clients sales records */
             for (client in (resultUpdate as Result.Success).data!!) {
                 val querySnapshotSales = colSalesRef
                     .whereEqualTo(Firestore.SALE_CLIENT_ID, client.id).get().await()

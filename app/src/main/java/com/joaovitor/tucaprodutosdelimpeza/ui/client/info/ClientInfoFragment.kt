@@ -13,9 +13,11 @@ import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentClientInfoBinding
 import com.joaovitor.tucaprodutosdelimpeza.util.toast
 import com.joaovitor.tucaprodutosdelimpeza.util.toastLong
 
-const val REQUEST_CALL_PERMISSION = 1
-
 class ClientInfoFragment : Fragment() {
+
+    companion object {
+        const val REQUEST_CALL_PERMISSION = 1
+    }
 
     private lateinit var viewModel: ClientInfoViewModel
     private lateinit var listAdapter: ClientSalesAdapter

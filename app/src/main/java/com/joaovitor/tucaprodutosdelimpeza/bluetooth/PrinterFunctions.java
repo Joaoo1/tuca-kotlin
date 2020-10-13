@@ -4,7 +4,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.widget.Toast;
-
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -13,7 +12,6 @@ import com.joaovitor.tucaprodutosdelimpeza.data.model.ProductSale;
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Client;
 import com.joaovitor.tucaprodutosdelimpeza.data.util.Firestore;
 import com.joaovitor.tucaprodutosdelimpeza.util.FormatDate;
-
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Locale;
@@ -79,7 +77,8 @@ public class PrinterFunctions {
                             mPrinter.setSmallSize();
                             mPrinter.setAlign(BluetoothPrinter.ALIGN_RIGHT);
                             mPrinter.printText(products.get(i).getQuantity() +
-                                "x                     RS" + calculateTotalProduct(products.get(i).getPrice(), products.get(i).getQuantity()));
+
+                                "x R$"+products.get(i).getPrice()+"              R$" + calculateTotalProduct(products.get(i).getPrice(), products.get(i).getQuantity()));
                         }
                         mPrinter.setNormal();
                         mPrinter.printLine();

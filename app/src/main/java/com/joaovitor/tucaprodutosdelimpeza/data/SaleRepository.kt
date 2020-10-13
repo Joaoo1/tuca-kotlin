@@ -7,17 +7,15 @@ import com.google.firebase.firestore.Query
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Address
 import com.joaovitor.tucaprodutosdelimpeza.data.model.AddressType
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
-import com.joaovitor.tucaprodutosdelimpeza.data.model.StockMovement
 import com.joaovitor.tucaprodutosdelimpeza.data.util.DateRange
 import com.joaovitor.tucaprodutosdelimpeza.data.util.Firestore
 import com.joaovitor.tucaprodutosdelimpeza.util.FormatDate
 import kotlinx.coroutines.tasks.await
-import java.lang.Exception
 
 class SaleRepository {
 
     private var colRef: CollectionReference =
-        FirebaseFirestore.getInstance().collection("vendas")
+        FirebaseFirestore.getInstance().collection(Firestore.COL_SALES)
 
     private var saleIdRepository = SaleIdRepository()
 
@@ -36,7 +34,7 @@ class SaleRepository {
             }
 
             Result.Success(sales)
-        } catch (e: Exception) {
+        } catch (e: FirebaseFirestoreException) {
             Result.Error(e)
         }
     }
@@ -83,7 +81,7 @@ class SaleRepository {
             }
 
             Result.Success(sales)
-        } catch (e: Exception) {
+        } catch (e: FirebaseFirestoreException) {
             Result.Error(e)
         }
     }
@@ -103,7 +101,7 @@ class SaleRepository {
             }
 
             Result.Success(clientSales)
-        } catch (e: Exception) {
+        } catch (e: FirebaseFirestoreException) {
             Result.Error(e)
         }
     }
@@ -124,7 +122,7 @@ class SaleRepository {
             }
 
             Result.Success(sales)
-        } catch (e: Exception) {
+        } catch (e: FirebaseFirestoreException) {
             Result.Error(e)
         }
     }
@@ -162,7 +160,7 @@ class SaleRepository {
         return try {
             colRef.document(sale.id).delete().await()
             //TODO: Test this function
-            StockRepository().deleteStockMovement(sale.saleId)
+            //StockRepository().deleteStockMovement(sale.saleId)
 
             Result.Success(null)
         }catch (e: FirebaseFirestoreException) {

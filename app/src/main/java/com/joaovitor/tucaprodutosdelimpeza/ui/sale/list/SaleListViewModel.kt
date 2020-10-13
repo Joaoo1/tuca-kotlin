@@ -16,7 +16,9 @@ class SaleListViewModel : BaseViewModel() {
 
     private var saleRepository: SaleRepository = SaleRepository()
 
-    var sales:MutableLiveData<List<Sale>> = MutableLiveData(emptyList())
+    private var _sales:MutableLiveData<List<Sale>> = MutableLiveData(listOf())
+
+    var sales:MutableLiveData<List<Sale>> = MutableLiveData(listOf())
 
     private var _filteredSales: MutableLiveData<List<Sale>> = MutableLiveData(emptyList())
     val filteredSales: LiveData<List<Sale>>
@@ -134,8 +136,9 @@ class SaleListViewModel : BaseViewModel() {
             val resultSales = saleRepository.getSales()
             if (resultSales is Result.Success) {
                sales.postValue(resultSales.data)
+               _sales.postValue(resultSales.data)
             } else {
-                _error.postValue("Erro ao carregar vendas!")
+                _error.postValue((resultSales as Result.Error).exception.toString())
             }
 
             _showProgressBar.postValue(false)
@@ -173,7 +176,7 @@ class SaleListViewModel : BaseViewModel() {
 
     fun filterSales(query: String) {
         if(query.isEmpty()) {
-            _filteredSales.postValue(sales.value!!)
+            sales.postValue(_sales.value!!)
             _showProgressBar.postValue(false)
         } else {
             _showProgressBar.postValue(true)
@@ -181,7 +184,7 @@ class SaleListViewModel : BaseViewModel() {
             GlobalScope.launch {
                 val result = SaleRepository().getSalesById(Integer.parseInt(query))
                 if(result is Result.Success) {
-                    _filteredSales.postValue(result.data)
+                    sales.postValue(result.data)
                 }
                 _showProgressBar.postValue(false)
             }

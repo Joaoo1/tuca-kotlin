@@ -51,11 +51,6 @@ class SaleListFragment : Fragment() {
                 listAdapter.saleList = it
             }
         }
-        viewModel.filteredSales.observe(viewLifecycleOwner) {
-            it?.let {
-                listAdapter.saleList = it
-            }
-        }
 
         //Navigate to Add Fragment listener
         viewModel.navigateToAdd.observe(viewLifecycleOwner) { navigate ->

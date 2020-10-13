@@ -79,7 +79,7 @@ class SaleAddViewModel(application: Application) : AndroidViewModel(application)
     val dialogBluetoothOff: LiveData<Boolean>
         get() = _dialogBluetoothOff
 
-    private var _showProgressBar = MutableLiveData<Boolean>(false)
+    private var _showProgressBar = MutableLiveData(false)
     val showProgressBar: LiveData<Boolean>
         get() = _showProgressBar
 
@@ -179,7 +179,7 @@ class SaleAddViewModel(application: Application) : AndroidViewModel(application)
                     launch {
                         val stockResult = StockRepository().addStockMovement(mSale.products, mSale.saleId)
                         if(stockResult is Result.Error) {
-                            _error.postValue("Erro ao dar baixa no estoque!")
+                            _error.postValue(stockResult.exception.toString())
                         }
                     }
 
@@ -216,10 +216,7 @@ class SaleAddViewModel(application: Application) : AndroidViewModel(application)
         val productsName = allProducts.value?.map{ it.name }
         val productIndex = productsName?.indexOf(text)
         if(productIndex != null && productIndex >= 0) {
-            val productSale = convertProductToProductSale(
-                _allProducts.value!![productIndex],
-                quantity.value!!
-            )
+            val productSale = _allProducts.value!![productIndex].toProductSale(quantity.value!!)
 
             /**
              * Check if the new product is already on list
@@ -239,10 +236,6 @@ class SaleAddViewModel(application: Application) : AndroidViewModel(application)
         } else {
             _error.postValue("Produto não encontrado")
         }
-    }
-
-    private fun convertProductToProductSale(product: Product, quantity: Int): ProductSale {
-        return ProductSale(product.name, product.price, quantity, Date(), product.id)
     }
 
     /** Check the input fields */
@@ -334,10 +327,10 @@ class SaleAddViewModel(application: Application) : AndroidViewModel(application)
     private fun printReceipt() {
         val printerFunctions = PrinterFunctions(getApplication())
 
-        if (printerFunctions.btAdapter?.isEnabled!!) {
+        if (printerFunctions.btAdapter != null && printerFunctions.btAdapter.isEnabled) {
             printerFunctions.printReceipt(sale, sale.products)
         } else {
-            _dialogBluetoothOff.value = true
+            _dialogBluetoothOff.postValue(true)
         }
     }
 

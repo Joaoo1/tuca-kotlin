@@ -15,6 +15,7 @@
                     android:layout_height="match_parent"
                     android:paddingBottom="@dimen/recycler_padding_bottom"
                     android:clipToPadding="false"
+                    android:scrollbars="vertical"
                     tools:context=".ui.product.list.ProductListFragment"
                     tools:listitem="@layout/list_item_product"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>

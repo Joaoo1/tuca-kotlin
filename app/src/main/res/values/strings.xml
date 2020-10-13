@@ -233,4 +233,11 @@
     <string name="client_info_label_complement">Complemento</string>
     <string name="client_info_label_street">Rua</string>
     <string name="client_info_label_phone">Telefone</string>
+    <string name="settings_help_header">Ajuda</string>
+    <string name="settings_about_title">Sobre</string>
+    <string name="developer">João Vitor da Silva</string>
+    <string name="year">2020</string>
+    <string name="version">1.0.0</string>
+    <string name="company_name">Tuca Produtos de Limpeza</string>
+    <string name="made_by">Desenvolvido por</string>
 </resources>

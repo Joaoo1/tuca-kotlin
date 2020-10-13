@@ -19,9 +19,13 @@ import com.joaovitor.tucaprodutosdelimpeza.util.toast
 import com.joaovitor.tucaprodutosdelimpeza.util.toastLong
 import java.util.Calendar
 
-const val REQUEST_ENABLED_BT = 1
+
 
 class SaleAddFragment : Fragment() {
+
+    companion object {
+        const val REQUEST_ENABLED_BT = 1
+    }
 
     private lateinit var viewModel: SaleAddViewModel
     private lateinit var listAdapter: SaleProductsAdapter

@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.joaovitor.tucaprodutosdelimpeza.MainActivity
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentFilteredSalesBinding
-import com.joaovitor.tucaprodutosdelimpeza.ui.sale.info.REQUEST_ENABLED_BT
+import com.joaovitor.tucaprodutosdelimpeza.ui.sale.info.SaleInfoFragment.Companion.REQUEST_ENABLED_BT
 import com.joaovitor.tucaprodutosdelimpeza.ui.sale.list.SaleListAdapter
 import com.joaovitor.tucaprodutosdelimpeza.util.toast
 import com.joaovitor.tucaprodutosdelimpeza.util.toastLong

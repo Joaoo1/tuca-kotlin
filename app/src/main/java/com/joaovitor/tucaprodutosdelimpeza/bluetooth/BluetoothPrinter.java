@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.UUID;
 
+@SuppressWarnings("ALL")
 public class BluetoothPrinter {
 
     static final int ALIGN_CENTER = 100;
@@ -93,32 +94,11 @@ public class BluetoothPrinter {
         printUnicode(NEW_LINE);
     }
 
-  /* public int addNewLines(int count) {
-        int success = 0;
-        for (int i = 0; i < count; i++) {
-            if (addNewLine()) success++;
-        }
-        return success;
-    }
-
-     public boolean printImage(Bitmap bitmap) {
-        byte[] command = decodeBitmap(bitmap);
-        return printUnicode(command);
-    }
-
-     public void setLineSpacing(int lineSpacing) {
-        byte[] cmd = new byte[]{0x1B, 0x33, (byte) lineSpacing};
-        printUnicode(cmd);
-    }*/
-
     void setAlign(int alignType) {
         byte[] d;
         switch (alignType) {
             case ALIGN_CENTER:
                 d = ESC_ALIGN_CENTER;
-                break;
-            case ALIGN_LEFT:
-                d = ESC_ALIGN_LEFT;
                 break;
             case ALIGN_RIGHT:
                 d = ESC_ALIGN_RIGHT;
@@ -201,6 +181,7 @@ public class BluetoothPrinter {
                 try {
                     socket = (BluetoothSocket) device.getClass().getMethod("createRfcommSocket", int.class)
                             .invoke(device, 1);
+                    assert socket != null;
                     socket.connect();
                 } catch (Exception e2) {
                     connected = false;

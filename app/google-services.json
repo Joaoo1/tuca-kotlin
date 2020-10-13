@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "745130882128",
-    "firebase_url": "https://my-project-for-developments.firebaseio.com",
-    "project_id": "my-project-for-developments",
-    "storage_bucket": "my-project-for-developments.appspot.com"
+    "project_number": "1027115693701",
+    "firebase_url": "https://mkm-produtos-de-limpeza.firebaseio.com",
+    "project_id": "mkm-produtos-de-limpeza",
+    "storage_bucket": "mkm-produtos-de-limpeza.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:745130882128:android:3ce4dedc70e5a1bbd34d55",
+        "mobilesdk_app_id": "1:1027115693701:android:452197250f7bd02c625bec",
         "android_client_info": {
           "package_name": "com.joaovitor.tucaprodutosdelimpeza"
         }
       },
       "oauth_client": [
         {
-          "client_id": "745130882128-3dvjveesbpsb4fg1j2p55vo6v14l0bda.apps.googleusercontent.com",
+          "client_id": "1027115693701-qeqt59eetnc6fr6hbg3pp0qv2udvn6uk.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBFI4b50zv8EWGNFNljNqtZIi2MNuNXQwU"
+          "current_key": "AIzaSyBKo58jLTXJKmW3fB508n9DURnWOrEtU6E"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "745130882128-3dvjveesbpsb4fg1j2p55vo6v14l0bda.apps.googleusercontent.com",
+              "client_id": "1027115693701-qeqt59eetnc6fr6hbg3pp0qv2udvn6uk.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
@@ -37,72 +37,43 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:745130882128:android:478c6e38e2ad952fd34d55",
+        "mobilesdk_app_id": "1:1027115693701:android:2caafa9e45ebafae",
         "android_client_info": {
           "package_name": "com.mkm"
         }
       },
       "oauth_client": [
         {
-          "client_id": "745130882128-mur3to29m2k21sqp1jqun9tqc16fehp5.apps.googleusercontent.com",
+          "client_id": "1027115693701-8qtbhastrjcr9m6igtbjnd41ve7s3uuf.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.mkm",
-            "certificate_hash": "e607a6c6a02991972ad111ba01a379ecf572f154"
+            "certificate_hash": "461869706e1c4239b3e1ab1f4f47aceb7522823c"
           }
         },
         {
-          "client_id": "745130882128-3dvjveesbpsb4fg1j2p55vo6v14l0bda.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBFI4b50zv8EWGNFNljNqtZIi2MNuNXQwU"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "745130882128-3dvjveesbpsb4fg1j2p55vo6v14l0bda.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:745130882128:android:22bda5e07adb6d3ad34d55",
-        "android_client_info": {
-          "package_name": "com.mkm.test"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "745130882128-86t71v0h795kqqd0ebh5s0usdo42s12d.apps.googleusercontent.com",
+          "client_id": "1027115693701-3uvs28nemumalju1dpjnreq3egep19uk.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.mkm.test",
-            "certificate_hash": "e607a6c6a02991972ad111ba01a379ecf572f154"
+            "package_name": "com.mkm",
+            "certificate_hash": "ce19b1d54cce73373e2bb130a08f3ba9d78e024c"
           }
         },
         {
-          "client_id": "745130882128-3dvjveesbpsb4fg1j2p55vo6v14l0bda.apps.googleusercontent.com",
+          "client_id": "1027115693701-qeqt59eetnc6fr6hbg3pp0qv2udvn6uk.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBFI4b50zv8EWGNFNljNqtZIi2MNuNXQwU"
+          "current_key": "AIzaSyBKo58jLTXJKmW3fB508n9DURnWOrEtU6E"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "745130882128-3dvjveesbpsb4fg1j2p55vo6v14l0bda.apps.googleusercontent.com",
+              "client_id": "1027115693701-qeqt59eetnc6fr6hbg3pp0qv2udvn6uk.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

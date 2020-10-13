@@ -10,6 +10,7 @@
         android:layout_height="match_parent"
         android:paddingBottom="@dimen/recycler_padding_bottom"
         android:clipToPadding="false"
+        android:scrollbars="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:context=".ui.sale.selectClient.SelectClientFragment"
         tools:listitem="@layout/list_item_client"/>
