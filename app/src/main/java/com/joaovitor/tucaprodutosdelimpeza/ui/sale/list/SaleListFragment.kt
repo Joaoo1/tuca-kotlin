@@ -13,6 +13,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.navigation.NavigationView
 import com.joaovitor.tucaprodutosdelimpeza.MainActivity
 import com.joaovitor.tucaprodutosdelimpeza.R
@@ -45,6 +46,7 @@ class SaleListFragment : Fragment() {
         listAdapter = SaleListAdapter(SaleListAdapter.SaleListener { sale ->
             viewModel.onSaleClicked(sale)
         })
+        listAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         binding.salesList.adapter = listAdapter
         viewModel.sales.observe(viewLifecycleOwner) {
             it?.let {

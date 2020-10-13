@@ -1,12 +1,8 @@
 package com.joaovitor.tucaprodutosdelimpeza.data.model
 
 import com.google.firebase.firestore.PropertyName
-import com.google.firebase.firestore.IgnoreExtraProperties
 import com.google.firebase.firestore.Exclude
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreException
 import com.joaovitor.tucaprodutosdelimpeza.data.util.Firestore
-import kotlinx.coroutines.tasks.await
 import java.io.Serializable
 import java.math.BigDecimal
 import java.util.Date
@@ -48,7 +44,7 @@ data class Sale(
     @PropertyName("valorAReceber")
     @get:PropertyName("valorAReceber")
     @set:PropertyName("valorAReceber")
-    var toReceive: String = "",
+    var toReceive: String? = "0.00",
 
     @PropertyName("valorPago")
     @get:PropertyName("valorPago")

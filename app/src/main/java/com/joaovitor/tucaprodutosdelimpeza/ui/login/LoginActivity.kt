@@ -21,11 +21,6 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if(getSharedPreferences("login", Context.MODE_PRIVATE).getBoolean("isLoggedIn", false)) {
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
-        }
-
         //Create the View Model
         val viewModelFactory = LoginViewModelFactory(application)
         val viewModel = ViewModelProvider(this, viewModelFactory)

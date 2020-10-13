@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.navigation.NavigationView
 import com.joaovitor.tucaprodutosdelimpeza.MainActivity
 import com.joaovitor.tucaprodutosdelimpeza.R
@@ -47,7 +48,9 @@ class ClientListFragment : Fragment() {
         //Setting up the recycler view
         listAdapter = ClientListAdapter(ClientListAdapter.ClientListener { client ->
             viewModel.onClientClicked(client) })
+        listAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         binding.clientsList.adapter = listAdapter
+
         viewModel.clients.observe(viewLifecycleOwner) {
             it?.let {
                 listAdapter.submitClientList(it)

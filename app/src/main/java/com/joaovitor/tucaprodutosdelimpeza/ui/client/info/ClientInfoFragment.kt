@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentClientInfoBinding
 import com.joaovitor.tucaprodutosdelimpeza.util.toast
@@ -63,6 +64,7 @@ class ClientInfoFragment : Fragment() {
                 LinearLayoutManager.VERTICAL
             )
         )
+        listAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         binding.clientSales.adapter = listAdapter
         viewModel.clientSales.observe(viewLifecycleOwner) {
             it?.let {
