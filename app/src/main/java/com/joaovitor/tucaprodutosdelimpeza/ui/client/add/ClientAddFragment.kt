@@ -6,7 +6,6 @@ import android.view.*
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -25,7 +24,6 @@ class ClientAddFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-
 
         // Inflate the layout for this fragment
         val binding: FragmentClientAddBinding = DataBindingUtil.inflate(
@@ -126,5 +124,4 @@ class ClientAddFragment : Fragment() {
                 .show()
         }
     }
-
 }

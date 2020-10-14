@@ -153,6 +153,5 @@ class SaleEditProductsFragment : Fragment() {
                 viewModel.allProducts.removeObservers(viewLifecycleOwner)
             }
         }
-
     }
 }

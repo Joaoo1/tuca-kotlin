@@ -1,10 +1,12 @@
 package com.joaovitor.tucaprodutosdelimpeza.data.model
 
 import com.google.firebase.firestore.Exclude
+import com.google.firebase.firestore.IgnoreExtraProperties
 import com.google.firebase.firestore.PropertyName
 import java.io.Serializable
 import java.util.*
 
+@IgnoreExtraProperties
 data class Product(
 
     @get:Exclude var id: String = "",

@@ -1,7 +1,6 @@
 package com.joaovitor.tucaprodutosdelimpeza.ui.product.stockMovements
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.joaovitor.tucaprodutosdelimpeza.data.Result
 import com.joaovitor.tucaprodutosdelimpeza.data.StockRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.model.StockMovement

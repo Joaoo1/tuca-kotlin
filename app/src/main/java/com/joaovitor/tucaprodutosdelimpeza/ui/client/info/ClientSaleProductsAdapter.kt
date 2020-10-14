@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.joaovitor.tucaprodutosdelimpeza.data.model.ProductSale
 
 class ClientSaleProductsAdapter(products: List<ProductSale>) : RecyclerView.Adapter<ClientSaleProductsAdapter.ViewHolder>() {
-    var listData = listOf<ProductSale>()
+    private var listData = listOf<ProductSale>()
 
     init {
         listData = products

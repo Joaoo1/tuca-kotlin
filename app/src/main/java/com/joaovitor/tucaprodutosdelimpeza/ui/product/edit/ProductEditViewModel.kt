@@ -145,5 +145,4 @@ class ProductEditViewModel(private var mProduct: Product) : BaseViewModel() {
         _navigateToStockMovements.value = null
         _openDialogDelete.value = false
     }
-
 }

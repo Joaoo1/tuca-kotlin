@@ -12,12 +12,12 @@ import java.lang.Exception
 class ClientRepository {
 
     private var colRef: CollectionReference =
-        FirebaseFirestore.getInstance().collection("clientes")
+        FirebaseFirestore.getInstance().collection(Firestore.COL_CLIENTS)
 
     suspend fun getClients(): Result<List<Client>> {
         return try {
             val querySnapshot = colRef
-                .orderBy("nome", Query.Direction.ASCENDING)
+                .orderBy(Firestore.CLIENT_NAME, Query.Direction.ASCENDING)
                 .get()
                 .await()
 
@@ -151,8 +151,6 @@ class ClientRepository {
         } catch (e: Exception) {
             Result.Error(e)
         }
-
-
-
     }
+
 }

@@ -38,7 +38,7 @@ class StockRepository {
                           .document(product.parentId)
 
                       /* Update the current stock */
-                      val currentStock = (productDocRef.get().await().get("currentStock") as Long).toInt()
+                      val currentStock = (productDocRef.get().await().get(Firestore.PRODUCT_CURRENT_STOCK) as Long).toInt()
                       productDocRef.update(Firestore.PRODUCT_CURRENT_STOCK, currentStock - product.quantity)
                           .addOnFailureListener {
                               FirebaseCrashlytics.getInstance().recordException(it)

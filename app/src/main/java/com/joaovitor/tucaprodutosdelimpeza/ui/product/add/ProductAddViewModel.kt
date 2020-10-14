@@ -28,6 +28,7 @@ class ProductAddViewModel: BaseViewModel() {
     fun doneNavigating() {
         _navigateBack.value = false
     }
+
     private fun addProduct() {
         if(product.value!!.name.isEmpty() || product.value!!.price.isEmpty()) {
             _error.postValue("Os campos não podem ficar em branco")
@@ -54,5 +55,4 @@ class ProductAddViewModel: BaseViewModel() {
             _showProgressBar.postValue(false)
         }
     }
-
 }

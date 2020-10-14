@@ -3,8 +3,6 @@ package com.joaovitor.tucaprodutosdelimpeza.data
 import android.content.Context
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreException
-import com.joaovitor.tucaprodutosdelimpeza.data.model.LoggedInUser
 import com.joaovitor.tucaprodutosdelimpeza.data.model.User
 import com.joaovitor.tucaprodutosdelimpeza.data.util.Firestore
 import kotlinx.coroutines.tasks.await
@@ -47,7 +45,7 @@ class LoginRepository(private val context: Context) {
     }
 
     private suspend fun getDisplayName(userUid: String): String? {
-        return FirebaseFirestore.getInstance().collection("users").document(userUid)
+        return FirebaseFirestore.getInstance().collection(Firestore.COL_USERS).document(userUid)
             .get().await().getString(Firestore.USER_NAME)
     }
 

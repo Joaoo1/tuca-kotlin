@@ -7,7 +7,6 @@
 
     <color name="colorGray">#656565</color>
     <color name="colorCardHome">@color/primaryDarkColor</color>
-
     <color name="inputIcon">#BBBABA</color>
     <color name="colorGreenStock">#149A31</color>
     <color name="colorHeaderClientAddEdit">#A9838383</color>

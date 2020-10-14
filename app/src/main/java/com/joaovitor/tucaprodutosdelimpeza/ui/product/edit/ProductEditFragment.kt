@@ -97,7 +97,7 @@ class ProductEditFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
-            R.id.delete_product -> viewModel.onClickDeleteProduct()
+            R.id.action_delete -> viewModel.onClickDeleteProduct()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -113,5 +113,4 @@ class ProductEditFragment : Fragment() {
                 .show()
         }
     }
-
 }

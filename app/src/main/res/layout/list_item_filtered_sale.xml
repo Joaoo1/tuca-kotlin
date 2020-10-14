@@ -24,7 +24,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginStart="16dp"
-            android:background="@drawable/list_item_background"
+            android:background="@drawable/background_list_item_icon"
             android:padding="10dp"
             android:src="@drawable/ic_sale_white"
             app:layout_constraintBottom_toBottomOf="parent"

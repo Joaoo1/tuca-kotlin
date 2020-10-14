@@ -178,5 +178,4 @@ class ReportSalesViewModel : BaseViewModel() {
             _error.value = "Ocorreu um erro ao ativar bluetooth!"
         }
     }
-
 }

@@ -26,7 +26,7 @@ class StockMovementsListAdapter : ListAdapter<StockMovementsListAdapter.DataItem
 
     fun submitStockMovementsList(list: List<StockMovement>){
         adapterScope.launch {
-            val formattedList = mutableListOf<StockMovementsListAdapter.DataItem>()
+            val formattedList = mutableListOf<DataItem>()
 
             list.forEach {
                 if(it.isStockChange!!) {

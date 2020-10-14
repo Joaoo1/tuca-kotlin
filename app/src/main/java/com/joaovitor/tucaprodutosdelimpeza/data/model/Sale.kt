@@ -2,11 +2,13 @@ package com.joaovitor.tucaprodutosdelimpeza.data.model
 
 import com.google.firebase.firestore.PropertyName
 import com.google.firebase.firestore.Exclude
+import com.google.firebase.firestore.IgnoreExtraProperties
 import com.joaovitor.tucaprodutosdelimpeza.data.util.Firestore
 import java.io.Serializable
 import java.math.BigDecimal
 import java.util.Date
 
+@IgnoreExtraProperties
 data class Sale(
 
     @get:Exclude var id: String = "",

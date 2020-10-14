@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Client
 import com.joaovitor.tucaprodutosdelimpeza.databinding.ListItemSelectClientBinding
-import java.util.*
+import java.util.Locale
 import kotlin.collections.ArrayList
 
 class SelectClientListAdapter(val clickListener: SelectClientListener)

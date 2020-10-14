@@ -5,17 +5,17 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.joaovitor.tucaprodutosdelimpeza.data.model.GeneralInfo
 import com.joaovitor.tucaprodutosdelimpeza.data.util.Firestore
 import kotlinx.coroutines.tasks.await
-import java.util.*
+import java.util.Date
 
 class DashboardRepository {
 
     private var colRef: CollectionReference =
-        FirebaseFirestore.getInstance().collection("dashboard")
+        FirebaseFirestore.getInstance().collection(Firestore.COL_DASHBOARD)
 
     suspend fun getGeneralInfo(): Result<GeneralInfo> {
         return try {
             val querySnapshot = colRef
-                .document("generalInfo")
+                .document(Firestore.DOC_GENERAL_INFO)
                 .get()
                 .await()
             val info = querySnapshot.toObject(GeneralInfo::class.java)
@@ -43,11 +43,12 @@ class DashboardRepository {
 
             generalInfo.updatedAt = Date()
 
-            colRef.document("generalInfo").set(generalInfo)
+            colRef.document(Firestore.COL_DASHBOARD).set(generalInfo)
 
             Result.Success(generalInfo)
         }catch (e: Exception) {
             Result.Error(e)
         }
     }
+
 }

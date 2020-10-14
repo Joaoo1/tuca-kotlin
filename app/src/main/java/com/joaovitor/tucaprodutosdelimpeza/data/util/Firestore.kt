@@ -21,22 +21,19 @@ object Firestore {
     const val SALE_NET_VALUE = "valorLiquido"
     const val SALE_PAID_VALUE = "valorPago"
     const val SALE_TO_RECEIVE = "valorAReceber"
-    const val SALE_SELLER = "seller"
-    const val SALE_SELLER_UID = "sellerUid"
 
     const val COL_PRODUCTS = "produtos"
     const val PRODUCT_CURRENT_STOCK = "currentStock"
+    const val PRODUCT_NAME = "nome"
     const val PRODUCT_MANAGE_STOCK = "manageStock"
     const val SUBCOL_STOCK_MOVEMENT = "stockMovement"
     const val STOCK_MOVEMENT_DATE = "date"
 
     const val COL_CLIENTS = "clientes"
     const val CLIENT_NAME = "nome"
-    const val CLIENT_PHONE = "telefone"
     const val CLIENT_STREET = "endereco"
     const val CLIENT_NEIGHBORHOOD = "bairro"
     const val CLIENT_CITY = "cidade"
-    const val CLIENT_COMPLEMENT = "complemento"
 
     const val COL_STREETS = "ruas"
     const val STREET_NAME = "nome_rua"
@@ -48,5 +45,10 @@ object Firestore {
     const val CITY_NAME = "nome_cidade"
 
     const val COL_SALES_ID = "id_vendas"
+
+    const val COL_DASHBOARD = "dashboard"
+    const val DOC_GENERAL_INFO = "generalInfo"
+
+    const val COL_USERS = "users"
 
 }

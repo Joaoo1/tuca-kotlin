@@ -12,7 +12,7 @@
 
         <androidx.preference.SwitchPreferenceCompat
             app:key="sync"
-            app:title="Ativar modo escuro"
+            app:title="@string/settings_night_mode_title"
             app:enabled="false"/>
 
     </androidx.preference.PreferenceCategory>

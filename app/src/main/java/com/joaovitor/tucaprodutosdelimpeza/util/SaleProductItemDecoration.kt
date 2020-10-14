@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.joaovitor.tucaprodutosdelimpeza.R
 
-
 class SaleProductItemDecoration(ctx: Context) :
     ItemDecoration() {
     private val paint: Paint = Paint()

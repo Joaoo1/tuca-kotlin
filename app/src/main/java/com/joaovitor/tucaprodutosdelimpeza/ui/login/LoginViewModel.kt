@@ -72,5 +72,4 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     fun doneShowError() {
         _error.value = false
     }
-
 }

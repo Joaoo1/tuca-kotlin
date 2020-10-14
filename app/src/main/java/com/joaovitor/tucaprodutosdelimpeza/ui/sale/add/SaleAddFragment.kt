@@ -19,8 +19,6 @@ import com.joaovitor.tucaprodutosdelimpeza.util.toast
 import com.joaovitor.tucaprodutosdelimpeza.util.toastLong
 import java.util.Calendar
 
-
-
 class SaleAddFragment : Fragment() {
 
     companion object {

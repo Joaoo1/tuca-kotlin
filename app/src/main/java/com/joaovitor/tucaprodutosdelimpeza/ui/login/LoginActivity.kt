@@ -1,8 +1,6 @@
 package com.joaovitor.tucaprodutosdelimpeza.ui.login
 
-import android.content.Context
 import android.content.Intent
-import androidx.lifecycle.Observer
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
@@ -14,7 +12,6 @@ import com.joaovitor.tucaprodutosdelimpeza.MainActivity
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.databinding.ActivityLoginBinding
 import com.joaovitor.tucaprodutosdelimpeza.util.toastLong
-import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
 

@@ -159,7 +159,6 @@ class SaleRepository {
     suspend fun deleteSale(sale: Sale): Result<Void>{
         return try {
             colRef.document(sale.id).delete().await()
-            //TODO: Test this function
             //StockRepository().deleteStockMovement(sale.saleId)
 
             Result.Success(null)

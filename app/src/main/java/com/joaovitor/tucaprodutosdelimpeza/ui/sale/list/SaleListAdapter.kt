@@ -2,21 +2,11 @@ package com.joaovitor.tucaprodutosdelimpeza.ui.sale.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Filter
-import android.widget.Filterable
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.joaovitor.tucaprodutosdelimpeza.data.Result
-import com.joaovitor.tucaprodutosdelimpeza.data.SaleRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
 import com.joaovitor.tucaprodutosdelimpeza.databinding.ListItemSaleBinding
-import com.joaovitor.tucaprodutosdelimpeza.ui.client.list.ClientListAdapter
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import java.util.*
-import kotlin.collections.ArrayList
-
 
 class SaleListAdapter(val clickListener: SaleListener) :
     ListAdapter<Sale, RecyclerView.ViewHolder>(SaleDiffCallback()) {

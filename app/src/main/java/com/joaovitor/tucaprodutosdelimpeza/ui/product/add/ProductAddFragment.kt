@@ -4,14 +4,10 @@ import android.os.Bundle
 import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentProductAddBinding
-import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentProductEditStockBinding
-import com.joaovitor.tucaprodutosdelimpeza.ui.client.add.ClientAddViewModel
-import com.joaovitor.tucaprodutosdelimpeza.ui.client.add.ClientAddViewModelFactory
 import com.joaovitor.tucaprodutosdelimpeza.util.toast
 import com.joaovitor.tucaprodutosdelimpeza.util.toastLong
 

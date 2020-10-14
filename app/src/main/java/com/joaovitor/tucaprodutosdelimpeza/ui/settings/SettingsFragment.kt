@@ -29,6 +29,5 @@ class SettingsFragment : PreferenceFragmentCompat() {
             aboutDialog.show()
             true
         }
-
     }
 }

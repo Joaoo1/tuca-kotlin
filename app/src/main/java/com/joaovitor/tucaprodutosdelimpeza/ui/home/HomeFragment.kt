@@ -27,45 +27,45 @@ class HomeFragment : Fragment() {
         val viewModelFactory = HomeViewModelFactory()
         val viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
 
-        viewModel.navigateToProduct.observe(viewLifecycleOwner, Observer {
+        viewModel.navigateToProduct.observe(viewLifecycleOwner) {
             if (it) {
                 this.findNavController()
                     .navigate(HomeFragmentDirections.actionHomeFragmentToProductListFragment())
                 viewModel.doneNavigating()
             }
-        })
+        }
 
-        viewModel.navigateToClient.observe(viewLifecycleOwner, Observer {
+        viewModel.navigateToClient.observe(viewLifecycleOwner) {
             if(it) {
                 this.findNavController()
                     .navigate(HomeFragmentDirections.actionHomeFragmentToClientListFragment())
                 viewModel.doneNavigating()
             }
-        })
+        }
 
-        viewModel.navigateToSale.observe(viewLifecycleOwner, Observer {
+        viewModel.navigateToSale.observe(viewLifecycleOwner) {
             if(it) {
                 this.findNavController()
                     .navigate(HomeFragmentDirections.actionHomeFragmentToSalesListFragment())
                 viewModel.doneNavigating()
             }
-        })
+        }
 
-        viewModel.navigateToAddSale.observe(viewLifecycleOwner, Observer {
+        viewModel.navigateToAddSale.observe(viewLifecycleOwner) {
             if(it) {
                 this.findNavController()
                     .navigate(HomeFragmentDirections.actionHomeFragmentToSalesAddFragment())
                 viewModel.doneNavigating()
             }
-        })
+        }
 
-        viewModel.navigateToReport.observe(viewLifecycleOwner, Observer {
+        viewModel.navigateToReport.observe(viewLifecycleOwner) {
             if(it) {
                 this.findNavController()
                     .navigate(HomeFragmentDirections.actionHomeFragmentToReportsFragment())
                 viewModel.doneNavigating()
             }
-        })
+        }
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner

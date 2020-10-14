@@ -3,9 +3,7 @@ package com.joaovitor.tucaprodutosdelimpeza.ui.sale.list
 import android.app.Dialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.databinding.DialogFilterSalesBinding
 import com.joaovitor.tucaprodutosdelimpeza.util.DatePickerBuilder
@@ -27,21 +25,21 @@ class FilterSalesDialog(parentFragment: Fragment): Dialog(parentFragment.require
         binding.viewModel = viewModel
 
         binding.startDate.setOnClickListener {
-            DatePickerBuilder.buildDatePicker(MaterialPickerOnPositiveButtonClickListener {
+            DatePickerBuilder.buildDatePicker({
                 viewModel.selectedStartDate(it)
             }).show(parentFragment.parentFragmentManager, this.toString())
         }
 
         binding.endDate.setOnClickListener {
-            DatePickerBuilder.buildDatePicker(MaterialPickerOnPositiveButtonClickListener {
+            DatePickerBuilder.buildDatePicker({
                 viewModel.selectedEndDate(it)
             }).show(parentFragment.parentFragmentManager, this.toString())
         }
 
-        viewModel.closeFiltersDialog.observe(parentFragment, Observer {
+        viewModel.closeFiltersDialog.observe(parentFragment) {
             if(it) {
                 dismiss()
             }
-        })
+        }
     }
 }
