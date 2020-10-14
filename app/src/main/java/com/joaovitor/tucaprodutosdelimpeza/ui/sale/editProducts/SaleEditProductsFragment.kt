@@ -55,8 +55,8 @@ class SaleEditProductsFragment : Fragment() {
         //Swipe to delete
         val swipeHandler = object : SwipeToDeleteCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                viewModel.removeProductAt(viewHolder.adapterPosition)
-                adapter.notifyItemRemoved(viewHolder.adapterPosition)
+                viewModel.removeProductAt(viewHolder.absoluteAdapterPosition)
+                adapter.notifyItemRemoved(viewHolder.absoluteAdapterPosition)
             }
         }
         val itemTouchHelper = ItemTouchHelper(swipeHandler)

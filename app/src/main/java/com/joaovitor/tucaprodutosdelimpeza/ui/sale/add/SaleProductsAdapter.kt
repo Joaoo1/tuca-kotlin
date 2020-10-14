@@ -60,7 +60,7 @@ class SaleProductsAdapter(val clickListener: DeleteProductSaleListener) : ListAd
         fun bind(productItem: DataItem.ProductItem, clickListener: DeleteProductSaleListener) {
             binding.product = productItem.product
             binding.deleteItem.setOnClickListener{
-                clickListener.onClick(adapterPosition)
+                clickListener.onClick(bindingAdapterPosition)
             }
         }
 
