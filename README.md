@@ -8,7 +8,7 @@
    </a>
 
   <a href="https://github.com/Joaoo1/proffy/commits/master">
-    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/Joaoo1/tuca-kotlin?color=8257F5">
+    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/Joaoo1/tuca-kotlin?color=069BFF">
   </a> 
   <img alt="License" src="https://img.shields.io/badge/license-MIT-069BFF">
 </h2>
@@ -18,22 +18,22 @@
 <br>
 
 ## Projeto
-Nesta pandemia que vivemos no momento, as aulas online são uma das principais saídas para quem quer continuar estudando de casa, foi pensando nisso que nasceu o projeto Proffy.
-É uma plataforma que possibilita a conexão entre o professor e o aluno, onde o professor disponibiliza quais matérias e em quais horários ele poderá lecionar para 
-todos os alunos que estão a procura de seu "Proffy" ideal.
+Este é um projeto onde o objetivo é auxiliar no gerenciamento de uma empresa de venda de produtos de limpeza. Algumas de suas funcionalidades: 
+
+* Realize o controle de suas vendas de forma fácil.
+* Acompanhe a quantidade de vendas realizadas nos últimos meses.
+* Busque de forma facilitada quais as vendas feitas para determinado cliente.
+* Faça o controle de estoque dos seus produtos, com histórico de baixas.
 
 ## Tecnologias usadas
 Algumas das tecnologias utilizadas neste projeto:
 
-* **[Typescript](https://www.typescriptlang.org)**
+* **[Kotlin](https://kotlinlang.org)**
 
-* **[React](https://pt-br.reactjs.org)**
+* **[Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html)**
 
-* **[React Native](https://reactnative.dev)**
+* **[Firebase](https://firebase.google.com)**
 
-* **[Expo](https://expo.io/)**
-
-* **[Express](https://expressjs.com/pt-br)**
 
 ## Demo
 
@@ -41,7 +41,7 @@ Algumas das tecnologias utilizadas neste projeto:
 <div align="center">
    <img src="./demo/login-page.png" width="250px">
    <img src="./demo/home-page.png" width="250px">
-   <img src="./demo/clients-page" width="250px">
-   <img src="./demo/client-info-page" width="250px">
-   <img src="./demo/navigation-drawer" width="250px">
+   <img src="./demo/clients-page.png" width="250px">
+   <img src="./demo/client-info-page.png" width="250px">
+   <img src="./demo/navigation-drawer.png" width="250px">
 </div>
