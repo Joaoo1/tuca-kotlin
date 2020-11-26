@@ -1,6 +1,7 @@
 package com.joaovitor.tucaprodutosdelimpeza.data
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.joaovitor.tucaprodutosdelimpeza.data.model.AddressType
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Neighborhood
 import com.joaovitor.tucaprodutosdelimpeza.data.util.Firestore
 import kotlinx.coroutines.tasks.await
@@ -21,6 +22,7 @@ class NeighborhoodRepository {
             for (doc in querySnapshot){
                 val neighborhood = doc.toObject(Neighborhood::class.java)
                 neighborhood.id = doc.id
+                neighborhood.type = AddressType.NEIGHBORHOOD
                 neighborhoods.add(neighborhood)
             }
 

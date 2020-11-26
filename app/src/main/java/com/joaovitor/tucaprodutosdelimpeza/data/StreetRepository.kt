@@ -2,6 +2,7 @@ package com.joaovitor.tucaprodutosdelimpeza.data
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
+import com.joaovitor.tucaprodutosdelimpeza.data.model.AddressType
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Street
 import com.joaovitor.tucaprodutosdelimpeza.data.util.Firestore
 import kotlinx.coroutines.tasks.await
@@ -22,6 +23,7 @@ class StreetRepository {
             for (doc in querySnapshot){
                 val street = doc.toObject(Street::class.java)
                 street.id = doc.id
+                street.type = AddressType.STREET
                 streets.add(street)
             }
 

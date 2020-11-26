@@ -1,6 +1,7 @@
 package com.joaovitor.tucaprodutosdelimpeza.data
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.joaovitor.tucaprodutosdelimpeza.data.model.AddressType
 import com.joaovitor.tucaprodutosdelimpeza.data.model.City
 import com.joaovitor.tucaprodutosdelimpeza.data.util.Firestore
 import kotlinx.coroutines.tasks.await
@@ -21,6 +22,7 @@ class CityRepository {
             for (doc in querySnapshot) {
                 val city = doc.toObject(City::class.java)
                 city.id = doc.id
+                city.type = AddressType.CITY
                 cities.add(city)
             }
 

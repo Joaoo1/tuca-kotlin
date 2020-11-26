@@ -51,6 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginTop="8dp"
+            android:nestedScrollingEnabled="false"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toStartOf="@+id/finish_sale"
             app:layout_constraintHorizontal_bias="0.0"

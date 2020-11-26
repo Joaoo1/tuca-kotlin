@@ -66,6 +66,7 @@ class ClientInfoFragment : Fragment() {
         )
         listAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         binding.clientSales.adapter = listAdapter
+
         viewModel.clientSales.observe(viewLifecycleOwner) {
             it?.let {
                 listAdapter.listData = it
