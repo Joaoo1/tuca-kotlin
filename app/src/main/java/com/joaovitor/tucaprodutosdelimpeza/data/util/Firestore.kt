@@ -45,6 +45,7 @@ object Firestore {
     const val CITY_NAME = "nome_cidade"
 
     const val COL_SALES_ID = "id_vendas"
+    const val SALES_ID_ID = "id_vendas"
 
     const val COL_DASHBOARD = "dashboard"
     const val DOC_GENERAL_INFO = "generalInfo"

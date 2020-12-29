@@ -43,7 +43,7 @@ class DashboardRepository {
 
             generalInfo.updatedAt = Date()
 
-            colRef.document(Firestore.COL_DASHBOARD).set(generalInfo)
+            colRef.document(Firestore.DOC_GENERAL_INFO).set(generalInfo)
 
             Result.Success(generalInfo)
         }catch (e: Exception) {

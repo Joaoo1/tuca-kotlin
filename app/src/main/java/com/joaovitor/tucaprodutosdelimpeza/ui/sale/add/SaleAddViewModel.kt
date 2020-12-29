@@ -83,6 +83,8 @@ class SaleAddViewModel(application: Application) : AndroidViewModel(application)
     val showProgressBar: LiveData<Boolean>
         get() = _showProgressBar
 
+    private var isSavingSale = false
+
     var sale = Sale()
 
     init {
@@ -128,6 +130,7 @@ class SaleAddViewModel(application: Application) : AndroidViewModel(application)
 
     private fun addSale() {
         if(validateFields()){
+            isSavingSale = true
             _showProgressBar.postValue(true)
 
             val mSale = Sale()
@@ -194,6 +197,7 @@ class SaleAddViewModel(application: Application) : AndroidViewModel(application)
                 }
 
                 _showProgressBar.postValue(false)
+                isSavingSale = false
             }
         }
     }
@@ -292,6 +296,10 @@ class SaleAddViewModel(application: Application) : AndroidViewModel(application)
 
     /* User actions */
     fun onClickAddSale() {
+        if(isSavingSale) {
+            return
+        }
+
         addSale()
     }
 

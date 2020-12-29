@@ -20,14 +20,16 @@ class SaleIdRepository {
     /** Get an available ID for sale */
     suspend fun generateSaleId(): Result<Int> {
         return try {
-            val result  = colRef.get().await()
+            val result  = colRef.whereGreaterThan(Firestore.SALES_ID_ID, 10000).get().await()
 
             // Get all used IDs
             val ids: List<Int> = result.map { (it.get("venda") as Long).toInt() }
 
             //Return an available ID
-            for(i in 1000..99999) {
-                if(!ids.contains(i)) return Result.Success(i)
+            val a = true
+            while(a) {
+                val id = (10000..99999).random()
+                if (!ids.contains(id)) return Result.Success(id)
             }
 
             //No available ID found
