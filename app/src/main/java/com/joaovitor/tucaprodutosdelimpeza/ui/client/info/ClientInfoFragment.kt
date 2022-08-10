@@ -27,7 +27,7 @@ class ClientInfoFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         setHasOptionsMenu(true)
         val client = ClientInfoFragmentArgs.fromBundle(requireArguments()).client
 

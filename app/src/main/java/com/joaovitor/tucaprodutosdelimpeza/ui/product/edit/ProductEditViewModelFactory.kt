@@ -6,7 +6,7 @@ import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
 
 class ProductEditViewModelFactory(val product: Product) : ViewModelProvider.Factory {
     @Suppress("unchecked_cast")
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(ProductEditViewModel::class.java)) {
             return ProductEditViewModel(product) as T
         }

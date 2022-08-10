@@ -6,7 +6,7 @@ import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
 
 class SaleInfoViewModelFactory : ViewModelProvider.Factory {
     @Suppress("unchecked_cast")
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(SaleInfoViewModel::class.java)) {
             return SaleInfoViewModel() as T
         }

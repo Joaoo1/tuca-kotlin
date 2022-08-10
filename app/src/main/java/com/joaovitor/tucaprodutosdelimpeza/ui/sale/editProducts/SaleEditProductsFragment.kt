@@ -33,7 +33,7 @@ class SaleEditProductsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         setHasOptionsMenu(true)
         sale = SaleEditProductsFragmentArgs.fromBundle(requireArguments()).sale
 

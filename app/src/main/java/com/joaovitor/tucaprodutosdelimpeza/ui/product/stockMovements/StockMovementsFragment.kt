@@ -19,7 +19,7 @@ class StockMovementsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val productId = StockMovementsFragmentArgs.fromBundle(requireArguments()).productId
 
         // Inflate the layout for this fragment

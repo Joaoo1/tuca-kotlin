@@ -30,7 +30,7 @@ class ProductListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         setHasOptionsMenu(true)
 
         // Inflate the layout for this fragment

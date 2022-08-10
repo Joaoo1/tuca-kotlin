@@ -17,7 +17,7 @@ class ReportsFragment: Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         val binding: FragmentReportsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_reports, container, false)
 

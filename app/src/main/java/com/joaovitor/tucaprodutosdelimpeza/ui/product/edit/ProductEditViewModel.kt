@@ -7,6 +7,7 @@ import com.joaovitor.tucaprodutosdelimpeza.data.Result
 import com.joaovitor.tucaprodutosdelimpeza.data.StockRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
 import com.joaovitor.tucaprodutosdelimpeza.ui.BaseViewModel
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
@@ -28,6 +29,7 @@ class ProductEditViewModel(private var mProduct: Product) : BaseViewModel() {
     val openDialogDelete: LiveData<Boolean>
         get() = _openDialogDelete
 
+    @OptIn(DelicateCoroutinesApi::class)
     fun onClickSaveEditRegister() {
         if(product.value!!.name.isEmpty() || product.value!!.price.isEmpty()) {
             _error.postValue("Os campos não podem ficar em branco")

@@ -20,7 +20,7 @@ class ReportProductsSoldFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         val binding: FragmentReportProductsSoldBinding =  DataBindingUtil.inflate(
             inflater,R.layout.fragment_report_products_sold, container, false)

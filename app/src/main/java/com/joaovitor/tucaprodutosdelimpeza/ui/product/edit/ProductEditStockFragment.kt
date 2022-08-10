@@ -21,7 +21,7 @@ class ProductEditStockFragment(val product: Product) : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         val binding: FragmentProductEditStockBinding = DataBindingUtil.inflate(
             inflater,

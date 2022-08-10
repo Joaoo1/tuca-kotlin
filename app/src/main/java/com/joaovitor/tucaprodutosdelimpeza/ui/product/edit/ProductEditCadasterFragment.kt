@@ -19,7 +19,7 @@ class ProductEditCadasterFragment(val product: Product) : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         val binding: FragmentProductEditCadasterBinding = DataBindingUtil.inflate(
             inflater,
@@ -30,8 +30,7 @@ class ProductEditCadasterFragment(val product: Product) : Fragment() {
 
         // Create the viewModel
         val viewModelFactory = ProductEditViewModelFactory(product)
-        val viewModel = ViewModelProvider(this,viewModelFactory)
-            .get(ProductEditViewModel::class.java)
+        val viewModel = ViewModelProvider(this,viewModelFactory)[ProductEditViewModel::class.java]
 
         viewModel.error.observe(viewLifecycleOwner) {
             it?.let {
@@ -55,7 +54,7 @@ class ProductEditCadasterFragment(val product: Product) : Fragment() {
             }
         }
 
-        binding.viewModel = viewModel
+        binding.viewmodel = viewModel
 
         return binding.root
     }

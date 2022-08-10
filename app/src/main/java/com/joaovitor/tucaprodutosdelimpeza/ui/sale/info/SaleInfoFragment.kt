@@ -1,9 +1,15 @@
 package com.joaovitor.tucaprodutosdelimpeza.ui.sale.info
 
+import android.Manifest.permission.BLUETOOTH_CONNECT
+import android.Manifest.permission.BLUETOOTH_SCAN
+import android.app.Activity.RESULT_OK
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.*
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -29,7 +35,7 @@ class SaleInfoFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         setHasOptionsMenu(true)
         sale = arguments?.let { SaleInfoFragmentArgs.fromBundle(it).sale }!!
         activity?.title = String.format(
@@ -93,8 +99,14 @@ class SaleInfoFragment : Fragment() {
 
         viewModel.requestBluetoothOn.observe(viewLifecycleOwner) {
             if(it) {
-                val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-                startActivityForResult(enableBtIntent, REQUEST_ENABLED_BT)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    requestMultiplePermissions.launch(arrayOf(
+                        BLUETOOTH_SCAN, BLUETOOTH_CONNECT))
+                }
+                else{
+                    val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+                    requestBluetooth.launch(enableBtIntent)
+                }
             }
         }
 
@@ -125,6 +137,23 @@ class SaleInfoFragment : Fragment() {
 
         return binding.root
     }
+
+    /* Bluetooth permissions */
+    private val requestMultiplePermissions =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            permissions.entries.forEach {
+                Log.d("test_PERMISSIONS", "${it.key} = ${it.value}")
+            }
+        }
+
+    private var requestBluetooth = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) {
+            context?.toast("Imprima novamente.")
+        }else{
+            context?.toastLong("Permissão recusada. Não é possível imprimir.")
+        }
+    }
+    /* End bluetooth permissions */
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.sale_info, menu)
