@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/action_whatsapp"
+        android:icon="@drawable/ic_whatsapp_white"
+        android:title="@string/menu_item_send_client_whatsapp"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/action_call"
         android:title="@string/menu_item_call_client_title"
         android:icon="@drawable/ic_call_white"
