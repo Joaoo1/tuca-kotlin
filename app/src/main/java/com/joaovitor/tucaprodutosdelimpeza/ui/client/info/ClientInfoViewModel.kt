@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.net.Uri
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,6 +13,8 @@ import com.joaovitor.tucaprodutosdelimpeza.data.SaleRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Client
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
 import com.joaovitor.tucaprodutosdelimpeza.ui.BaseViewModel
+import com.joaovitor.tucaprodutosdelimpeza.util.Phone
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -33,6 +36,10 @@ class ClientInfoViewModel(mClient: Client) : BaseViewModel() {
     private var _callClientPhone = MutableLiveData<Intent?>()
     val callClientPhone: LiveData<Intent?>
         get() = _callClientPhone
+
+    private var _sendWhatsappClient = MutableLiveData<Intent?>()
+    val sendWhatsappClient: LiveData<Intent?>
+        get() = _sendWhatsappClient
 
     private var _requestCallPermission = MutableLiveData(false)
     val requestCallPermission: LiveData<Boolean>
@@ -63,6 +70,7 @@ class ClientInfoViewModel(mClient: Client) : BaseViewModel() {
         _navigateToEditClient.value = client.value
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     fun onClickFinishSale(sale: Sale) {
         if(sale.paid){
             _info.postValue("Está venda já está paga")
@@ -89,13 +97,13 @@ class ClientInfoViewModel(mClient: Client) : BaseViewModel() {
         _navigateToInfoSale.value = sale
     }
 
+    fun onClickWhatsapp() {
+        sendWhatsappClient()
+    }
+
     fun doneNavigating(){
         _navigateToEditClient.value = null
         _navigateToInfoSale.value = null
-    }
-
-    fun doneCalling() {
-        _callClientPhone.value = null
     }
 
     fun onClickCallClient(context: Context) {
@@ -104,6 +112,20 @@ class ClientInfoViewModel(mClient: Client) : BaseViewModel() {
         } else {
             _requestCallPermission.value = true
         }
+    }
+
+    /* Whatsapp functions */
+    private fun sendWhatsappClient() {
+        val clientPhoneNumber = client.value!!.phone.filter {it.isDigit()}
+        val phoneNumber = Phone.getFormattedNumberToWhatsapp(clientPhoneNumber)
+        val url = "https://api.whatsapp.com/send?phone=$phoneNumber"
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse(url)
+        _sendWhatsappClient.value = intent
+    }
+
+    fun doneSendWhatsapp() {
+        _sendWhatsappClient.value = null
     }
 
     /* Call phone functions */
@@ -126,9 +148,12 @@ class ClientInfoViewModel(mClient: Client) : BaseViewModel() {
 
     private fun callClientPhone() {
         val intent = Intent(Intent.ACTION_CALL)
-        val uri: String = client.value!!.phone.replace("-", "")
+        val uri: String = client.value!!.phone.filter {it.isDigit()}
         intent.data = Uri.parse("tel:$uri")
         _callClientPhone.value = intent
     }
 
+    fun doneCalling() {
+        _callClientPhone.value = null
+    }
 }
