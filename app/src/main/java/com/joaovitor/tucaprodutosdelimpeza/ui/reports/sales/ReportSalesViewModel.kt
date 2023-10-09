@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.joaovitor.tucaprodutosdelimpeza.R
+import com.joaovitor.tucaprodutosdelimpeza.bluetooth.Bluetooth
 import com.joaovitor.tucaprodutosdelimpeza.bluetooth.PrinterFunctions
 import com.joaovitor.tucaprodutosdelimpeza.data.CityRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.NeighborhoodRepository
@@ -23,7 +24,7 @@ import java.util.Date
 
 class ReportSalesViewModel : BaseViewModel() {
 
-    val filteredSales = MutableLiveData<List<Sale>>(listOf())
+    val filteredSales = MutableLiveData<List<Sale>?>(listOf())
 
     private val address = MutableLiveData<Address>()
     var startDate = MutableLiveData<Date>()
@@ -36,8 +37,8 @@ class ReportSalesViewModel : BaseViewModel() {
     val openDialog: LiveData<Boolean>
         get() = _openDialog
 
-    private var _openSelectAddressDialog = MutableLiveData<List<Address>>()
-    val openSelectAddressDialog: LiveData<List<Address>>
+    private var _openSelectAddressDialog = MutableLiveData<List<Address>?>()
+    val openSelectAddressDialog: MutableLiveData<List<Address>?>
         get() = _openSelectAddressDialog
 
     private var _openStartDatePicker = MutableLiveData<Boolean>()
@@ -163,8 +164,9 @@ class ReportSalesViewModel : BaseViewModel() {
     /* Printer */
     private fun printReport(context: Context) {
         val printerFunctions = PrinterFunctions(context)
+        val hasPermission = Bluetooth().checkPermission(context)
 
-        if (printerFunctions.btAdapter.isEnabled) {
+        if (hasPermission) {
             printerFunctions.printSalesList(filteredSales.value!!)
         } else {
             _requestBluetoothOn.value = true

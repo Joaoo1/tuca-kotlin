@@ -2,11 +2,13 @@ package com.joaovitor.tucaprodutosdelimpeza.ui.sale.add
 
 import android.app.Activity
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.joaovitor.tucaprodutosdelimpeza.R
+import com.joaovitor.tucaprodutosdelimpeza.bluetooth.Bluetooth
 import com.joaovitor.tucaprodutosdelimpeza.bluetooth.PrinterFunctions
 import com.joaovitor.tucaprodutosdelimpeza.data.*
 import com.joaovitor.tucaprodutosdelimpeza.data.model.*
@@ -19,27 +21,27 @@ class SaleAddViewModel(application: Application) : AndroidViewModel(application)
 
     private val saleRepository = SaleRepository()
 
-    private var _error = MutableLiveData<String>()
-    val error: LiveData<String>
+    private var _error = MutableLiveData<String?>()
+    val error: MutableLiveData<String?>
         get() = _error
 
-    private var _info = MutableLiveData<String>()
-    val info: LiveData<String>
+    private var _info = MutableLiveData<String?>()
+    val info: MutableLiveData<String?>
         get() = _info
 
     //All options available for AutoCompleteTextView
-    private val _allProducts =  MutableLiveData<List<Product>>()
-    val allProducts: MutableLiveData<List<Product>>
+    private val _allProducts =  MutableLiveData<List<Product>?>()
+    val allProducts: MutableLiveData<List<Product>?>
         get() = _allProducts
 
     //All clients for SelectClientFragment
-    private var _allClients = MutableLiveData<List<Client>>()
-    val allClients: LiveData<List<Client>>
+    private var _allClients = MutableLiveData<List<Client>?>()
+    val allClients: MutableLiveData<List<Client>?>
         get() = _allClients
 
     //Fields form
-    private var _client = MutableLiveData<Client>()
-    val client: LiveData<Client>
+    private var _client = MutableLiveData<Client?>()
+    val client: MutableLiveData<Client?>
         get() = _client
 
     private var _saleDate = MutableLiveData(Date())
@@ -59,9 +61,9 @@ class SaleAddViewModel(application: Application) : AndroidViewModel(application)
 
     val quantity = MutableLiveData(1)
 
-    val discount = MutableLiveData<String>()
+    val discount = MutableLiveData<String?>()
 
-    val paidValue = MutableLiveData<String>()
+    val paidValue = MutableLiveData<String?>()
 
     private var _navigateToSelectClient = MutableLiveData<Boolean>()
     val navigateToSelectClient: LiveData<Boolean>
@@ -128,7 +130,7 @@ class SaleAddViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    private fun addSale() {
+    private fun addSale(context: Context) {
         if(validateFields()){
             isSavingSale = true
             _showProgressBar.postValue(true)
@@ -188,7 +190,7 @@ class SaleAddViewModel(application: Application) : AndroidViewModel(application)
 
                     // Print the receipt for the sale
                     sale = mSale
-                    if(printReceipt.value!!) printReceipt()
+                    if(printReceipt.value!!) printReceipt(context)
 
                     //Clean the form fields
                     reset()
@@ -295,12 +297,12 @@ class SaleAddViewModel(application: Application) : AndroidViewModel(application)
     }
 
     /* User actions */
-    fun onClickAddSale() {
+    fun onClickAddSale(context: Context) {
         if(isSavingSale) {
             return
         }
 
-        addSale()
+        addSale(context)
     }
 
     fun onSaleDateSelect(millis: Long) {
@@ -332,19 +334,20 @@ class SaleAddViewModel(application: Application) : AndroidViewModel(application)
     }
 
     /* Printer */
-    private fun printReceipt() {
-        val printerFunctions = PrinterFunctions(getApplication())
+    private fun printReceipt(context: Context) {
+        val printerFunctions = PrinterFunctions(context)
+        val hasPermission = Bluetooth().checkPermission(context)
 
-        if (printerFunctions.btAdapter != null && printerFunctions.btAdapter.isEnabled) {
+        if (hasPermission) {
             printerFunctions.printReceipt(sale, sale.products)
         } else {
             _dialogBluetoothOff.postValue(true)
         }
     }
 
-    fun onBluetoothResult(resultCode: Int) {
+    fun onBluetoothResult(resultCode: Int, context: Context) {
         if(resultCode == Activity.RESULT_OK) {
-            printReceipt()
+            printReceipt(context)
         }else if (resultCode == Activity.RESULT_CANCELED) {
             _error.value = "Ocorreu um erro ao ativar bluetooth!"
         }

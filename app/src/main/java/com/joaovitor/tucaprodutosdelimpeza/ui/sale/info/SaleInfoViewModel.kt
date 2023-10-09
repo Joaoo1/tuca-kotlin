@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.joaovitor.tucaprodutosdelimpeza.bluetooth.Bluetooth
 import com.joaovitor.tucaprodutosdelimpeza.bluetooth.PrinterFunctions
 import com.joaovitor.tucaprodutosdelimpeza.data.Result
 import com.joaovitor.tucaprodutosdelimpeza.data.SaleRepository
@@ -161,8 +162,9 @@ class SaleInfoViewModel : BaseViewModel() {
     /* Printer */
     private fun printReceipt(context: Context) {
         val printerFunctions = PrinterFunctions(context)
+        val hasPermission = Bluetooth().checkPermission(context)
 
-        if (printerFunctions.btAdapter != null && printerFunctions.btAdapter.isEnabled) {
+        if (hasPermission) {
             printerFunctions.printReceipt(_sale.value!!, _sale.value!!.products)
         } else {
             _requestBluetoothOn.value = true
