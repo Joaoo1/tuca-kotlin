@@ -146,7 +146,7 @@ class SaleAddFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
-            R.id.action_save_sale -> viewModel.onClickAddSale()
+            R.id.action_save_sale -> viewModel.onClickAddSale(requireContext())
         }
         return super.onOptionsItemSelected(item)
     }
@@ -164,7 +164,7 @@ class SaleAddFragment : Fragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_ENABLED_BT) viewModel.onBluetoothResult(resultCode)
+        if (requestCode == REQUEST_ENABLED_BT) viewModel.onBluetoothResult(resultCode, requireContext())
         super.onActivityResult(requestCode, resultCode, data)
     }
 }
