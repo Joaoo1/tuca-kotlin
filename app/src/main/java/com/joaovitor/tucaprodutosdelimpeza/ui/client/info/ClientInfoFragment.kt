@@ -80,6 +80,13 @@ class ClientInfoFragment : Fragment() {
             }
         }
 
+        viewModel.sendWhatsappClient.observe(viewLifecycleOwner) {
+            it?.let {
+                startActivity(it)
+                viewModel.doneSendWhatsapp()
+            }
+        }
+
         viewModel.requestCallPermission.observe(viewLifecycleOwner) {
             if(it) {
                 requestPermissions(arrayOf(android.Manifest.permission.CALL_PHONE), REQUEST_CALL_PERMISSION)
@@ -115,6 +122,7 @@ class ClientInfoFragment : Fragment() {
         when (item.itemId) {
             R.id.action_edit -> viewModel.onClickEditClient()
             R.id.action_call -> viewModel.onClickCallClient(requireContext())
+            R.id.action_whatsapp -> viewModel.onClickWhatsapp();
         }
         return super.onOptionsItemSelected(item)
     }

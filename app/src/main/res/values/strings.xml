@@ -265,5 +265,6 @@
     <string name="quantity">%1$sx</string>
     <string name="sale_id">Venda %1$s</string>
     <string name="press_back_to_exit">Pressione voltar novamente para sair</string>
+    <string name="menu_item_send_client_whatsapp">Enviar mensagem no whatsapp</string>
 
 </resources>
