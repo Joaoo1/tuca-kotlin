@@ -1,9 +1,14 @@
 package com.joaovitor.tucaprodutosdelimpeza.bluetooth;
 
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.widget.Toast;
+
+import androidx.core.app.ActivityCompat;
+
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -12,6 +17,7 @@ import com.joaovitor.tucaprodutosdelimpeza.data.model.ProductSale;
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Client;
 import com.joaovitor.tucaprodutosdelimpeza.data.util.Firestore;
 import com.joaovitor.tucaprodutosdelimpeza.util.FormatDate;
+
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Locale;
@@ -25,24 +31,28 @@ public class PrinterFunctions {
     private final BluetoothAdapter btAdapter;
     private CollectionReference clientsRef;
 
-    public PrinterFunctions(Context context){
+    public PrinterFunctions(Context context) {
         mContext = context;
         btAdapter = BluetoothAdapter.getDefaultAdapter();
         clientsRef = FirebaseFirestore.getInstance().collection(Firestore.COL_CLIENTS);
     }
 
-    public BluetoothAdapter getBtAdapter(){
+    public BluetoothAdapter getBtAdapter() {
         return btAdapter;
     }
 
-    public void printReceipt(final Sale sale, final List<ProductSale> products){
-        try{
+    public void printReceipt(final Sale sale, final List<ProductSale> products) {
+        try {
+            if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+
             BluetoothDevice mBtDevice = btAdapter.getBondedDevices().iterator().next();
             mPrinter = new BluetoothPrinter(mBtDevice);
-            mPrinter.connectPrinter(new BluetoothPrinter.PrinterConnectListener(){
+            mPrinter.connectPrinter(new BluetoothPrinter.PrinterConnectListener() {
                 @Override
                 public void onConnected() {
-                    if(products != null && !products.isEmpty()){
+                    if (products != null && !products.isEmpty()) {
                         mPrinter.setAlign(BluetoothPrinter.ALIGN_CENTER);
                         mPrinter.setBold(true);
                         mPrinter.setBigSize();
@@ -57,8 +67,8 @@ public class PrinterFunctions {
                         mPrinter.printLine();
                         mPrinter.setSmallSize();
                         mPrinter.printText(FormatDate.INSTANCE.formatDateToString(sale.getSaleDate())
-                                +"         COD. VENDA:"+String.format(new Locale("pt","BR"),"%05d",sale.getSaleId()));
-                        mPrinter.printText("Cliente: "+sale.getClientName());
+                                + "         COD. VENDA:" + String.format(new Locale("pt", "BR"), "%05d", sale.getSaleId()));
+                        mPrinter.printText("Cliente: " + sale.getClientName());
                         mPrinter.addNewLine();
                         mPrinter.setAlign(BluetoothPrinter.ALIGN_CENTER);
                         mPrinter.setBigSize();
@@ -70,7 +80,7 @@ public class PrinterFunctions {
                         mPrinter.printText("Produto                    Preco");
                         mPrinter.setNormal();
                         mPrinter.addNewLine();
-                        for(int i=0;i<products.size();i++) {
+                        for (int i = 0; i < products.size(); i++) {
                             mPrinter.setAlign(BluetoothPrinter.ALIGN_LEFT);
                             mPrinter.setNormal();
                             mPrinter.printText(" " + products.get(i).getName());
@@ -78,22 +88,22 @@ public class PrinterFunctions {
                             mPrinter.setAlign(BluetoothPrinter.ALIGN_RIGHT);
                             mPrinter.printText(products.get(i).getQuantity() +
 
-                                "x R$"+products.get(i).getPrice()+"              R$" + calculateTotalProduct(products.get(i).getPrice(), products.get(i).getQuantity()));
+                                    "x R$" + products.get(i).getPrice() + "              R$" + calculateTotalProduct(products.get(i).getPrice(), products.get(i).getQuantity()));
                         }
                         mPrinter.setNormal();
                         mPrinter.printLine();
                         mPrinter.setAlign(BluetoothPrinter.ALIGN_RIGHT);
-                        mPrinter.printText("Sub Total  R$"+sale.getGrossValue());
-                        if(!sale.getPaidValue().isEmpty()) {
-                          BigDecimal amountPaid = new BigDecimal(sale.getPaidValue());
-                          if(amountPaid.compareTo(new BigDecimal("0.00")) > 0){
-                            mPrinter.printText("Valor pago R$"+sale.getPaidValue());
-                          }
+                        mPrinter.printText("Sub Total  R$" + sale.getGrossValue());
+                        if (!sale.getPaidValue().isEmpty()) {
+                            BigDecimal amountPaid = new BigDecimal(sale.getPaidValue());
+                            if (amountPaid.compareTo(new BigDecimal("0.00")) > 0) {
+                                mPrinter.printText("Valor pago R$" + sale.getPaidValue());
+                            }
                         }
                         mPrinter.setUnderline();
-                        mPrinter.printText("Desconto   R$ "+sale.getDiscount());
+                        mPrinter.printText("Desconto   R$ " + sale.getDiscount());
                         mPrinter.setNormal();
-                        mPrinter.printText("Total      R$"+sale.getToReceive());
+                        mPrinter.printText("Total      R$" + sale.getToReceive());
                         mPrinter.feedPaper();
                         mPrinter.finish();
                     } else {
@@ -108,9 +118,13 @@ public class PrinterFunctions {
                 }
 
             });
-        }catch(NoSuchElementException ex){
+        } catch (NoSuchElementException ex) {
             FirebaseCrashlytics.getInstance().recordException(ex);
-            Toast.makeText(mContext, "Erro ao imprimir recibo!", Toast.LENGTH_SHORT).show();
+
+            try {
+                Toast.makeText(mContext, "Erro ao imprimir recibo!", Toast.LENGTH_SHORT).show();
+            } catch (Exception exc) {
+            }
 
         }
     }
@@ -122,7 +136,11 @@ public class PrinterFunctions {
         return price.multiply(qtt).toString();
     }
 
-    public void printSalesList(final List<Sale> listSales){
+    public void printSalesList(final List<Sale> listSales) {
+        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
         BluetoothDevice mBtDevice = btAdapter.getBondedDevices().iterator().next();
         mPrinter = new BluetoothPrinter(mBtDevice);
         mPrinter.connectPrinter(new BluetoothPrinter.PrinterConnectListener(){
