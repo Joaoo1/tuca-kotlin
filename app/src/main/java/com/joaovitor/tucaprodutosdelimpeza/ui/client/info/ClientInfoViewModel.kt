@@ -116,12 +116,19 @@ class ClientInfoViewModel(mClient: Client) : BaseViewModel() {
 
     /* Whatsapp functions */
     private fun sendWhatsappClient() {
-        val clientPhoneNumber = client.value!!.phone.filter {it.isDigit()}
-        val phoneNumber = Phone.getFormattedNumberToWhatsapp(clientPhoneNumber)
-        val url = "https://api.whatsapp.com/send?phone=$phoneNumber"
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse(url)
-        _sendWhatsappClient.value = intent
+        client.value?.let{
+            if(it.phone.isEmpty()) {
+                _error.postValue("Cliente não possui um número cadastrado")
+                return
+            }
+
+            val clientPhoneNumber = it.phone.filter { it1 -> it1.isDigit()}
+            val phoneNumber = Phone.getFormattedNumberToWhatsapp(clientPhoneNumber)
+            val url = "https://api.whatsapp.com/send?phone=$phoneNumber"
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(url)
+            _sendWhatsappClient.value = intent
+        }
     }
 
     fun doneSendWhatsapp() {
