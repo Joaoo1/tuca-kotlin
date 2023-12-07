@@ -1,6 +1,5 @@
 package com.joaovitor.tucaprodutosdelimpeza.ui.sale.selectClient
 
-import android.app.Application
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -12,7 +11,6 @@ import android.view.inputmethod.EditorInfo
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.joaovitor.tucaprodutosdelimpeza.R
@@ -75,6 +73,7 @@ class SelectClientFragment : Fragment() {
         return binding.root
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.search_list, menu)
         //Implement SearchView

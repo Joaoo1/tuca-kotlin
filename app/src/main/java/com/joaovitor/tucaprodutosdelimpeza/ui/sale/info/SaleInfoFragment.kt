@@ -155,11 +155,13 @@ class SaleInfoFragment : Fragment() {
     }
     /* End bluetooth permissions */
 
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.sale_info, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             R.id.action_register_payment -> viewModel.onClickRegisterPayment()
@@ -201,6 +203,7 @@ class SaleInfoFragment : Fragment() {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_ENABLED_BT) viewModel.onBluetoothResult(resultCode, requireContext())
         super.onActivityResult(requestCode, resultCode, data)

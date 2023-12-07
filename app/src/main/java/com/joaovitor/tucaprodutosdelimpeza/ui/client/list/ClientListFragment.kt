@@ -100,6 +100,7 @@ class ClientListFragment : Fragment() {
         return binding.root
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.search_list, menu)
         //Implement SearchView
@@ -107,6 +108,7 @@ class ClientListFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             R.id.action_refresh_list -> viewModel.onClickRefreshList()

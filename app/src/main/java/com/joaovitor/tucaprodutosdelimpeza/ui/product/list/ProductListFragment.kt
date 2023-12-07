@@ -11,7 +11,6 @@ import android.view.inputmethod.EditorInfo
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -100,12 +99,14 @@ class ProductListFragment : Fragment() {
         return binding.root
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.search_list, menu)
         searchOnList(menu.findItem(R.id.action_search))
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             R.id.action_refresh_list -> viewModel.onClickRefreshList()
