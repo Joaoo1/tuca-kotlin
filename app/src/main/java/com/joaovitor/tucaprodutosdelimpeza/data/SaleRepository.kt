@@ -70,6 +70,8 @@ class SaleRepository {
 
                 AddressType.CITY -> querySnapshot = querySnapshot
                     .whereEqualTo(Firestore.SALE_CLIENT_CITY, address.name)
+
+                else -> {}
             }
 
             val result = querySnapshot.get().await()

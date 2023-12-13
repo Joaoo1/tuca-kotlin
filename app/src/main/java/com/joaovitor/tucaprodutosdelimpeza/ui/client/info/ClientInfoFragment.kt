@@ -113,20 +113,23 @@ class ClientInfoFragment : Fragment() {
         return binding.root
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.client_info, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_edit -> viewModel.onClickEditClient()
             R.id.action_call -> viewModel.onClickCallClient(requireContext())
-            R.id.action_whatsapp -> viewModel.onClickWhatsapp();
+            R.id.action_whatsapp -> viewModel.onClickWhatsapp()
         }
         return super.onOptionsItemSelected(item)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,

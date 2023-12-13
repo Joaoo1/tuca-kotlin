@@ -117,6 +117,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         progressBar.visibility = View.INVISIBLE
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         val currentFragment = navHostFragment.childFragmentManager.fragments[0]
 
