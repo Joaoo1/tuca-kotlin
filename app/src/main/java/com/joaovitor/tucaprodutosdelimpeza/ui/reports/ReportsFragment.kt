@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.navigation.NavigationView
 import com.joaovitor.tucaprodutosdelimpeza.R
@@ -21,17 +22,17 @@ class ReportsFragment: Fragment() {
         // Inflate the layout for this fragment
         val binding: FragmentReportsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_reports, container, false)
 
-        binding.reportProductsSold.setOnClickListener{
-            this.findNavController()
-                .navigate(ReportsFragmentDirections.actionReportsFragmentToReportProductsSoldFragment())
-        }
-
-        binding.reportSales.setOnClickListener{
-            this.findNavController()
-                .navigate(ReportsFragmentDirections.actionReportsFragmentToReportSalesFragment())
-        }
+        navigateOnClick(binding.reportProductsSold, ReportsFragmentDirections.actionReportsFragmentToReportProductsSoldFragment())
+        navigateOnClick(binding.reportSales, ReportsFragmentDirections.actionReportsFragmentToReportSalesFragment())
+        navigateOnClick(binding.reportSeller, ReportsFragmentDirections.actionReportsFragmentToReportSellerFragment())
 
         return binding.root
+    }
+
+    private fun navigateOnClick(view: View, directions: NavDirections) {
+        view.setOnClickListener{
+            this.findNavController().navigate(directions)
+        }
     }
 
     override fun onResume() {

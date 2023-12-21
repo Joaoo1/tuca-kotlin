@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.joaovitor.tucaprodutosdelimpeza.ui.reports.seller.ReportSellerViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+            android:layout_marginVertical="@dimen/activity_vertical_margin"
+            tools:context=".ui.reports.seller.ReportSellerFragment">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/headline_sellers"
+                style="@style/Headline6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/report_seller_headline_seller"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Spinner
+                android:id="@+id/spinner_sellers"
+                android:layout_width="377dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/headline_sellers"
+                />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/headline_period"
+                style="@style/Headline6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/report_sales_headline_period"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/spinner_sellers" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/label_seller_start_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:drawablePadding="6dp"
+                android:gravity="center_vertical"
+                android:text="@string/report_sales_label_start_date"
+                android:textSize="20sp"
+                app:drawableStartCompat="@drawable/ic_input_calendar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/headline_period" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/seller_start_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="#CECECECE"
+                android:ems="6"
+                android:focusable="false"
+                android:maxLength="10"
+                android:hint="@string/fragment_report_seller_date_hint"
+                android:onClick="@{() -> viewModel.openStartDatePicker()}"
+                android:textAlignment="center"
+                android:textColor="#CECECE"
+                android:textSize="24sp"
+                app:formatDateToString="@{viewModel.startDate}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/label_seller_start_date" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/label_seller_end_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:drawablePadding="6dp"
+                android:gravity="center_vertical"
+                android:text="@string/report_sales_label_end_date"
+                android:textSize="20sp"
+                app:drawableStartCompat="@drawable/ic_input_calendar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/seller_start_date" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/seller_end_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="#CECECECE"
+                android:ems="6"
+                android:focusable="false"
+                android:hint="@string/fragment_report_seller_date_hint"
+                android:maxLength="10"
+                android:onClick="@{() -> viewModel.openEndDatePicker()}"
+                android:textAlignment="center"
+                android:textColor="#CECECE"
+                android:textSize="24sp"
+                app:formatDateToString="@{viewModel.endDate}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/label_seller_end_date" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/filter_seller_sales"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="16dp"
+                android:onClick="@{() -> viewModel.onClickFilterButton()}"
+                android:text="@string/report_sales_filter_button"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/seller_end_date"
+                android:enabled="false"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</layout>
+
+

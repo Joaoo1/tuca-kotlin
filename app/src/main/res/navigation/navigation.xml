@@ -185,6 +185,16 @@
             android:id="@+id/action_filtered_sales_fragment_to_sales_info_fragment"
             app:destination="@id/sales_info_fragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/filtered_seller_sales_fragment"
+        android:name="com.joaovitor.tucaprodutosdelimpeza.ui.reports.seller.FilteredSellerSalesFragment"
+        android:label="@string/title_fragment_report_filtered_sales"
+        tools:layout="@layout/fragment_filtered_sales">
+        <action
+            android:id="@+id/action_filtered_sales_fragment_to_sales_info_fragment"
+            app:destination="@id/sales_info_fragment" />
+    </fragment>
     <fragment
         android:id="@+id/reports_fragment"
         android:name="com.joaovitor.tucaprodutosdelimpeza.ui.reports.ReportsFragment"
@@ -196,6 +206,9 @@
         <action
             android:id="@+id/action_reports_fragment_to_report_products_sold_fragment"
             app:destination="@id/report_products_sold_fragment" />
+        <action
+            android:id="@+id/action_reports_fragment_to_report_seller_fragment"
+            app:destination="@id/report_seller_fragment" />
     </fragment>
     <fragment
         android:id="@+id/report_products_sold_fragment"
@@ -205,6 +218,15 @@
         <action
             android:id="@+id/action_report_products_sold_fragment_to_products_sold_list_fragment"
             app:destination="@id/products_sold_list_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/report_seller_fragment"
+        android:name="com.joaovitor.tucaprodutosdelimpeza.ui.reports.seller.ReportSellerFragment"
+        android:label="@string/title_fragment_report_seller"
+        tools:layout="@layout/fragment_report_seller" >
+        <action
+            android:id="@+id/action_report_seller_fragment_to_filtered_sales_fragment"
+            app:destination="@id/filtered_seller_sales_fragment" />
     </fragment>
     <fragment
         android:id="@+id/products_sold_list_fragment"
