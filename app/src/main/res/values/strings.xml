@@ -158,6 +158,12 @@
     <string name="report_products_sold_label_start_date">Data inicio</string>
     <string name="report_products_sold_label_end_date">Data final</string>
 
+    <!-- ReportSellerSales Fragment -->
+    <string name="fragment_report_seller_date_hint">Selecione a data</string>
+    <string name="title_fragment_report_seller">Relatório por vendedor</string>
+    <string name="fragment_report_button_seller">Relatório por vendedor</string>
+    <string name="report_seller_headline_seller">Vendedor</string>
+
     <!-- ManageAddress Fragments -->
     <string name="fragment_manage_address_label_streets">Ruas</string>
     <string name="fragment_manage_address_label_neighborhoods">Bairros</string>

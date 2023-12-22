@@ -129,6 +129,30 @@ class SaleRepository {
         }
     }
 
+    suspend fun getSalesBySeller(sellerUid: String, dateRange: DateRange): Result<List<Sale>> {
+        return try {
+            var querySnapshot = colRef
+                .whereEqualTo(Firestore.SALE_SELLER_UID, sellerUid)
+                .orderBy(Firestore.SALE_DATE, Query.Direction.DESCENDING)
+
+                querySnapshot = querySnapshot
+                    .whereGreaterThanOrEqualTo(Firestore.SALE_DATE, dateRange.startDate)
+
+                querySnapshot = querySnapshot
+                    .whereLessThan(Firestore.SALE_DATE, FormatDate.addOneDay(dateRange.endDate))
+
+            val sales = querySnapshot.get().await().map {
+                val sale = it.toObject(Sale::class.java)
+                sale.id = it.id
+                sale
+            }
+
+            Result.Success(sales)
+        } catch (e: FirebaseFirestoreException) {
+            Result.Error(e)
+        }
+    }
+
     suspend fun addSale(sale: Sale): Result<Void> {
         return try {
             // Getting a unused id for sale
