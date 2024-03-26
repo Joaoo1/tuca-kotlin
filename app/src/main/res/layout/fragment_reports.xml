@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<layout xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -46,6 +46,28 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/report_sales" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/report_seller"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="32dp"
+            android:paddingVertical="28dp"
+            android:text="@string/fragment_report_button_seller"
+            android:textSize="16sp"
+            app:drawableEndCompat="@drawable/ic_chevron_right"
+            app:layout_constraintTop_toBottomOf="@+id/divider2"
+            tools:layout_editor_absoluteX="0dp" />
+
+        <View
+            android:id="@+id/divider5"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/report_seller" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

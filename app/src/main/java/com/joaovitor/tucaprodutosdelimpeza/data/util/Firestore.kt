@@ -21,6 +21,7 @@ object Firestore {
     const val SALE_NET_VALUE = "valorLiquido"
     const val SALE_PAID_VALUE = "valorPago"
     const val SALE_TO_RECEIVE = "valorAReceber"
+    const val SALE_SELLER_UID = "sellerUid"
 
     const val COL_PRODUCTS = "produtos"
     const val PRODUCT_CURRENT_STOCK = "currentStock"

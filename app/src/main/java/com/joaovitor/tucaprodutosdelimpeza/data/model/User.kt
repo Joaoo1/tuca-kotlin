@@ -1,7 +1,9 @@
 package com.joaovitor.tucaprodutosdelimpeza.data.model
 
-class User (
+import java.io.Serializable
+
+data class User (
     var uid: String? = "",
-    var displayName: String? = "",
+    var name: String? = "",
     var email: String? = "",
-)
+): Serializable

@@ -25,7 +25,7 @@ class LoginRepository(private val context: Context) {
             // handle login
             val firebaseUser = auth.signInWithEmailAndPassword(email, password).await().user
             val user = User(uid = firebaseUser?.uid, email = firebaseUser?.email!!)
-            user.displayName = getDisplayName(user.uid!!)
+            user.name = getDisplayName(user.uid!!)
 
             setLoggedInUser(user)
 
@@ -39,7 +39,7 @@ class LoginRepository(private val context: Context) {
     private fun setLoggedInUser(user: User) {
         val sharedPreference = context.getSharedPreferences("login", Context.MODE_PRIVATE)
         sharedPreference.edit().putString("userEmail", user.email).apply()
-        sharedPreference.edit().putString("userName", user.displayName).apply()
+        sharedPreference.edit().putString("userName", user.name).apply()
         sharedPreference.edit().putString("userUid", user.uid).apply()
         sharedPreference.edit().putBoolean("isLoggedIn", true).apply()
     }
