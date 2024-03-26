@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.net.Uri
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -49,6 +48,7 @@ class ClientInfoViewModel(mClient: Client) : BaseViewModel() {
         fetchClientSales()
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     private fun fetchClientSales() {
         GlobalScope.launch {
             _showProgressBar.postValue(true)
@@ -97,8 +97,8 @@ class ClientInfoViewModel(mClient: Client) : BaseViewModel() {
         _navigateToInfoSale.value = sale
     }
 
-    fun onClickWhatsapp() {
-        sendWhatsappClient()
+    fun onClickWhatsapp(context: Context) {
+        sendWhatsappClient(context)
     }
 
     fun doneNavigating(){
@@ -115,7 +115,7 @@ class ClientInfoViewModel(mClient: Client) : BaseViewModel() {
     }
 
     /* Whatsapp functions */
-    private fun sendWhatsappClient() {
+    private fun sendWhatsappClient(context: Context) {
         client.value?.let{
             if(it.phone.isEmpty()) {
                 _error.postValue("Cliente não possui um número cadastrado")
@@ -124,10 +124,22 @@ class ClientInfoViewModel(mClient: Client) : BaseViewModel() {
 
             val clientPhoneNumber = it.phone.filter { it1 -> it1.isDigit()}
             val phoneNumber = Phone.getFormattedNumberToWhatsapp(clientPhoneNumber)
-            val url = "https://api.whatsapp.com/send?phone=$phoneNumber"
+
+            val whatsappBusinessPackage = "com.whatsapp.w4b"
+            val whatsappBusinessIntent = context.packageManager.getLaunchIntentForPackage(whatsappBusinessPackage)
             val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse(url)
+
+            if (whatsappBusinessIntent != null) {
+                val url = "https://wa.me/$phoneNumber"
+                intent.data = Uri.parse(url)
+                intent.setPackage(whatsappBusinessPackage)
+            } else {
+                val url = "https://api.whatsapp.com/send?phone=$phoneNumber"
+                intent.data = Uri.parse(url)
+            }
+
             _sendWhatsappClient.value = intent
+
         }
     }
 

@@ -124,7 +124,7 @@ class ClientInfoFragment : Fragment() {
         when (item.itemId) {
             R.id.action_edit -> viewModel.onClickEditClient()
             R.id.action_call -> viewModel.onClickCallClient(requireContext())
-            R.id.action_whatsapp -> viewModel.onClickWhatsapp()
+            R.id.action_whatsapp -> viewModel.onClickWhatsapp(requireContext())
         }
         return super.onOptionsItemSelected(item)
     }
