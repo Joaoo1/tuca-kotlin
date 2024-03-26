@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 
 class StockMovementsViewModel(private val productId: String) : BaseViewModel() {
 
-    var stockHistories:MutableLiveData<List<StockMovement>> = MutableLiveData(listOf())
+    var stockHistories:MutableLiveData<List<StockMovement>?> = MutableLiveData(listOf())
 
     init {
         GlobalScope.launch {

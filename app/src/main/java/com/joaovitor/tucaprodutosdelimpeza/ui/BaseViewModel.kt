@@ -10,12 +10,12 @@ abstract class BaseViewModel : ViewModel() {
     val showProgressBar: LiveData<Boolean>
         get() = _showProgressBar
 
-    protected var _error = MutableLiveData<String>()
-    val error: LiveData<String>
+    protected var _error = MutableLiveData<String?>()
+    val error: LiveData<String?>
         get() = _error
 
-    protected var _info = MutableLiveData<String>()
-    val info: LiveData<String>
+    protected var _info = MutableLiveData<String?>()
+    val info: LiveData<String?>
         get() = _info
 
     fun doneShowError() {

@@ -25,16 +25,16 @@ class ManageAddressViewModel : BaseViewModel() {
 
     private var cities: MutableList<City> = mutableListOf()
 
-    private var _openDialogAddAddress = MutableLiveData<AddressType>()
-    val openDialogAddAddress: LiveData<AddressType>
+    private var _openDialogAddAddress = MutableLiveData<AddressType?>()
+    val openDialogAddAddress: LiveData<AddressType?>
         get() = _openDialogAddAddress
 
-    private var _openDialogEditAddress = MutableLiveData<AddressObject>()
-    val openDialogEditAddress: LiveData<AddressObject>
+    private var _openDialogEditAddress = MutableLiveData<AddressObject?>()
+    val openDialogEditAddress: LiveData<AddressObject?>
         get() = _openDialogEditAddress
 
-    private var _openDialogDeleteAddress = MutableLiveData<AddressObject>()
-    val openDialogDeleteAddress: LiveData<AddressObject>
+    private var _openDialogDeleteAddress = MutableLiveData<AddressObject?>()
+    val openDialogDeleteAddress: LiveData<AddressObject?>
         get() = _openDialogDeleteAddress
 
     fun onClickAddStreet(){

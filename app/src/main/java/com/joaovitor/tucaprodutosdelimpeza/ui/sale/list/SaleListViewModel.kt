@@ -16,9 +16,9 @@ class SaleListViewModel : BaseViewModel() {
 
     private var saleRepository: SaleRepository = SaleRepository()
 
-    private var _sales:MutableLiveData<List<Sale>> = MutableLiveData(listOf())
+    private var _sales:MutableLiveData<List<Sale>?> = MutableLiveData(listOf())
 
-    var sales:MutableLiveData<List<Sale>> = MutableLiveData(listOf())
+    var sales:MutableLiveData<List<Sale>?> = MutableLiveData(listOf())
 
     private var _filteredSales: MutableLiveData<List<Sale>> = MutableLiveData(emptyList())
     val filteredSales: LiveData<List<Sale>>
@@ -28,8 +28,8 @@ class SaleListViewModel : BaseViewModel() {
     val navigateToAdd: LiveData<Boolean>
         get() = _navigateToAdd
 
-    private var _navigateToInfo = MutableLiveData<Sale>()
-    val navigateToInfo: LiveData<Sale>
+    private var _navigateToInfo = MutableLiveData<Sale?>()
+    val navigateToInfo: LiveData<Sale?>
         get() = _navigateToInfo
 
     //Filters

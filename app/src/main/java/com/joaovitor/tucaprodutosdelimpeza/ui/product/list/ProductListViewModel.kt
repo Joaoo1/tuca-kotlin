@@ -11,16 +11,16 @@ import kotlinx.coroutines.launch
 
 class ProductListViewModel : BaseViewModel() {
 
-    private var _products = MutableLiveData<List<Product>>()
-    val products: LiveData<List<Product>>
+    private var _products = MutableLiveData<List<Product>?>()
+    val products: LiveData<List<Product>?>
         get() = _products
 
     private var _navigateToAdd = MutableLiveData<Boolean>()
     val navigateToAdd: LiveData<Boolean>
         get() = _navigateToAdd
 
-    private var _navigateToEdit = MutableLiveData<Product>()
-    val navigateToEdit: LiveData<Product>
+    private var _navigateToEdit = MutableLiveData<Product?>()
+    val navigateToEdit: LiveData<Product?>
         get() = _navigateToEdit
 
     init {

@@ -26,8 +26,8 @@ class SaleEditProductsViewModel(var mSale: Sale) : BaseViewModel() {
         get() = _total
 
     /** List of products used by AutoCompleteTextView on Add Products Dialog*/
-    private var _allProducts = MutableLiveData<List<Product>>()
-    val allProducts: LiveData<List<Product>>
+    private var _allProducts = MutableLiveData<List<Product>?>()
+    val allProducts: LiveData<List<Product>?>
         get() = _allProducts
 
     val quantity:MutableLiveData<Int> = MutableLiveData(1)

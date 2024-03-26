@@ -16,14 +16,14 @@ import java.util.*
 
 class ClientListViewModel : BaseViewModel() {
 
-    var clients = MutableLiveData<List<Client>>(emptyList())
+    var clients = MutableLiveData<List<Client>?>(emptyList())
 
     private var _navigateToAdd = MutableLiveData<Boolean>()
     val navigateToAdd: LiveData<Boolean>
         get() = _navigateToAdd
 
-    private var _navigateToInfo = MutableLiveData<Client>()
-    val navigateToInfo: LiveData<Client>
+    private var _navigateToInfo = MutableLiveData<Client?>()
+    val navigateToInfo: LiveData<Client?>
         get() = _navigateToInfo
 
     init {

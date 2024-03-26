@@ -14,8 +14,8 @@ import java.util.Date
 
 class ReportProductsSoldViewModel : BaseViewModel() {
 
-    private var _productsSoldList = MutableLiveData<List<ProductSold>>()
-    val productsSoldList: LiveData<List<ProductSold>>
+    private var _productsSoldList = MutableLiveData<List<ProductSold>?>()
+    val productsSoldList: LiveData<List<ProductSold>?>
         get() = _productsSoldList
 
     private var _navigateToProductsSoldList = MutableLiveData<Boolean>()
