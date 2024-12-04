@@ -58,6 +58,10 @@
     <string name="home_card_description_clients">Número total de clientes</string>
     <string name="home_card_title_products">Produtos</string>
     <string name="home_card_description_products">Número total de produtos</string>
+    <string name="home_fab_content_description">Ícone de adição</string>
+
+    <!-- ProductList Fragment -->
+    <string name="product_list_fab_content_description">Ícone de adição</string>
 
     <!-- ProductAdd Fragment -->
     <string name="product_add_hint_name">Nome</string>
@@ -75,6 +79,9 @@
 
     <!-- StockHistory Fragment -->
     <string name="stock_history_sale">Venda %1$s</string>
+
+    <!-- ClientList Fragment -->
+    <string name="client_list_fab_icon_content_description">Ícone de pessoa</string>
 
     <!-- ClientAdd Fragment -->
     <string name="client_add_hint_name">Nome</string>
@@ -100,6 +107,9 @@
     <string name="client_info_label_complement">Complemento</string>
     <string name="client_info_label_street">Rua</string>
     <string name="client_info_label_phone">Telefone</string>
+
+    <!-- SaleList Fragment -->
+    <string name="sale_list_fab_content_description">Ícone de adição</string>
 
     <!-- SaleAdd Fragment -->
     <string name="sale_add_hint_products">Produtos</string>
