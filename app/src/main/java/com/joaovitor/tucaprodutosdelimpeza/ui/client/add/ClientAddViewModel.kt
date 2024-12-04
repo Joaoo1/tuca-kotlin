@@ -9,8 +9,6 @@ import com.joaovitor.tucaprodutosdelimpeza.data.Result
 import com.joaovitor.tucaprodutosdelimpeza.data.StreetRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.model.*
 import com.joaovitor.tucaprodutosdelimpeza.ui.BaseViewModel
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class ClientAddViewModel : BaseViewModel() {
 
@@ -43,33 +41,31 @@ class ClientAddViewModel : BaseViewModel() {
         get() = _openSelectCity
 
     /** Fill in the address fields */
-    fun fetchAddress() {
-        GlobalScope.launch {
-            val resultStreets = StreetRepository().getStreets()
-            if(resultStreets is Result.Success) {
-                _streets.postValue(resultStreets.data?.map { it.name })
-            } else {
-                _error.postValue("Um erro ocorreu ao buscar ruas")
+    suspend fun fetchAddress() {
+        val resultStreets = StreetRepository().getStreets()
+        if(resultStreets is Result.Success) {
+            _streets.postValue(resultStreets.data?.map { it.name })
+        } else {
+            _error.postValue("Um erro ocorreu ao buscar ruas")
+        }
+
+        val resultNeighborhood = NeighborhoodRepository().getNeighborhoods()
+        if(resultNeighborhood is Result.Success) {
+            _neighborhoods.addAll(resultNeighborhood.data!!.map { it.name })
+        } else {
+            _error.postValue("Um erro ocorreu ao buscar bairros")
             }
 
-            val resultNeighborhood = NeighborhoodRepository().getNeighborhoods()
-            if(resultNeighborhood is Result.Success) {
-                _neighborhoods.addAll(resultNeighborhood.data!!.map { it.name })
-            } else {
-                _error.postValue("Um erro ocorreu ao buscar bairros")
-                }
-
-            val resultCities = CityRepository().getCities()
-            if(resultCities is Result.Success) {
-                _cities.addAll(resultCities.data!!.map { it.name })
-            } else {
-                _error.postValue("Um erro ocorreu ao buscar cidades")
-                }
+        val resultCities = CityRepository().getCities()
+        if(resultCities is Result.Success) {
+            _cities.addAll(resultCities.data!!.map { it.name })
+        } else {
+            _error.postValue("Um erro ocorreu ao buscar cidades")
         }
     }
 
     /** Save new client on database */
-    private fun addClient(){
+    private suspend fun addClient(){
         /**
          * Client must at least have a name
          */
@@ -88,22 +84,20 @@ class ClientAddViewModel : BaseViewModel() {
             return
         }
 
-        GlobalScope.launch {
-            _showProgressBar.postValue(true)
+        _showProgressBar.postValue(true)
 
-            val result = clientRepository.addClient(client.value!!)
+        val result = clientRepository.addClient(client.value!!)
 
-            if(result is Result.Success) {
-                _info.postValue("Cliente adicionado com sucesso")
+        if(result is Result.Success) {
+            _info.postValue("Cliente adicionado com sucesso")
 
-                //Reset client
-                client.postValue(Client())
-            } else {
-                _error.postValue("Ocorreu um erro ao adicionar cliente")
-            }
-
-            _showProgressBar.postValue(false)
+            //Reset client
+            client.postValue(Client())
+        } else {
+            _error.postValue("Ocorreu um erro ao adicionar cliente")
         }
+
+        _showProgressBar.postValue(false)
     }
 
     fun onClickAddAddress() {
@@ -128,7 +122,7 @@ class ClientAddViewModel : BaseViewModel() {
         client.value = client.value
     }
 
-    fun onClickSave(){
+    suspend fun onClickSave(){
         addClient()
     }
 

@@ -7,6 +7,7 @@ import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -14,6 +15,7 @@ import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.databinding.FragmentClientAddBinding
 import com.joaovitor.tucaprodutosdelimpeza.util.toast
 import com.joaovitor.tucaprodutosdelimpeza.util.toastLong
+import kotlinx.coroutines.launch
 
 class ClientAddFragment : Fragment() {
 
@@ -99,7 +101,7 @@ class ClientAddFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             R.id.action_add_address -> viewModel.onClickAddAddress()
-            R.id.action_save -> viewModel.onClickSave()
+            R.id.action_save -> viewLifecycleOwner.lifecycleScope.launch { viewModel.onClickSave() }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -111,7 +113,9 @@ class ClientAddFragment : Fragment() {
          * it ensures that the address fields are up to date
          * when user backs to screen
          */
-        viewModel.fetchAddress()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.fetchAddress()
+        }
     }
 
     private fun createDialogSelectAddress(
