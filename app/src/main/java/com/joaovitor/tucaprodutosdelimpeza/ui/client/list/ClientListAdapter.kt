@@ -127,8 +127,8 @@ class ClientListAdapter(val clickListener: ClientListener) : ListAdapter<ClientL
                 } else {
                     for (client in clientsList) {
                         if (client.name
-                                .toLowerCase(Locale.ROOT)
-                                .contains(charSearch.toLowerCase(Locale.ROOT))) {
+                                .lowercase(Locale.ROOT)
+                                .contains(charSearch.lowercase(Locale.ROOT))) {
                             resultList.add(client)
                         }
                     }

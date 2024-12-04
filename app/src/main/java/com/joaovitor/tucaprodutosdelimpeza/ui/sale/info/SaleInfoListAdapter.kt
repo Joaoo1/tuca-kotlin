@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.joaovitor.tucaprodutosdelimpeza.data.model.ProductSale
 import com.joaovitor.tucaprodutosdelimpeza.databinding.ListItemInfoSaleProductBinding
 
-class SaleInfoListAdapter() : RecyclerView.Adapter<SaleInfoListAdapter.ViewHolder>(){
+class SaleInfoListAdapter : RecyclerView.Adapter<SaleInfoListAdapter.ViewHolder>(){
     var listData = listOf<ProductSale>()
         set(value) {
             field = value

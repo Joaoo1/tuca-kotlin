@@ -26,10 +26,10 @@ import java.util.Objects;
 
 public class PrinterFunctions {
 
-    private Context mContext;
+    private final Context mContext;
     private BluetoothPrinter mPrinter;
     private final BluetoothAdapter btAdapter;
-    private CollectionReference clientsRef;
+    private final CollectionReference clientsRef;
 
     public PrinterFunctions(Context context) {
         mContext = context;

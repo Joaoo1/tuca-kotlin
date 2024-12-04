@@ -65,8 +65,8 @@ class ProductListAdapter(val clickListener: ProductListener) :
                 } else {
                     for (product in productsList) {
                         if (product.name
-                                .toLowerCase(Locale.ROOT)
-                                .contains(charSearch.toLowerCase(Locale.ROOT))) {
+                                .lowercase(Locale.ROOT)
+                                .contains(charSearch.lowercase(Locale.ROOT))) {
                             resultList.add(product)
                         }
                     }
