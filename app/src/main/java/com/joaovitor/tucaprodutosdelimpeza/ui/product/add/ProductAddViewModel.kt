@@ -2,11 +2,11 @@ package com.joaovitor.tucaprodutosdelimpeza.ui.product.add
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.joaovitor.tucaprodutosdelimpeza.data.ProductRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.Result
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
 import com.joaovitor.tucaprodutosdelimpeza.ui.BaseViewModel
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -40,7 +40,7 @@ class ProductAddViewModel: BaseViewModel() {
             return
         }
 
-        GlobalScope.launch {
+        viewModelScope.launch {
             _showProgressBar.postValue(true)
 
             product.value!!.price = BigDecimal(product.value!!.price).setScale(2, RoundingMode.FLOOR).toString()

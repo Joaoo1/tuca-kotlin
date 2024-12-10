@@ -2,13 +2,13 @@ package com.joaovitor.tucaprodutosdelimpeza.ui.sale.list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.joaovitor.tucaprodutosdelimpeza.data.Result
 import com.joaovitor.tucaprodutosdelimpeza.data.SaleRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
 import com.joaovitor.tucaprodutosdelimpeza.data.util.DateRange
 import com.joaovitor.tucaprodutosdelimpeza.ui.BaseViewModel
 import com.joaovitor.tucaprodutosdelimpeza.util.FormatDate
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -67,7 +67,7 @@ class SaleListViewModel : BaseViewModel() {
         val dateRange = getDateRange()
         val paidFilter: Boolean? = getPaidFilter()
 
-        GlobalScope.launch {
+        viewModelScope.launch {
             _showProgressBar.postValue(true)
 
             val resultSales = saleRepository.getFilteredSales(dateRange, paidFilter)
@@ -130,7 +130,7 @@ class SaleListViewModel : BaseViewModel() {
     }
 
     private fun fetchSales(){
-        GlobalScope.launch {
+        viewModelScope.launch {
             _showProgressBar.postValue(true)
 
             val resultSales = saleRepository.getSales()
@@ -181,7 +181,7 @@ class SaleListViewModel : BaseViewModel() {
         } else {
             _showProgressBar.postValue(true)
 
-            GlobalScope.launch {
+            viewModelScope.launch {
                 val result = SaleRepository().getSalesById(Integer.parseInt(query))
                 if(result is Result.Success) {
                     sales.postValue(result.data)

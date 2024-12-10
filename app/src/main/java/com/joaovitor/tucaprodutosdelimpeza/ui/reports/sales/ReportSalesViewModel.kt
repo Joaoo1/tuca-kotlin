@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.bluetooth.Bluetooth
 import com.joaovitor.tucaprodutosdelimpeza.bluetooth.PrinterFunctions
@@ -17,7 +18,6 @@ import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
 import com.joaovitor.tucaprodutosdelimpeza.data.util.DateRange
 import com.joaovitor.tucaprodutosdelimpeza.ui.BaseViewModel
 import com.joaovitor.tucaprodutosdelimpeza.util.FormatDate
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.lang.Exception
 import java.util.Date
@@ -101,9 +101,8 @@ class ReportSalesViewModel : BaseViewModel() {
     }
 
     private fun openSelectAddressDialog() {
-        GlobalScope.launch {
+        viewModelScope.launch {
             _showProgressBar.postValue(true)
-            @Suppress("ThrowableNotThrown")
             val result: Result<List<Address>> = when(addressRadioChecked.value){
                 R.id.radio_button_street -> StreetRepository().getStreets()
                 R.id.radio_button_neighborhood -> NeighborhoodRepository().getNeighborhoods()
@@ -141,7 +140,7 @@ class ReportSalesViewModel : BaseViewModel() {
             else -> null
         }
 
-        GlobalScope.launch {
+        viewModelScope.launch {
             _showProgressBar.postValue(true)
             val resultSales = SaleRepository()
                 .getFilteredSales(DateRange(startDate.value!!, endDate.value!!), paid, address.value)

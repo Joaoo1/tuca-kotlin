@@ -3,6 +3,7 @@ package com.joaovitor.tucaprodutosdelimpeza.ui.sale.editProducts
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.joaovitor.tucaprodutosdelimpeza.data.ProductRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.Result
 import com.joaovitor.tucaprodutosdelimpeza.data.SaleRepository
@@ -12,11 +13,10 @@ import com.joaovitor.tucaprodutosdelimpeza.data.model.ProductSale
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
 import com.joaovitor.tucaprodutosdelimpeza.ui.BaseViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 
-class SaleEditProductsViewModel(var mSale: Sale) : BaseViewModel() {
+class SaleEditProductsViewModel(private var mSale: Sale) : BaseViewModel() {
 
     private var _products = MutableLiveData<MutableList<ProductSale>>()
     val products = MediatorLiveData<MutableList<ProductSale>>()
@@ -45,7 +45,7 @@ class SaleEditProductsViewModel(var mSale: Sale) : BaseViewModel() {
     init {
         /**
          * Clone product sales with a deep copy,
-         * thus avoiding altering the sale object of the infosale page
+         * thus avoiding altering the sale object of the info sale page
          * and therefore doesn't showing false information if the user navigate back
          * without saving the information
          */
@@ -65,7 +65,7 @@ class SaleEditProductsViewModel(var mSale: Sale) : BaseViewModel() {
             quantity.value = 1
         }
 
-        GlobalScope.launch {
+        viewModelScope.launch {
             val resultProducts = ProductRepository().getProducts()
             if(resultProducts is Result.Success) {
                 _allProducts.postValue(resultProducts.data)
@@ -112,7 +112,7 @@ class SaleEditProductsViewModel(var mSale: Sale) : BaseViewModel() {
     }
 
     private fun calculateTotalFromProductsList(products: List<ProductSale>?): BigDecimal {
-        if(products != null && products.isNotEmpty()) {
+        if(!products.isNullOrEmpty()) {
             val productsTotal =
                 products.map { BigDecimal(it.price).multiply(BigDecimal(it.quantity)) }
             return productsTotal.reduce { acc, productTotal -> acc.add(productTotal) }
@@ -133,7 +133,7 @@ class SaleEditProductsViewModel(var mSale: Sale) : BaseViewModel() {
         mSale.total = _total.value!!.minus(BigDecimal(mSale.discount)).toString()
         mSale.toReceive = _total.value?.minus(BigDecimal(mSale.paidValue)).toString()
 
-        GlobalScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(Dispatchers.Default) {
             _showProgressBar.postValue(true)
 
             val result = SaleRepository().editSale(mSale)

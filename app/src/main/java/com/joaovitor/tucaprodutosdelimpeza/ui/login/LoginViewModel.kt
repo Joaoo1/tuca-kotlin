@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import android.util.Patterns
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.viewModelScope
 import com.joaovitor.tucaprodutosdelimpeza.data.LoginRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.Result
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
@@ -19,11 +19,11 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     val error: LiveData<Boolean>
         get() = _error
 
-    private val _navigateToMain = MutableLiveData<Boolean>(false)
+    private val _navigateToMain = MutableLiveData(false)
     val navigateToMain: LiveData<Boolean>
         get() = _navigateToMain
 
-    private var _showProgressBar = MutableLiveData<Boolean>(false)
+    private var _showProgressBar = MutableLiveData(false)
     val showProgressBar: LiveData<Boolean>
         get() = _showProgressBar
 
@@ -35,7 +35,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         if (!isUserNameValid(email.value!!) || !isPasswordValid(password.value!!)) {
             _error.value = true
         } else {
-            GlobalScope.launch {
+            viewModelScope.launch {
                 _showProgressBar.postValue(true)
 
                 val result = LoginRepository(getApplication()).login(email = email.value!!, password = password.value!!)

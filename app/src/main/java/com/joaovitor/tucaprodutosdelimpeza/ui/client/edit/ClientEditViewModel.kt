@@ -2,6 +2,7 @@ package com.joaovitor.tucaprodutosdelimpeza.ui.client.edit
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.joaovitor.tucaprodutosdelimpeza.data.CityRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.ClientRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.NeighborhoodRepository
@@ -9,7 +10,6 @@ import com.joaovitor.tucaprodutosdelimpeza.data.Result
 import com.joaovitor.tucaprodutosdelimpeza.data.StreetRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Client
 import com.joaovitor.tucaprodutosdelimpeza.ui.BaseViewModel
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class ClientEditViewModel(private var mClient: Client) : BaseViewModel() {
@@ -51,7 +51,7 @@ class ClientEditViewModel(private var mClient: Client) : BaseViewModel() {
         get() = _popUpToClientList
 
     init {
-        GlobalScope.launch {
+        viewModelScope.launch {
             val resultStreets = StreetRepository().getStreets()
             if(resultStreets is Result.Success) {
                 _streets.postValue(resultStreets.data?.map { it.name })
@@ -76,7 +76,7 @@ class ClientEditViewModel(private var mClient: Client) : BaseViewModel() {
     }
 
     private fun deleteClient(){
-        GlobalScope.launch {
+        viewModelScope.launch {
             _showProgressBar.postValue(true)
 
             val result = clientRepository.deleteClient(client.value!!.id)
@@ -110,7 +110,7 @@ class ClientEditViewModel(private var mClient: Client) : BaseViewModel() {
             return
         }
 
-        GlobalScope.launch {
+        viewModelScope.launch {
             _showProgressBar.postValue(true)
 
             val result = clientRepository.editClient(client.value!!)

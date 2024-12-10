@@ -2,13 +2,12 @@ package com.joaovitor.tucaprodutosdelimpeza.ui.product.edit
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.joaovitor.tucaprodutosdelimpeza.data.ProductRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.Result
 import com.joaovitor.tucaprodutosdelimpeza.data.StockRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
 import com.joaovitor.tucaprodutosdelimpeza.ui.BaseViewModel
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -29,7 +28,6 @@ class ProductEditViewModel(private var mProduct: Product) : BaseViewModel() {
     val openDialogDelete: LiveData<Boolean>
         get() = _openDialogDelete
 
-    @OptIn(DelicateCoroutinesApi::class)
     fun onClickSaveEditRegister() {
         if(product.value!!.name.isEmpty() || product.value!!.price.isEmpty()) {
             _error.postValue("Os campos não podem ficar em branco")
@@ -41,7 +39,7 @@ class ProductEditViewModel(private var mProduct: Product) : BaseViewModel() {
             return
         }
 
-        GlobalScope.launch {
+        viewModelScope.launch {
             _showProgressBar.postValue(true)
 
             product.value!!.price = BigDecimal(product.value!!.price)
@@ -61,7 +59,7 @@ class ProductEditViewModel(private var mProduct: Product) : BaseViewModel() {
     }
 
     fun onClickSaveEditStock(seller: String = "") {
-        GlobalScope.launch {
+        viewModelScope.launch {
             _showProgressBar.postValue(true)
 
             val result = if(!product.value!!.manageStock) {
@@ -102,7 +100,7 @@ class ProductEditViewModel(private var mProduct: Product) : BaseViewModel() {
     }
 
     private fun recalculateStock() {
-        GlobalScope.launch {
+        viewModelScope.launch {
             _showProgressBar.postValue(true)
 
             val result = StockRepository().recalculateStock(product.value!!.id)
@@ -123,7 +121,7 @@ class ProductEditViewModel(private var mProduct: Product) : BaseViewModel() {
     }
 
     private fun deleteProduct() {
-        GlobalScope.launch {
+        viewModelScope.launch {
             _showProgressBar.postValue(true)
 
             val result = ProductRepository().deleteProduct(product.value!!.id)

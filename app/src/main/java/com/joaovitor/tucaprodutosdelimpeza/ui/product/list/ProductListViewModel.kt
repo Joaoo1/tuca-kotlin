@@ -2,11 +2,11 @@ package com.joaovitor.tucaprodutosdelimpeza.ui.product.list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.joaovitor.tucaprodutosdelimpeza.data.ProductRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.Result
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
 import com.joaovitor.tucaprodutosdelimpeza.ui.BaseViewModel
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class ProductListViewModel : BaseViewModel() {
@@ -28,7 +28,7 @@ class ProductListViewModel : BaseViewModel() {
     }
 
     private fun fetchProducts() {
-        GlobalScope.launch {
+        viewModelScope.launch {
             _showProgressBar.postValue(true)
 
             val resultProduct = ProductRepository().getProducts()

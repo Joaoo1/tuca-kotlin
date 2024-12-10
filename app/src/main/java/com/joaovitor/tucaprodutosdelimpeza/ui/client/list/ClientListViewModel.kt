@@ -2,17 +2,12 @@ package com.joaovitor.tucaprodutosdelimpeza.ui.client.list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.joaovitor.tucaprodutosdelimpeza.data.ClientRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.Result
-import com.joaovitor.tucaprodutosdelimpeza.data.SaleRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Client
-import com.joaovitor.tucaprodutosdelimpeza.data.model.Product
-import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
 import com.joaovitor.tucaprodutosdelimpeza.ui.BaseViewModel
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.util.*
 
 class ClientListViewModel : BaseViewModel() {
 
@@ -31,7 +26,7 @@ class ClientListViewModel : BaseViewModel() {
     }
 
     private fun fetchClients() {
-        GlobalScope.launch {
+        viewModelScope.launch {
             _showProgressBar.postValue(true)
             val resultClient = ClientRepository().getClients()
             if (resultClient is Result.Success) {

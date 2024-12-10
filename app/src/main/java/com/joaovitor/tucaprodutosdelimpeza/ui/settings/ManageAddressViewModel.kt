@@ -2,6 +2,7 @@ package com.joaovitor.tucaprodutosdelimpeza.ui.settings
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.joaovitor.tucaprodutosdelimpeza.data.CityRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.NeighborhoodRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.Result
@@ -12,7 +13,6 @@ import com.joaovitor.tucaprodutosdelimpeza.data.model.Street
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Neighborhood
 import com.joaovitor.tucaprodutosdelimpeza.data.model.City
 import com.joaovitor.tucaprodutosdelimpeza.ui.BaseViewModel
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class ManageAddressViewModel : BaseViewModel() {
@@ -50,7 +50,7 @@ class ManageAddressViewModel : BaseViewModel() {
     }
 
     fun onClickEditStreet(){
-        GlobalScope.launch {
+        viewModelScope.launch {
             _showProgressBar.postValue(true)
 
             val resultStreet = StreetRepository().getStreets()
@@ -66,7 +66,7 @@ class ManageAddressViewModel : BaseViewModel() {
     }
 
     fun onClickEditNeighborhood() {
-        GlobalScope.launch {
+        viewModelScope.launch {
             _showProgressBar.postValue(true)
 
             val resultNeighborhood = NeighborhoodRepository().getNeighborhoods()
@@ -82,7 +82,7 @@ class ManageAddressViewModel : BaseViewModel() {
     }
 
     fun onClickEditCity(){
-        GlobalScope.launch {
+        viewModelScope.launch {
             _showProgressBar.postValue(true)
 
             val resultCities = CityRepository().getCities()
@@ -98,7 +98,7 @@ class ManageAddressViewModel : BaseViewModel() {
     }
 
     fun onClickDeleteStreet(){
-        GlobalScope.launch {
+        viewModelScope.launch {
             _showProgressBar.postValue(true)
 
             val resultStreet = StreetRepository().getStreets()
@@ -114,7 +114,7 @@ class ManageAddressViewModel : BaseViewModel() {
     }
 
     fun onClickDeleteNeighborhood(){
-        GlobalScope.launch {
+        viewModelScope.launch {
             _showProgressBar.postValue(true)
 
             val resultNeighborhood = NeighborhoodRepository().getNeighborhoods()
@@ -130,7 +130,7 @@ class ManageAddressViewModel : BaseViewModel() {
     }
 
     fun onClickDeleteCity(){
-        GlobalScope.launch {
+        viewModelScope.launch {
             _showProgressBar.postValue(true)
 
             val resultCities = CityRepository().getCities()
@@ -157,7 +157,7 @@ class ManageAddressViewModel : BaseViewModel() {
             return
         }
 
-        GlobalScope.launch {
+        viewModelScope.launch {
             _showProgressBar.postValue(true)
 
             val result = when(type){
@@ -193,7 +193,7 @@ class ManageAddressViewModel : BaseViewModel() {
             return
         }
 
-        GlobalScope.launch {
+        viewModelScope.launch {
             _showProgressBar.postValue(true)
 
             val result = when(address.type!!){
@@ -213,7 +213,7 @@ class ManageAddressViewModel : BaseViewModel() {
     }
 
     fun onClickDeleteAddressPositiveButton(address: Address) {
-        GlobalScope.launch {
+        viewModelScope.launch {
             _showProgressBar.postValue(true)
 
             val result = when(address.type!!){

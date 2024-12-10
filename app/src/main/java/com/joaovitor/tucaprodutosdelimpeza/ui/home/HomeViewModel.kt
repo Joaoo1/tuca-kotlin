@@ -3,10 +3,10 @@ package com.joaovitor.tucaprodutosdelimpeza.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.joaovitor.tucaprodutosdelimpeza.data.DashboardRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.Result
 import com.joaovitor.tucaprodutosdelimpeza.data.model.GeneralInfo
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class HomeViewModel : ViewModel() {
@@ -29,7 +29,7 @@ class HomeViewModel : ViewModel() {
     val navigateToReport: LiveData<Boolean> get() = _navigateToReport
 
     init {
-        GlobalScope.launch {
+        viewModelScope.launch {
             val result = DashboardRepository().getGeneralInfo()
             if(result is Result.Success) {
                 generalInfo.postValue(result.data)
@@ -68,7 +68,7 @@ class HomeViewModel : ViewModel() {
 
     /* Database functions*/
     fun onClickUpdateGeneralInfo() {
-        GlobalScope.launch {
+        viewModelScope.launch {
             val result = DashboardRepository().updateGeneralInfo()
             if(result is Result.Success) {
                 generalInfo.postValue(result.data)

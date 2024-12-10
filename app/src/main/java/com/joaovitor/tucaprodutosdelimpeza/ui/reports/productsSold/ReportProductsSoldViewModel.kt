@@ -2,13 +2,13 @@ package com.joaovitor.tucaprodutosdelimpeza.ui.reports.productsSold
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.joaovitor.tucaprodutosdelimpeza.data.ReportRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.Result
 import com.joaovitor.tucaprodutosdelimpeza.data.model.ProductSold
 import com.joaovitor.tucaprodutosdelimpeza.data.util.DateRange
 import com.joaovitor.tucaprodutosdelimpeza.ui.BaseViewModel
 import com.joaovitor.tucaprodutosdelimpeza.util.FormatDate
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.Date
 
@@ -35,7 +35,7 @@ class ReportProductsSoldViewModel : BaseViewModel() {
 
     private fun generateReport() {
         if(validateFields()) {
-            GlobalScope.launch {
+            viewModelScope.launch {
                 _showProgressBar.postValue(true)
 
                 val result = ReportRepository().generateProductsSoldReport(

@@ -7,12 +7,12 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.joaovitor.tucaprodutosdelimpeza.R
 import com.joaovitor.tucaprodutosdelimpeza.bluetooth.Bluetooth
 import com.joaovitor.tucaprodutosdelimpeza.bluetooth.PrinterFunctions
 import com.joaovitor.tucaprodutosdelimpeza.data.*
 import com.joaovitor.tucaprodutosdelimpeza.data.model.*
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.util.Date
@@ -90,7 +90,7 @@ class SaleAddViewModel(application: Application) : AndroidViewModel(application)
     var sale = Sale()
 
     init {
-        GlobalScope.launch {
+        viewModelScope.launch {
             _showProgressBar.postValue(true)
 
             val productRepository = ProductRepository()
@@ -174,7 +174,7 @@ class SaleAddViewModel(application: Application) : AndroidViewModel(application)
             mSale.seller = loginRepository.getCachedUserName()
             mSale.sellerUid = loginRepository.getCachedUserUid()
 
-            GlobalScope.launch {
+            viewModelScope.launch {
                 val result = saleRepository.addSale(mSale)
 
                 if (result is Result.Success) {
@@ -214,7 +214,7 @@ class SaleAddViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun addProduct(text: String?) {
-        if(text == null || text.isEmpty()) {
+        if(text.isNullOrEmpty()) {
             _error.value = "Digite o nome do produto"
             return
         }
@@ -286,7 +286,7 @@ class SaleAddViewModel(application: Application) : AndroidViewModel(application)
     }
 
     private fun calculateTotalFromProductsList(products: List<ProductSale>?): BigDecimal {
-        if(products != null && products.isNotEmpty()) {
+        if(!products.isNullOrEmpty()) {
             val productsTotal =
                 products.map { BigDecimal(it.price).multiply(BigDecimal(it.quantity)) }
 

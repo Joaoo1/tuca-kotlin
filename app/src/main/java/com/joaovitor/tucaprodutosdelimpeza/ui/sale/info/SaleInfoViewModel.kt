@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.joaovitor.tucaprodutosdelimpeza.bluetooth.Bluetooth
 import com.joaovitor.tucaprodutosdelimpeza.bluetooth.PrinterFunctions
 import com.joaovitor.tucaprodutosdelimpeza.data.Result
@@ -44,7 +45,7 @@ class SaleInfoViewModel : BaseViewModel() {
 
     /* Database functions */
     fun deleteSale() {
-        GlobalScope.launch {
+        viewModelScope.launch {
             _showProgressBar.postValue(true)
 
             sale.value?.id?.let {

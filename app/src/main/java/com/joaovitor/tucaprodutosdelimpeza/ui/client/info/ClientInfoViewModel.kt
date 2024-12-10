@@ -7,14 +7,13 @@ import android.net.Uri
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.joaovitor.tucaprodutosdelimpeza.data.Result
 import com.joaovitor.tucaprodutosdelimpeza.data.SaleRepository
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Client
 import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
 import com.joaovitor.tucaprodutosdelimpeza.ui.BaseViewModel
 import com.joaovitor.tucaprodutosdelimpeza.util.Phone
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class ClientInfoViewModel(mClient: Client) : BaseViewModel() {
@@ -48,9 +47,8 @@ class ClientInfoViewModel(mClient: Client) : BaseViewModel() {
         fetchClientSales()
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     private fun fetchClientSales() {
-        GlobalScope.launch {
+        viewModelScope.launch {
             _showProgressBar.postValue(true)
 
             val resultClientSales = SaleRepository().getSalesByClient(client.value!!.id)
@@ -70,14 +68,13 @@ class ClientInfoViewModel(mClient: Client) : BaseViewModel() {
         _navigateToEditClient.value = client.value
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     fun onClickFinishSale(sale: Sale) {
         if(sale.paid){
             _info.postValue("Está venda já está paga")
             return
         }
 
-        GlobalScope.launch {
+        viewModelScope.launch {
             _showProgressBar.postValue(true)
 
             sale.finishSale()
