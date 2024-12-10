@@ -4,8 +4,11 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.view.*
 import android.widget.ArrayAdapter
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -25,8 +28,6 @@ class ClientAddFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        setHasOptionsMenu(true)
-
         // Inflate the layout for this fragment
         val binding: FragmentClientAddBinding = DataBindingUtil.inflate(
             inflater,R.layout.fragment_client_add, container, false)
@@ -90,19 +91,31 @@ class ClientAddFragment : Fragment() {
         return binding.root
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.client_add, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
 
-    @Deprecated("Deprecated in Java")
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
-            R.id.action_add_address -> viewModel.onClickAddAddress()
-            R.id.action_save -> viewLifecycleOwner.lifecycleScope.launch { viewModel.onClickSave() }
-        }
-        return super.onOptionsItemSelected(item)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val menuHost: MenuHost = requireActivity()
+
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.client_add, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.action_add_address -> {
+                        viewModel.onClickAddAddress()
+                        true
+                    }
+                    R.id.action_save -> {
+                        viewLifecycleOwner.lifecycleScope.launch { viewModel.onClickSave() }
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     override fun onResume() {

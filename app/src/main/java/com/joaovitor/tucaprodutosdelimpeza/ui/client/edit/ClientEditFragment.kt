@@ -4,8 +4,11 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.view.*
 import android.widget.ArrayAdapter
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -23,8 +26,6 @@ class ClientEditFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        setHasOptionsMenu(true)
-
         //Create the viewModel
         val viewModelFactory = ClientEditViewModelFactory(ClientEditFragmentArgs.fromBundle(requireArguments()).client)
         viewModel = ViewModelProvider(this, viewModelFactory)[ClientEditViewModel::class.java]
@@ -81,8 +82,6 @@ class ClientEditFragment : Fragment() {
             }
         }
 
-
-
         viewModel.error.observe(viewLifecycleOwner) {
             it?.let {
                 context?.toastLong(it)
@@ -103,20 +102,34 @@ class ClientEditFragment : Fragment() {
         return binding.root
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.client_edit, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    @Deprecated("Deprecated in Java")
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
-            R.id.action_delete_client -> createDeleteClientDialog()
-            R.id.action_add_address -> viewModel.onClickMenuItemAddAddress()
-            R.id.action_save -> viewModel.onClickSave()
-        }
-        return super.onOptionsItemSelected(item)
+        val menuHost: MenuHost = requireActivity()
+
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.client_edit, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.action_delete_client -> {
+                        createDeleteClientDialog()
+                        true
+                    }
+                    R.id.action_add_address -> {
+                        viewModel.onClickMenuItemAddAddress()
+                        true
+                    }
+                    R.id.action_save -> {
+                        viewModel.onClickSave()
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     private fun createDeleteClientDialog() {

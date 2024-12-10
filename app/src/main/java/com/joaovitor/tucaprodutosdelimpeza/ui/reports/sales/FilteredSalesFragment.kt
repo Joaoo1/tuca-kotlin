@@ -4,8 +4,11 @@ import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.joaovitor.tucaprodutosdelimpeza.MainActivity
@@ -24,8 +27,6 @@ class FilteredSalesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        setHasOptionsMenu(true)
-
         // Inflate the layout for this fragment
         val binding: FragmentFilteredSalesBinding = DataBindingUtil
             .inflate(inflater,R.layout.fragment_filtered_sales,container, false)
@@ -88,17 +89,27 @@ class FilteredSalesFragment : Fragment() {
         return binding.root
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.print_report, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
 
-    @Deprecated("Deprecated in Java")
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId == R.id.action_print) viewModel.onClickPrintReport(requireContext())
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        return super.onOptionsItemSelected(item)
+        val menuHost: MenuHost = requireActivity()
+
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.print_report, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.action_print -> {
+                        viewModel.onClickPrintReport(requireContext())
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     @Deprecated("Deprecated in Java")

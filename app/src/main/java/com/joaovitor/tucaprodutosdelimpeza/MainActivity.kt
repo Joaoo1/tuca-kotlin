@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageButton
@@ -75,6 +76,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val navController = navHostFragment.navController
         toolbar.setupWithNavController(navController, appBarConfiguration)
 
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                handleBackPressed()
+            }
+        }
+
+        this.onBackPressedDispatcher.addCallback(this, callback)
         setupNavigationView()
     }
 
@@ -117,8 +125,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         progressBar.visibility = View.INVISIBLE
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
+    private fun handleBackPressed() {
         val currentFragment = navHostFragment.childFragmentManager.fragments[0]
 
         if(currentFragment is HomeFragment) {

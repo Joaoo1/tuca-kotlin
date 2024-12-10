@@ -10,8 +10,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -36,7 +39,6 @@ class SaleInfoFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        setHasOptionsMenu(true)
         sale = arguments?.let { SaleInfoFragmentArgs.fromBundle(it).sale }!!
         activity?.title = String.format(
             resources.getString(R.string.title_fragment_sale_info),
@@ -137,6 +139,40 @@ class SaleInfoFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val menuHost: MenuHost = requireActivity()
+
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.sale_info, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.action_register_payment -> {
+                        viewModel.onClickRegisterPayment()
+                        true
+                    }
+                    R.id.action_delete_sale -> {
+                        viewModel.onClickDeleteSale()
+                        true
+                    }
+                    R.id.action_edit_products -> {
+                        viewModel.onClickEditProducts()
+                        true
+                    }
+                    R.id.action_print -> {
+                        viewModel.onClickPrintReceipt(requireContext())
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
     /* Bluetooth permissions */
     private val requestMultiplePermissions =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
@@ -153,23 +189,6 @@ class SaleInfoFragment : Fragment() {
         }
     }
     /* End bluetooth permissions */
-
-    @Deprecated("Deprecated in Java")
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.sale_info, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
-            R.id.action_register_payment -> viewModel.onClickRegisterPayment()
-            R.id.action_delete_sale -> viewModel.onClickDeleteSale()
-            R.id.action_edit_products -> viewModel.onClickEditProducts()
-            R.id.action_print -> viewModel.onClickPrintReceipt(requireContext())
-        }
-        return super.onOptionsItemSelected(item)
-    }
 
     private fun createPaymentDialog() {
         val view = layoutInflater.inflate(R.layout.dialog_payment, null)

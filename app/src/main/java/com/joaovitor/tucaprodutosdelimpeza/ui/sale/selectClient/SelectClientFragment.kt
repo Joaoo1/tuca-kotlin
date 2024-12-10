@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -28,8 +30,6 @@ class SelectClientFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        setHasOptionsMenu(true)
-
         // Inflate the layout for this fragment
         val binding: FragmentSelectClientBinding = DataBindingUtil
             .inflate(inflater,R.layout.fragment_select_client, container, false)
@@ -72,12 +72,21 @@ class SelectClientFragment : Fragment() {
         return binding.root
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.search_list, menu)
-        //Implement SearchView
-        searchOnList(menu.findItem(R.id.action_search))
-        super.onCreateOptionsMenu(menu, inflater)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val menuHost: MenuHost = requireActivity()
+
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.search_list, menu)
+                searchOnList(menu.findItem(R.id.action_search))
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return false
+            }
+        })
     }
 
     private fun searchOnList(search: MenuItem) {

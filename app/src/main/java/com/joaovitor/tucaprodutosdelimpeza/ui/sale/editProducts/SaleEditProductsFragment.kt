@@ -8,8 +8,11 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.ArrayAdapter
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -34,7 +37,6 @@ class SaleEditProductsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        setHasOptionsMenu(true)
         sale = SaleEditProductsFragmentArgs.fromBundle(requireArguments()).sale
 
         /* Create the viewModel */
@@ -100,19 +102,30 @@ class SaleEditProductsFragment : Fragment() {
         return binding.root
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.sale_edit, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    @Deprecated("Deprecated in Java")
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
-            R.id.action_add_product -> viewModel.onClickAddProduct()
-            R.id.action_save -> viewModel.onClickSave()
-        }
-        return super.onOptionsItemSelected(item)
+        val menuHost: MenuHost = requireActivity()
+
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.sale_edit, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.action_add_product -> {
+                        viewModel.onClickAddProduct()
+                        true
+                    }
+                    R.id.action_save -> {
+                        viewModel.onClickSave()
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     private fun createAddProductDialog() {

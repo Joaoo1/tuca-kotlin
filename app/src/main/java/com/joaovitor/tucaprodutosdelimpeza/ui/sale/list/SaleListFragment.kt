@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -30,8 +32,6 @@ class SaleListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        setHasOptionsMenu(true)
-
         // Inflate the layout for this fragment
         val binding: FragmentSaleListBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_sale_list, container, false
@@ -100,20 +100,34 @@ class SaleListFragment : Fragment() {
         return binding.root
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.sale_list, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    @Deprecated("Deprecated in Java")
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
-            R.id.action_filter_sales -> createFiltersDialog()
-            R.id.action_search_sales -> searchOnList(item)
-            R.id.action_refresh_sales -> viewModel.onClickRefreshList()
-        }
-        return super.onOptionsItemSelected(item)
+        val menuHost: MenuHost = requireActivity()
+
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.sale_list, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when(menuItem.itemId) {
+                    R.id.action_filter_sales -> {
+                        createFiltersDialog()
+                        true
+                    }
+                    R.id.action_search_sales -> {
+                        searchOnList(menuItem)
+                        true
+                    }
+                    R.id.action_refresh_sales -> {
+                        viewModel.onClickRefreshList()
+                        true
+                    }
+                    else -> false
+                }
+            }
+        })
     }
 
     private fun searchOnList(search: MenuItem) {
