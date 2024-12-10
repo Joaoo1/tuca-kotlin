@@ -48,8 +48,7 @@ class ProductEditFragment : Fragment() {
 
         // Create the viewModel
         val viewModelFactory = ProductEditViewModelFactory(product)
-        viewModel = ViewModelProvider(this,viewModelFactory)
-            .get(ProductEditViewModel::class.java)
+        viewModel = ViewModelProvider(this,viewModelFactory)[ProductEditViewModel::class.java]
 
         viewModel.navigateBack.observe(viewLifecycleOwner) {
             if (it) {

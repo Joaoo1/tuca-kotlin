@@ -32,8 +32,7 @@ class ManageAddressFragment : Fragment() {
 
         //Create the viewModel
         val viewModelFactory = ManageAddressViewModelFactory()
-        viewModel = ViewModelProvider(requireActivity(), viewModelFactory)
-            .get(ManageAddressViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity(), viewModelFactory)[ManageAddressViewModel::class.java]
 
         viewModel.openDialogAddAddress.observe(viewLifecycleOwner) {
             it?.let{
@@ -157,7 +156,7 @@ class ManageAddressFragment : Fragment() {
         context?.let {
             MaterialAlertDialogBuilder(it)
                 .setTitle("Excluir "+address.name)
-                .setMessage("Esta ação irá deletar o(a) "+address.type?.value+" permanentemente")
+                .setMessage("Esta ação irá excluir o(a) "+address.type?.value+" permanentemente")
                 .setNegativeButton("Cancelar", null)
                 .setPositiveButton("Salvar") { _, _ ->
                     viewModel.onClickDeleteAddressPositiveButton(address)}

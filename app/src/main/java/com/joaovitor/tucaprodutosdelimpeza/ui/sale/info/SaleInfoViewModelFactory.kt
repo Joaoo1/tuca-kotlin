@@ -2,7 +2,6 @@ package com.joaovitor.tucaprodutosdelimpeza.ui.sale.info
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.joaovitor.tucaprodutosdelimpeza.data.model.Sale
 
 class SaleInfoViewModelFactory : ViewModelProvider.Factory {
     @Suppress("unchecked_cast")

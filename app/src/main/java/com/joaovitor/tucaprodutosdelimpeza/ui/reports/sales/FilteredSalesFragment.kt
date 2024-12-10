@@ -32,8 +32,7 @@ class FilteredSalesFragment : Fragment() {
 
         //Create the viewModel
         val viewModelFactory = ReportSalesViewModelFactory()
-        viewModel = ViewModelProvider(requireActivity(),viewModelFactory)
-            .get(ReportSalesViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity(),viewModelFactory)[ReportSalesViewModel::class.java]
 
         //Setting up RecyclerView
         val listAdapter = FilteredSalesListAdapter(SaleListAdapter.SaleListener { sale ->

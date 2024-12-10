@@ -38,8 +38,7 @@ class ProductListFragment : Fragment() {
 
         // Create the viewModel
         val viewModelFactory = ProductListViewModelFactory()
-        viewModel = ViewModelProvider(this,viewModelFactory)
-            .get(ProductListViewModel::class.java)
+        viewModel = ViewModelProvider(this,viewModelFactory)[ProductListViewModel::class.java]
 
         //Setting up the recycler view
         listAdapter = ProductListAdapter(ProductListAdapter.ProductListener { product ->

@@ -40,7 +40,7 @@ class SaleInfoFragment : Fragment() {
         sale = arguments?.let { SaleInfoFragmentArgs.fromBundle(it).sale }!!
         activity?.title = String.format(
             resources.getString(R.string.title_fragment_sale_info),
-            sale.saleId
+            sale.saleId.toString()
         )
 
         // Inflate the layout for this fragment
@@ -53,8 +53,7 @@ class SaleInfoFragment : Fragment() {
 
         //Create the viewModel
         val viewModelFactory = SaleInfoViewModelFactory()
-        viewModel = ViewModelProvider(requireActivity(), viewModelFactory)
-            .get(SaleInfoViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity(), viewModelFactory)[SaleInfoViewModel::class.java]
         
         viewModel.setSale(sale)
 

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.navigation.NavigationView
@@ -25,7 +24,7 @@ class HomeFragment : Fragment() {
             false)
 
         val viewModelFactory = HomeViewModelFactory()
-        val viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
+        val viewModel = ViewModelProvider(this, viewModelFactory)[HomeViewModel::class.java]
 
         viewModel.navigateToProduct.observe(viewLifecycleOwner) {
             if (it) {

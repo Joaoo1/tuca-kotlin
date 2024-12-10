@@ -3,7 +3,6 @@ package com.joaovitor.tucaprodutosdelimpeza.ui.login
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.joaovitor.tucaprodutosdelimpeza.data.LoginRepository
 
 /**
  * ViewModel provider factory to instantiate LoginViewModel.

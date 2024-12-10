@@ -41,8 +41,7 @@ class SaleAddFragment : Fragment() {
 
         //Create the viewModel
         val viewModelFactory = SaleAddViewModelFactory(requireActivity().application)
-        viewModel = ViewModelProvider(requireActivity(), viewModelFactory)
-            .get(SaleAddViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity(), viewModelFactory)[SaleAddViewModel::class.java]
 
         // Setting up the RecyclerView
         listAdapter = SaleProductsAdapter(SaleProductsAdapter.DeleteProductSaleListener {

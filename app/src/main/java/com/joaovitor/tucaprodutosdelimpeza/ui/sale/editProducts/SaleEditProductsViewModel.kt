@@ -138,7 +138,7 @@ class SaleEditProductsViewModel(private var mSale: Sale) : BaseViewModel() {
 
             val result = SaleRepository().editSale(mSale)
             if(result is Result.Success) {
-                _info.postValue("Venda editada com sucesso")
+                _info.postValue("Venda alterada com sucesso")
                 _navigateBack.postValue(true)
 
                 // Register stock movements
@@ -150,7 +150,7 @@ class SaleEditProductsViewModel(private var mSale: Sale) : BaseViewModel() {
                     StockRepository().addStockMovement(addedProducts, mSale.saleId)
                 }
             } else {
-                _error.postValue("Ocorreu um erro ao editar produtos!")
+                _error.postValue("Ocorreu um erro ao alterar produtos!")
             }
 
             _showProgressBar.postValue(false)

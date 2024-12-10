@@ -39,8 +39,7 @@ class SaleEditProductsFragment : Fragment() {
 
         /* Create the viewModel */
         val viewModelFactory = SaleEditProductsViewModelFactory(sale)
-        viewModel = ViewModelProvider(this,viewModelFactory)
-            .get(SaleEditProductsViewModel::class.java)
+        viewModel = ViewModelProvider(this,viewModelFactory)[SaleEditProductsViewModel::class.java]
 
         /* Inflate the layout for this fragment */
         val binding: FragmentSaleEditProductsBinding = DataBindingUtil.inflate(

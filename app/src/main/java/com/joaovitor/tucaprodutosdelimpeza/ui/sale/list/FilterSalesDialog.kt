@@ -13,8 +13,7 @@ class FilterSalesDialog(parentFragment: Fragment): Dialog(parentFragment.require
     init {
         //Create the viewModel
         val viewModelFactory = SaleListViewModelFactory()
-        val viewModel: SaleListViewModel = ViewModelProvider(parentFragment,viewModelFactory)
-            .get(SaleListViewModel::class.java)
+        val viewModel: SaleListViewModel = ViewModelProvider(parentFragment,viewModelFactory)[SaleListViewModel::class.java]
 
         // Inflate the layout for this fragment
         val binding: DialogFilterSalesBinding = DataBindingUtil.inflate(

@@ -123,7 +123,7 @@ public class PrinterFunctions {
 
             try {
                 Toast.makeText(mContext, "Erro ao imprimir recibo!", Toast.LENGTH_SHORT).show();
-            } catch (Exception exc) {
+            } catch (Exception ignored) {
             }
 
         }

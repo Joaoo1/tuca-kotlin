@@ -27,8 +27,7 @@ class ClientEditFragment : Fragment() {
 
         //Create the viewModel
         val viewModelFactory = ClientEditViewModelFactory(ClientEditFragmentArgs.fromBundle(requireArguments()).client)
-        viewModel = ViewModelProvider(this, viewModelFactory)
-            .get(ClientEditViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory)[ClientEditViewModel::class.java]
 
         // Inflate the layout for this fragment
         val binding: FragmentClientEditBinding = DataBindingUtil.inflate(

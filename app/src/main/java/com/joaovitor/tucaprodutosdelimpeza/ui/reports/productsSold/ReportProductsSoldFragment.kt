@@ -27,8 +27,7 @@ class ReportProductsSoldFragment : Fragment() {
 
         //Create the viewModel
         val viewModelFactory = ReportProductsSoldViewModelFactory()
-        val viewModel = ViewModelProvider(requireActivity(),viewModelFactory)
-            .get(ReportProductsSoldViewModel::class.java)
+        val viewModel = ViewModelProvider(requireActivity(),viewModelFactory)[ReportProductsSoldViewModel::class.java]
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel

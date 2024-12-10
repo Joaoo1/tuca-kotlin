@@ -1,5 +1,5 @@
-<p align="center">
-   <img src="./demo/logo.png" alt="Proffy" width="250"/>
+<p style="text-align: center;">
+   <img src="./demo/logo.png" alt="Tuca" width="250"/>
 </p>
 
 <h2 align="center">	
@@ -10,7 +10,7 @@
   <a href="https://github.com/Joaoo1/proffy/commits/master">
     <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/Joaoo1/tuca-kotlin?color=069BFF">
   </a> 
-  <img alt="License" src="https://img.shields.io/badge/license-MIT-069BFF">
+  <img alt="License" src="https://img.shields.io/badge/license-MIT-069BFF" />
 </h2>
 
 
@@ -38,10 +38,10 @@ Algumas das tecnologias utilizadas neste projeto:
 ## Demo
 
 ### Aplicativo mobile
-<div align="center">
-   <img src="./demo/login-page.png" width="250px">
-   <img src="./demo/home-page.png" width="250px">
-   <img src="./demo/clients-page.png" width="250px">
-   <img src="./demo/client-info-page.png" width="250px">
-   <img src="./demo/navigation-drawer.png" width="250px">
+<div style="text-align: center;">
+   <img alt="Página de login" src="./demo/login-page.png" width="250px">
+   <img alt="Página inicial" src="./demo/home-page.png" width="250px">
+   <img alt="Página de clientes" src="./demo/clients-page.png" width="250px">
+   <img alt="Página de informações do cliente" src="./demo/client-info-page.png" width="250px">
+   <img alt="Menu de navegação" src="./demo/navigation-drawer.png" width="250px">
 </div>

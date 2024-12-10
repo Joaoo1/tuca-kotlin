@@ -37,8 +37,7 @@ class ClientInfoFragment : Fragment() {
 
         //Create the viewModel
         val viewModelFactory = ClientInfoViewModelFactory(client)
-        viewModel = ViewModelProvider(this, viewModelFactory)
-            .get(ClientInfoViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory)[ClientInfoViewModel::class.java]
 
         viewModel.navigateToEditClient.observe(viewLifecycleOwner) {
             it?.let {

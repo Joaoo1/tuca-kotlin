@@ -33,8 +33,7 @@ class ClientAddFragment : Fragment() {
 
         //Create the viewModel
         val viewModelFactory = ClientAddViewModelFactory()
-        viewModel = ViewModelProvider(requireActivity(), viewModelFactory)
-            .get(ClientAddViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity(), viewModelFactory)[ClientAddViewModel::class.java]
 
         viewModel.streets.observe(viewLifecycleOwner) {
             it?.let {

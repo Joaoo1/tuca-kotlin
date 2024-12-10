@@ -106,7 +106,7 @@ class SaleProductsAdapter(val clickListener: DeleteProductSaleListener) : ListAd
             override val id = product.name
         }
 
-        object Header: DataItem() {
+        data object Header: DataItem() {
             override val id = ""
         }
 

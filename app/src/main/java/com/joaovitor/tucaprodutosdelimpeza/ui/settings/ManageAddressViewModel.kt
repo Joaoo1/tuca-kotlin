@@ -74,7 +74,7 @@ class ManageAddressViewModel : BaseViewModel() {
                 neighborhoods = resultNeighborhood.data?.toMutableList()!!
                 _openDialogEditAddress.postValue(AddressObject(AddressType.NEIGHBORHOOD, neighborhoods.map{it.copy()}))
             } else {
-                _error.postValue("Erro ao carregar bairrps!")
+                _error.postValue("Erro ao carregar bairros!")
             }
 
             _showProgressBar.postValue(false)

@@ -31,8 +31,7 @@ class  ReportSalesFragment : Fragment() {
 
         //Create the viewModel
         val viewModelFactory = ReportSalesViewModelFactory()
-        viewModel = ViewModelProvider(requireActivity(),viewModelFactory)
-            .get(ReportSalesViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity(),viewModelFactory)[ReportSalesViewModel::class.java]
 
         viewModel.openSelectAddressDialog.observe(viewLifecycleOwner){
             it?.let {

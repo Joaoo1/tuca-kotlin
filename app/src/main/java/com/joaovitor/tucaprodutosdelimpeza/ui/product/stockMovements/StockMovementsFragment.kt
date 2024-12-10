@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.joaovitor.tucaprodutosdelimpeza.MainActivity
 import com.joaovitor.tucaprodutosdelimpeza.R
@@ -28,8 +27,7 @@ class StockMovementsFragment : Fragment() {
 
         // Create the viewModel
         val viewModelFactory = StockMovementsViewModelFactory(productId)
-        val viewModel = ViewModelProvider(this,viewModelFactory)
-            .get(StockMovementsViewModel::class.java)
+        val viewModel = ViewModelProvider(this,viewModelFactory)[StockMovementsViewModel::class.java]
 
         //Setting up the recycler view
         val adapter = StockMovementsListAdapter()

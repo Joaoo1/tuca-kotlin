@@ -36,8 +36,7 @@ class SelectClientFragment : Fragment() {
 
         //Create the Add viewModel
         val viewModelFactory = SaleAddViewModelFactory(requireActivity().application)
-        val viewModel = ViewModelProvider(requireActivity(), viewModelFactory)
-            .get(SaleAddViewModel::class.java)
+        val viewModel = ViewModelProvider(requireActivity(), viewModelFactory)[SaleAddViewModel::class.java]
 
         //Setting up Recycler View
         listAdapter = SelectClientListAdapter(SelectClientListAdapter.SelectClientListener { client ->

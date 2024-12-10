@@ -32,8 +32,7 @@ class ProductEditStockFragment(val product: Product) : Fragment() {
 
         // Create the viewModel
         val viewModelFactory = ProductEditViewModelFactory(product)
-        val viewModel = ViewModelProvider(this,viewModelFactory)
-            .get(ProductEditViewModel::class.java)
+        val viewModel = ViewModelProvider(this,viewModelFactory)[ProductEditViewModel::class.java]
 
         viewModel.navigateToStockMovements.observe(viewLifecycleOwner) {
             it?.let {

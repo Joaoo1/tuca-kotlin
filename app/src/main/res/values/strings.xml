@@ -23,7 +23,7 @@
     <string name="title_fragment_reports">Relatórios</string>
     <string name="title_fragment_report_sales">Relatório de vendas</string>
     <string name="title_fragment_report_filtered_sales">Vendas filtradas</string>
-    <string name="title_fragment_report_products_sold">Relátorio de produtos vendidos</string>
+    <string name="title_fragment_report_products_sold">Relatório de produtos vendidos</string>
     <string name="title_fragment_report_products_sold_list">Produtos vendidos</string>
     <string name="title_fragment_settings">Configurações</string>
     <string name="title_fragment_manage_address">Gerenciar endereços</string>
@@ -164,7 +164,7 @@
     <string name="report_sales_radio_unpaid">Não pago</string>
 
     <!-- ReportProductsSold Fragment -->
-    <string name="report_products_sold_headline_period">Periodo de tempo</string>
+    <string name="report_products_sold_headline_period">Período de tempo</string>
     <string name="report_products_sold_label_start_date">Data inicio</string>
     <string name="report_products_sold_label_end_date">Data final</string>
 

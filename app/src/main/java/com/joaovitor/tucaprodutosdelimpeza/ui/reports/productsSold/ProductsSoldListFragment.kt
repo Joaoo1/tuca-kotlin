@@ -24,8 +24,7 @@ class ProductsSoldListFragment : Fragment() {
 
         //Create the viewModel
         val viewModelFactory = ReportProductsSoldViewModelFactory()
-        val viewModel = ViewModelProvider(requireActivity(),viewModelFactory)
-            .get(ReportProductsSoldViewModel::class.java)
+        val viewModel = ViewModelProvider(requireActivity(),viewModelFactory)[ReportProductsSoldViewModel::class.java]
 
         //Setting up RecyclerView
         val listAdapter = ProductsSoldListAdapter()

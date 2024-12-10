@@ -23,8 +23,7 @@ class ProductAddFragment : Fragment() {
 
         //Create the viewModel
         val viewModelFactory = ProductAddViewModelFactory()
-        viewModel = ViewModelProvider(this, viewModelFactory)
-            .get(ProductAddViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory)[ProductAddViewModel::class.java]
 
         // Inflate the layout for this fragment
         val binding: FragmentProductAddBinding = DataBindingUtil.inflate(

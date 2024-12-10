@@ -20,10 +20,6 @@ class SaleListViewModel : BaseViewModel() {
 
     var sales:MutableLiveData<List<Sale>?> = MutableLiveData(listOf())
 
-    private var _filteredSales: MutableLiveData<List<Sale>> = MutableLiveData(emptyList())
-    val filteredSales: LiveData<List<Sale>>
-        get() = _filteredSales
-
     private var _navigateToAdd = MutableLiveData<Boolean>()
     val navigateToAdd: LiveData<Boolean>
         get() = _navigateToAdd
@@ -166,7 +162,7 @@ class SaleListViewModel : BaseViewModel() {
         _navigateToInfo.value = null
     }
 
-    fun doneDialogClosing() {
+    private fun doneDialogClosing() {
         _closeFiltersDialog.value = false
 
         if(!isFiltered) {
